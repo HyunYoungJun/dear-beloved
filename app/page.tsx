@@ -146,42 +146,58 @@ export default function Home() {
           {/* Column 1: Today's Obituary */}
           <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
             <span className="inline-block bg-red-700 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
-            <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden">
-              {/* Placeholder Image */}
-              <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지</div>
-            </div>
-            <h2 className="text-2xl font-serif font-bold leading-tight mb-2 hover:underline cursor-pointer">
-              시대의 지성, 영원한 안식에 들다
-            </h2>
-            <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
-              2024.12.19 | 정치&middot;사회
-            </div>
-            <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
-              평생을 한국 사회의 민주화와 인권 신장을 위해 헌신했던 김철수 선생님께서 향년 85세를 일기로 별세하셨습니다. 선생님의 뜻을 기리며...
-            </p>
+            {todayObituary ? (
+              <Link href={`/obituary/${todayObituary.id}`} className="block group">
+                <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden relative">
+                  {todayObituary.main_image_url ? (
+                    <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지 없음</div>
+                  )}
+                </div>
+                <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer">
+                  {todayObituary.title}
+                </h2>
+                <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
+                  {new Date(todayObituary.created_at).toLocaleDateString()} | {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
+                </div>
+                <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
+                  {todayObituary.content?.substring(0, 150) || "고인의 평안한 안식을 빕니다."}...
+                </p>
+              </Link>
+            ) : (
+              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
+            )}
           </div>
 
           {/* Column 2: Editor's Pick */}
           <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
             <span className="inline-block bg-gray-900 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
-            <h3 className="text-xl font-serif font-bold leading-snug mb-3 hover:underline cursor-pointer">
-              [기획] 잊혀진 독립운동가를 찾아서
-            </h3>
-            <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6">
-              우리가 기억해야 할 그러나 역사 속에 묻혀버린 이름들. 그들의 삶을 재조명합니다.
-            </p>
-            <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
-              <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지</div>
-            </div>
-            <h4 className="text-lg font-serif font-bold leading-tight mb-1 hover:underline cursor-pointer">
-              소박했지만 위대했던 삶
-            </h4>
-            <div className="text-xs text-gray-400 mb-2">
-              2024.12.18 | 문화
-            </div>
-            <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-3">
-              이름 없는 꽃처럼 살다가신 故 이순자님의 삶이 우리에게 던지는 잔잔한 울림.
-            </p>
+            {editorPick ? (
+              <Link href={`/obituary/${editorPick.id}`} className="block group">
+                <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
+                  {editorPick.title}
+                </h3>
+                <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
+                  {editorPick.content?.substring(0, 100)}...
+                </p>
+                <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
+                  {editorPick.main_image_url ? (
+                    <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
+                  )}
+                </div>
+                <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
+                  {editorPick.deceased_name}
+                </h4>
+                <div className="text-xs text-gray-400 mb-2">
+                  {new Date(editorPick.created_at).toLocaleDateString()}
+                </div>
+              </Link>
+            ) : (
+              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
+            )}
           </div>
 
           {/* Column 3: My Tribute */}
