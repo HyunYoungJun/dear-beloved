@@ -59,7 +59,7 @@ export default function ObituaryDetailPage() {
 
         if (error) {
             console.error('Error fetching obituary:', error);
-            alert('부고를 찾을 수 없거나 접근 권한이 없습니다.');
+            alert('기사를 찾을 수 없거나 접근 권한이 없습니다.');
             router.push('/library');
         } else {
             setObituary(data);
@@ -137,7 +137,7 @@ export default function ObituaryDetailPage() {
                 <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 bg-gradient-to-t from-black/80 to-transparent text-white">
                     <div className="max-w-3xl mx-auto">
                         <div className="inline-block border border-white/30 px-3 py-1 rounded-full text-xs md:text-sm mb-4 bg-white/10 backdrop-blur-md">
-                            부고(訃告)
+                            메모리얼
                         </div>
                         <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-normal font-['Nanum_Myeongjo']">
                             {obituary.title}

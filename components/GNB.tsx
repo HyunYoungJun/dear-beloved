@@ -28,7 +28,7 @@ export default function GNB() {
                         서비스 소개
                     </Link>
                     <Link href="/write" className="hover:text-gray-900 transition-colors">
-                        부고기사 의뢰
+                        메모리얼 기사 의뢰
                     </Link>
                     <Link href="/library" className="hover:text-gray-900 transition-colors">
                         인물 도서관

@@ -114,8 +114,8 @@ export default function LibraryPage() {
                         <button
                             onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
                             className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-colors ${isAdvancedOpen
-                                    ? 'bg-gray-900 text-white border-gray-900'
-                                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                                ? 'bg-gray-900 text-white border-gray-900'
+                                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
                                 }`}
                         >
                             <SlidersHorizontal size={18} />
@@ -195,7 +195,7 @@ export default function LibraryPage() {
                     </div>
                 ) : (
                     <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100 border-dashed">
-                        <p className="text-gray-500 mb-4">{searchTerm || filters.category ? '검색 결과가 없습니다.' : '등록된 부고가 없습니다.'}</p>
+                        <p className="text-gray-500 mb-4">{searchTerm || filters.category ? '검색 결과가 없습니다.' : '등록된 메모리얼 기사가 없습니다.'}</p>
                         <Link href="/write" className="text-gray-900 underline hover:no-underline font-medium">
                             첫 번째 이야기를 기록해보세요.
                         </Link>

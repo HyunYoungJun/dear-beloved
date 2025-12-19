@@ -208,7 +208,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     if (!serviceType && !isEditMode) {
         return (
             <div className="max-w-4xl mx-auto my-10 px-4">
-                <h1 className="text-3xl font-serif font-bold text-center text-gray-900 mb-2">부고 서비스 선택</h1>
+                <h1 className="text-3xl font-serif font-bold text-center text-gray-900 mb-2">메모리얼 서비스 선택</h1>
                 <p className="text-center text-gray-500 mb-12">고인의 마지막 길을 기록할 방식을 선택해 주세요.</p>
 
                 <div className="grid md:grid-cols-3 gap-6">
@@ -270,7 +270,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                             '프리미엄 전기문 작성'}
                 </span>
                 <h1 className="text-3xl font-serif font-bold text-gray-900">
-                    {isEditMode ? '부고 수정' : (serviceType === 'premium' ? '고인의 위대한 삶을 기록합니다' : '부고 작성')}
+                    {isEditMode ? '메모리얼 기사 수정' : (serviceType === 'premium' ? '고인의 위대한 삶을 기록합니다' : '메모리얼 기사 작성')}
                 </h1>
             </div>
 
@@ -384,7 +384,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-1">부고 제목</label>
+                                    <label className="block text-sm font-bold text-gray-700 mb-1">기사 제목</label>
                                     <input
                                         type="text"
                                         name="title"

@@ -12,7 +12,7 @@ const notoSerifKr = Noto_Serif_KR({
 
 export const metadata: Metadata = {
   title: "Dear˚Beloved | 사랑하는 당신을 위한 마지막 기록",
-  description: "온라인 부고 및 디지털 추모 플랫폼",
+  description: "온라인 메모리얼 및 디지털 추모 플랫폼",
 };
 
 export default function RootLayout({
