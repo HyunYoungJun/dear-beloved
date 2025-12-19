@@ -13,6 +13,7 @@ type ObituarySummary = {
   death_date: string | null;
   service_type: string | null;
   category: string | null; // Added category
+  content: string | null;
   created_at: string;
   biography_data: any;
 };
