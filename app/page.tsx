@@ -11,11 +11,11 @@ type ObituarySummary = {
   title: string;
   main_image_url: string | null;
   death_date: string | null;
-  service_type: string | null;
-  category: string | null; // Added category
+  service_type?: string | null;
+  category?: string | null; // Added category
   content: string | null;
   created_at: string;
-  biography_data: any;
+  biography_data?: any;
 };
 
 export default function Home() {
