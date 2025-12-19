@@ -182,22 +182,47 @@ export default function Home() {
             <span className="inline-block bg-red-700 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
             {todayObituary ? (
               <Link href={`/obituary/${todayObituary.id}`} className="block group">
-                <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden relative">
-                  {todayObituary.main_image_url ? (
-                    <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  ) : (
-                    <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지 없음</div>
-                  )}
+                {/* Desktop Layout (Large Card) */}
+                <div className="hidden lg:block">
+                  <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden relative">
+                    {todayObituary.main_image_url ? (
+                      <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지 없음</div>
+                    )}
+                  </div>
+                  <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer">
+                    {todayObituary.title}
+                  </h2>
+                  <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
+                    {new Date(todayObituary.created_at).toLocaleDateString()} | {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
+                  </div>
+                  <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
+                    {todayObituary.content?.substring(0, 150) || "고인의 평안한 안식을 빕니다."}...
+                  </p>
                 </div>
-                <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer">
-                  {todayObituary.title}
-                </h2>
-                <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
-                  {new Date(todayObituary.created_at).toLocaleDateString()} | {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
+
+                {/* Mobile Layout (List Card) */}
+                <div className="flex lg:hidden gap-4 items-start pb-4 border-b border-gray-100 last:border-0">
+                  <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                    {todayObituary.main_image_url ? (
+                      <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-xs text-center p-1">No Img</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <h2 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer truncate">
+                      {todayObituary.deceased_name}
+                    </h2>
+                    <p className="text-sm text-gray-800 font-serif leading-tight mb-1 line-clamp-1">
+                      {todayObituary.title}
+                    </p>
+                    <div className="text-xs text-gray-400 uppercase">
+                      {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
+                    </div>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
-                  {todayObituary.content?.substring(0, 150) || "고인의 평안한 안식을 빕니다."}...
-                </p>
               </Link>
             ) : (
               <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
@@ -209,25 +234,51 @@ export default function Home() {
             <span className="inline-block bg-gray-900 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
             {editorPick ? (
               <Link href={`/obituary/${editorPick.id}`} className="block group">
-                <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
-                  {editorPick.title}
-                </h3>
-                <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
-                  {editorPick.content?.substring(0, 100)}...
-                </p>
-                <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
-                  {editorPick.main_image_url ? (
-                    <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  ) : (
-                    <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
-                  )}
+                {/* Desktop Layout (Large Card) */}
+                <div className="hidden lg:block">
+                  <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
+                    {editorPick.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
+                    {editorPick.content?.substring(0, 100)}...
+                  </p>
+                  <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
+                    {editorPick.main_image_url ? (
+                      <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
+                    )}
+                  </div>
+                  <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
+                    {editorPick.deceased_name}
+                  </h4>
+                  <div className="text-xs text-gray-400 mb-2">
+                    {new Date(editorPick.created_at).toLocaleDateString()}
+                  </div>
                 </div>
-                <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
-                  {editorPick.deceased_name}
-                </h4>
-                <div className="text-xs text-gray-400 mb-2">
-                  {new Date(editorPick.created_at).toLocaleDateString()}
+
+                {/* Mobile Layout (List Card) */}
+                <div className="flex lg:hidden gap-4 items-start pb-4 border-b border-gray-100 last:border-0">
+                  <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                    {editorPick.main_image_url ? (
+                      <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-xs text-center p-1">No Img</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer truncate">
+                      {editorPick.deceased_name}
+                    </h4>
+                    <p className="text-sm text-gray-800 font-serif leading-tight mb-1 line-clamp-1">
+                      {editorPick.title}
+                    </p>
+                    <div className="text-xs text-gray-400">
+                      {new Date(editorPick.created_at).toLocaleDateString()}
+                    </div>
+                  </div>
                 </div>
+
               </Link>
             ) : (
               <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
