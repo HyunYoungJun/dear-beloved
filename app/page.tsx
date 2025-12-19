@@ -20,6 +20,8 @@ type ObituarySummary = {
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
+  const [todayObituary, setTodayObituary] = useState<ObituarySummary | null>(null);
+  const [editorPick, setEditorPick] = useState<ObituarySummary | null>(null);
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
     economy: [],
@@ -30,19 +32,26 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      // 1. Fetch Headline (Latest Anchor/Premium or just latest)
-      const { data: headlineData } = await supabase
+      // 1. Fetch Featured Data (Today & Editor)
+      const { data: recentData } = await supabase
         .from('obituaries')
         .select('*')
         .eq('is_public', true)
         .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
+        .limit(20);
 
-      setHeadline(headlineData);
+      if (recentData) {
+        // Find Today's Obituary
+        const today = recentData.find((item: any) => item.biography_data?.feature_tag === 'today') || recentData[0];
+        setTodayObituary(today);
+
+        // Find Editor's Pick (avoid duplicate if possible)
+        const editor = recentData.find((item: any) => item.biography_data?.feature_tag === 'editor') ||
+          recentData.find((item: any) => item.id !== today?.id) || null;
+        setEditorPick(editor);
+      }
 
       // 2. Fetch data for each category (Limit 3 per category)
-      // Note: In production, doing 4 separate requests isn't ideal, but fine for prototype.
       const CATEGORIES = ['politics', 'economy', 'culture', 'society'];
       const newCategories: any = {};
 
@@ -79,11 +88,52 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 text-gray-900 pb-20">
+    <main className="min-h-screen bg-stone-50 text-gray-900 pb-20 relative">
+      {/* Left Banner (Desktop) */}
+      <div className="hidden 2xl:block fixed left-10 top-1/3 w-48 z-10">
+        <Link href="/write" className="block p-6 bg-[#fffdf5] shadow-[2px_2px_10px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-transform border border-gray-100 rotate-[-1deg]">
+          <div className="w-8 h-8 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-lg mb-4">
+            弔
+          </div>
+          <p className="text-gray-800 font-serif font-bold leading-relaxed mb-2 break-keep text-sm">
+            사랑하는 사람의<br />마지막 떠나는 길,
+          </p>
+          <p className="text-gray-600 text-xs leading-relaxed break-keep">
+            메모리얼 기사와<br />함께하세요.
+          </p>
+          <div className="mt-4 pt-3 border-t border-gray-200 text-xs font-bold text-red-800 flex items-center gap-1">
+            메모리얼 기사 의뢰 <ArrowRight size={10} />
+          </div>
+        </Link>
+      </div>
+
+      {/* Right Banner (Desktop) */}
+      <div className="hidden 2xl:block fixed right-10 top-1/3 w-64 z-10 space-y-4">
+        {/* Search Box */}
+        <div className="bg-white p-4 shadow-sm border border-gray-200 rounded-lg">
+          <h3 className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Article Search</h3>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="기사 검색"
+              className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent"
+            />
+            <button className="absolute right-0 bottom-2 text-gray-400 hover:text-gray-900">
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Advanced Search Link */}
+        <Link href="/library" className="block bg-gray-900 text-white p-4 rounded-lg hover:bg-black transition-colors text-center">
+          <span className="text-sm font-bold">상세 검색 바로가기</span>
+        </Link>
+      </div>
+
       {/* Header */}
       <div className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col items-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-black tracking-tighter mb-2">Dear˚Beloved</h1>
+          <h1 className="text-3xl md:text-4xl font-serif font-black tracking-tighter mb-2">Dear˚Beloved</h1>
           <p className="text-gray-500 font-serif italic">The Daily Memorial Archive</p>
         </div>
       </div>

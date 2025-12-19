@@ -36,6 +36,11 @@ export default function GNB() {
                     <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs">
                         앵커 콘텐츠
                     </Link>
+                    {user && user.email === 'youngjun88@gmail.com' && (
+                        <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold bg-red-50 px-2 py-1 rounded text-xs ml-2">
+                            관리자
+                        </Link>
+                    )}
 
                     {loading ? (
                         <div className="w-12 h-4 bg-gray-100 animate-pulse rounded" />
