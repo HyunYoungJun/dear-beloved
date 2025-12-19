@@ -90,37 +90,83 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
 
-        {/* Hero Headline */}
-        {headline && (
-          <section className="mb-20 border-b-2 border-gray-900 pb-12">
-            <Link href={`/obituary/${headline.id}`} className="group grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              <div className="aspect-[16/10] overflow-hidden bg-gray-200 relative">
-                {headline.main_image_url && (
-                  <img
-                    src={headline.main_image_url}
-                    className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
-                  />
-                )}
-                <span className="absolute top-0 left-0 bg-red-700 text-white text-xs font-bold px-3 py-1 uppercase">
-                  Top Story
-                </span>
-              </div>
-              <div className="flex flex-col justify-center h-full">
-                <div className="flex gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
-                  <span>{new Date(headline.created_at).toLocaleDateString()}</span>
-                  <span>/</span>
-                  <span>{headline.category ? categoryNames[headline.category] || headline.category : 'Obituary'}</span>
+        {/* Newspaper Style 3-Column Layout */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-b-2 border-gray-900 pb-12">
+
+          {/* Column 1: Today's Obituary */}
+          <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
+            <span className="inline-block bg-red-700 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
+            <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden">
+              {/* Placeholder Image */}
+              <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지</div>
+            </div>
+            <h2 className="text-2xl font-serif font-bold leading-tight mb-2 hover:underline cursor-pointer">
+              시대의 지성, 영원한 안식에 들다
+            </h2>
+            <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
+              2024.12.19 | 정치&middot;사회
+            </div>
+            <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
+              평생을 한국 사회의 민주화와 인권 신장을 위해 헌신했던 김철수 선생님께서 향년 85세를 일기로 별세하셨습니다. 선생님의 뜻을 기리며...
+            </p>
+          </div>
+
+          {/* Column 2: Editor's Pick */}
+          <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
+            <span className="inline-block bg-gray-900 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
+            <h3 className="text-xl font-serif font-bold leading-snug mb-3 hover:underline cursor-pointer">
+              [기획] 잊혀진 독립운동가를 찾아서
+            </h3>
+            <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6">
+              우리가 기억해야 할 그러나 역사 속에 묻혀버린 이름들. 그들의 삶을 재조명합니다.
+            </p>
+            <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
+              <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지</div>
+            </div>
+            <h4 className="text-lg font-serif font-bold leading-tight mb-1 hover:underline cursor-pointer">
+              소박했지만 위대했던 삶
+            </h4>
+            <div className="text-xs text-gray-400 mb-2">
+              2024.12.18 | 문화
+            </div>
+            <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-3">
+              이름 없는 꽃처럼 살다가신 故 이순자님의 삶이 우리에게 던지는 잔잔한 울림.
+            </p>
+          </div>
+
+          {/* Column 3: My Tribute */}
+          <div className="flex flex-col">
+            <span className="inline-block bg-gray-100 text-gray-900 text-xs font-bold px-2 py-1 mb-4 w-fit border border-gray-300">나의 조문</span>
+
+            <div className="bg-stone-50 p-6 border border-stone-100 h-full">
+              <p className="text-xs text-gray-400 mb-4">로그인이 필요합니다</p>
+              <h3 className="text-lg font-serif font-bold mb-4">
+                가장 최근에 남긴 조문
+              </h3>
+              <div className="space-y-4">
+                {/* Mock List Items */}
+                <div className="border-b border-gray-200 pb-3">
+                  <div className="text-xs text-gray-500 mb-1">2024.12.15</div>
+                  <p className="text-sm font-serif text-gray-800 line-clamp-2">
+                    "선생님의 가르침을 영원히 잊지 않겠습니다. 편히 쉬세요."
+                  </p>
+                  <div className="text-xs text-gray-400 mt-1 text-right">- 故 홍길동님께</div>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-serif font-bold leading-tight mb-6 group-hover:underline decoration-2 underline-offset-4">
-                  {headline.title}
-                </h2>
-                <p className="text-lg text-gray-600 font-serif italic leading-relaxed line-clamp-3">
-                  "{headline.biography_data?.quote || headline.content?.substring(0, 100) || "고인의 삶을 기억합니다."}"
-                </p>
+                <div className="border-b border-gray-200 pb-3">
+                  <div className="text-xs text-gray-500 mb-1">2024.11.30</div>
+                  <p className="text-sm font-serif text-gray-800 line-clamp-2">
+                    "사랑하는 할머니, 하늘나라에서도 행복하세요."
+                  </p>
+                  <div className="text-xs text-gray-400 mt-1 text-right">- 故 박막례님께</div>
+                </div>
               </div>
-            </Link>
-          </section>
-        )}
+              <button className="w-full mt-6 py-2 border border-gray-300 text-xs font-bold uppercase hover:bg-white transition-colors">
+                내 기록 더보기
+              </button>
+            </div>
+          </div>
+
+        </section>
 
         {/* Categories Grid (4 Columns) */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
