@@ -211,14 +211,14 @@ export default function Home() {
                       <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-xs text-center p-1">No Img</div>
                     )}
                   </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h2 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer truncate">
+                  <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
+                    <h2 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
                       {todayObituary.deceased_name}
                     </h2>
-                    <p className="text-sm text-gray-800 font-serif leading-tight mb-1 line-clamp-1">
+                    <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
                       {todayObituary.title}
                     </p>
-                    <div className="text-xs text-gray-400 uppercase">
+                    <div className="text-xs text-gray-400 uppercase mt-1">
                       {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
                     </div>
                   </div>
@@ -266,14 +266,14 @@ export default function Home() {
                       <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-xs text-center p-1">No Img</div>
                     )}
                   </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer truncate">
+                  <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
+                    <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
                       {editorPick.deceased_name}
                     </h4>
-                    <p className="text-sm text-gray-800 font-serif leading-tight mb-1 line-clamp-1">
+                    <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
                       {editorPick.title}
                     </p>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-gray-400 mt-1">
                       {new Date(editorPick.created_at).toLocaleDateString()}
                     </div>
                   </div>

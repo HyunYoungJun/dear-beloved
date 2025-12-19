@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Serif_KR } from "next/font/google";
+import { Noto_Serif_KR, Inter } from "next/font/google"; // Import Inter
 import GNB from "@/components/GNB";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import "./globals.css";
@@ -8,6 +8,12 @@ const notoSerifKr = Noto_Serif_KR({
   variable: "--font-noto-serif-kr",
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "900"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +34,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${notoSerifKr.className} antialiased bg-white text-gray-900 group/body`}
+        className={`${inter.variable} ${notoSerifKr.variable} font-sans antialiased bg-white text-gray-900 group/body tracking-wide leading-relaxed`}
       >
         <AuthProvider>
           <GNB />
