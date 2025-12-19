@@ -43,7 +43,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     const [serviceType, setServiceType] = useState<'ai' | 'expert' | 'premium' | null>(initialData?.service_type || null);
 
     // Form State
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<any>({
         deceased_name: '',
         birth_date: '',
         death_date: '',
@@ -71,7 +71,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +93,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
 
             const result = await response.json();
             if (response.ok) {
-                setFormData(prev => ({ ...prev, content: result.content }));
+                setFormData((prev: any) => ({ ...prev, content: result.content }));
             } else {
                 alert('AI 생성 실패: ' + result.error);
             }
@@ -341,14 +341,14 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                         <label className="block text-sm font-bold text-gray-700 mb-1">생년월일</label>
                                         <WheelDatePicker
                                             value={formData.birth_date}
-                                            onChange={(date) => setFormData(prev => ({ ...prev, birth_date: date }))}
+                                            onChange={(date) => setFormData((prev: any) => ({ ...prev, birth_date: date }))}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-bold text-gray-700 mb-1">임종일</label>
                                         <WheelDatePicker
                                             value={formData.death_date}
-                                            onChange={(date) => setFormData(prev => ({ ...prev, death_date: date }))}
+                                            onChange={(date) => setFormData((prev: any) => ({ ...prev, death_date: date }))}
                                         />
                                     </div>
                                 </div>
@@ -435,7 +435,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                         type="checkbox"
                                         id="is_public"
                                         checked={formData.is_public}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, is_public: e.target.checked }))}
+                                        onChange={(e) => setFormData((prev: any) => ({ ...prev, is_public: e.target.checked }))}
                                         className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
                                     />
                                     <label htmlFor="is_public" className="text-gray-700">인물 도서관에 공개하기 (체크 시 모두가 볼 수 있습니다)</label>

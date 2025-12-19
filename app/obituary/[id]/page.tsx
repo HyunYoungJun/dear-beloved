@@ -14,9 +14,9 @@ type ObituaryDetail = {
     birth_date: string | null;
     death_date: string | null;
     title: string;
-    content: string;
+    content: string | null;
     main_image_url: string | null;
-    biography_data: any; // Added to access quote
+    biography_data?: any; // Added to access quote
 };
 
 type Comment = {
