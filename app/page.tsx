@@ -89,52 +89,59 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-stone-50 text-gray-900 pb-20 relative">
-      {/* Left Banner (Desktop) */}
-      <div className="hidden 2xl:block fixed left-10 top-1/3 w-48 z-10">
-        <Link href="/write" className="block p-6 bg-[#fffdf5] shadow-[2px_2px_10px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-transform border border-gray-100 rotate-[-1deg]">
-          <div className="w-8 h-8 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-lg mb-4">
-            弔
-          </div>
-          <p className="text-gray-800 font-serif font-bold leading-relaxed mb-2 break-keep text-sm">
-            사랑하는 사람의<br />마지막 떠나는 길,
-          </p>
-          <p className="text-gray-600 text-xs leading-relaxed break-keep">
-            메모리얼 기사와<br />함께하세요.
-          </p>
-          <div className="mt-4 pt-3 border-t border-gray-200 text-xs font-bold text-red-800 flex items-center gap-1">
-            메모리얼 기사 의뢰 <ArrowRight size={10} />
-          </div>
-        </Link>
-      </div>
-
-      {/* Right Banner (Desktop) */}
-      <div className="hidden 2xl:block fixed right-10 top-1/3 w-64 z-10 space-y-4">
-        {/* Search Box */}
-        <div className="bg-white p-4 shadow-sm border border-gray-200 rounded-lg">
-          <h3 className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Article Search</h3>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="기사 검색"
-              className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent"
-            />
-            <button className="absolute right-0 bottom-2 text-gray-400 hover:text-gray-900">
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
-
-        {/* Advanced Search Link */}
-        <Link href="/library" className="block bg-gray-900 text-white p-4 rounded-lg hover:bg-black transition-colors text-center">
-          <span className="text-sm font-bold">상세 검색 바로가기</span>
-        </Link>
-      </div>
-
       {/* Header */}
       <div className="border-b border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col items-center">
-          <h1 className="text-3xl md:text-4xl font-serif font-black tracking-tighter mb-2">Dear˚Beloved</h1>
-          <p className="text-gray-500 font-serif italic">The Daily Memorial Archive</p>
+        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+
+          {/* Top Row: Memorial Banner - Title - Search (Desktop) */}
+          <div className="w-full hidden lg:flex justify-between items-center mb-8 relative">
+
+            {/* Left: Memorial Request */}
+            <Link href="/write" className="flex items-center gap-4 group p-4 border border-transparent hover:border-gray-100 hover:bg-stone-50 rounded-lg transition-all w-1/3">
+              <div className="w-10 h-10 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-lg shrink-0">
+                弔
+              </div>
+              <div className="flex flex-col">
+                <span className="text-gray-900 font-serif font-bold text-sm leading-tight group-hover:underline decoration-red-800 underline-offset-4">
+                  사랑하는 사람의<br />마지막 떠나는 길,
+                </span>
+                <span className="text-gray-500 text-xs mt-1">
+                  메모리얼 기사와 함께하세요 <ArrowRight size={10} className="inline ml-1" />
+                </span>
+              </div>
+            </Link>
+
+            {/* Center: Title */}
+            <div className="flex flex-col items-center text-center w-1/3">
+              <h1 className="text-3xl lg:text-4xl font-serif font-black tracking-tighter mb-1">Dear˚Beloved</h1>
+              <p className="text-gray-400 font-serif italic text-sm">The Daily Memorial Archive</p>
+            </div>
+
+            {/* Right: Search */}
+            <div className="flex flex-col items-end w-1/3 gap-3">
+              <div className="relative w-full max-w-[280px]">
+                <input
+                  type="text"
+                  placeholder="기사 검색"
+                  className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent text-right pr-6"
+                />
+                <button className="absolute right-0 bottom-2 text-gray-400 hover:text-gray-900">
+                  <ArrowRight size={14} />
+                </button>
+              </div>
+              <Link href="/library" className="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 uppercase tracking-wider">
+                Advanced Seach <ArrowRight size={10} />
+              </Link>
+            </div>
+
+          </div>
+
+          {/* Mobile Header (Title Only - Simplified) */}
+          <div className="lg:hidden flex flex-col items-center">
+            <h1 className="text-3xl font-serif font-black tracking-tighter mb-2">Dear˚Beloved</h1>
+            <p className="text-gray-500 font-serif italic">The Daily Memorial Archive</p>
+          </div>
+
         </div>
       </div>
 
