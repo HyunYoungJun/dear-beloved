@@ -136,10 +136,37 @@ export default function Home() {
 
           </div>
 
-          {/* Mobile Header (Title Only - Simplified) */}
-          <div className="lg:hidden flex flex-col items-center">
-            <h1 className="text-3xl font-serif font-black tracking-tighter mb-2">Dear˚Beloved</h1>
-            <p className="text-gray-500 font-serif italic">The Daily Memorial Archive</p>
+          {/* Mobile Header (Title + Key Actions) */}
+          <div className="lg:hidden flex flex-col items-center gap-6">
+            <div className="text-center">
+              <h1 className="text-3xl font-serif font-black tracking-tighter mb-1">Dear˚Beloved</h1>
+              <p className="text-gray-400 font-serif italic text-xs">The Daily Memorial Archive</p>
+            </div>
+
+            <div className="w-full space-y-4 px-2">
+              {/* Mobile Search */}
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="기사 검색"
+                  className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent"
+                />
+                <button className="absolute right-0 bottom-2 text-gray-400">
+                  <ArrowRight size={14} />
+                </button>
+              </div>
+
+              {/* Mobile Write Button */}
+              <Link href="/write" className="flex items-center justify-between w-full p-4 bg-stone-50 border border-stone-200 rounded-lg active:scale-98 transition-transform">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-sm">
+                    弔
+                  </div>
+                  <span className="text-sm font-bold text-gray-900">메모리얼 기사 작성</span>
+                </div>
+                <ArrowRight size={14} className="text-gray-400" />
+              </Link>
+            </div>
           </div>
 
         </div>
