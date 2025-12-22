@@ -18,6 +18,8 @@ type ObituarySummary = {
   biography_data?: any;
 };
 
+import BannerCarousel from '@/components/BannerCarousel';
+
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
   const [todayObituary, setTodayObituary] = useState<ObituarySummary | null>(null);
@@ -96,20 +98,8 @@ export default function Home() {
           {/* Top Row: Memorial Banner - Title - Search (Desktop) */}
           <div className="w-full hidden lg:flex justify-between items-center mb-8 relative">
 
-            {/* Left: Memorial Request */}
-            <Link href="/write" className="flex items-center gap-4 group p-4 border border-transparent hover:border-gray-100 hover:bg-stone-50 rounded-lg transition-all w-1/3">
-              <div className="w-10 h-10 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-lg shrink-0">
-                弔
-              </div>
-              <div className="flex flex-col">
-                <span className="text-gray-900 font-serif font-bold text-sm leading-tight group-hover:underline decoration-red-800 underline-offset-4">
-                  사랑하는 사람의<br />마지막 떠나는 길,
-                </span>
-                <span className="text-gray-500 text-xs mt-1">
-                  메모리얼 기사와 함께하세요 <ArrowRight size={10} className="inline ml-1" />
-                </span>
-              </div>
-            </Link>
+            {/* Left: Carousel Banner */}
+            <BannerCarousel />
 
             {/* Center: Title */}
             <div className="flex flex-col items-center text-center w-1/3">
@@ -138,6 +128,8 @@ export default function Home() {
 
           {/* Mobile Header (Title + Key Actions) */}
           <div className="lg:hidden flex flex-col items-center gap-3 mt-2 mb-4 px-3">
+            {/* Mobile Carousel Banner */}
+            <BannerCarousel mobile={true} />
             <div className="text-center">
               <h2 className="text-[15px] font-serif font-bold text-stone-600 tracking-tight">
                 생애 마지막 선물, 메모리얼 리포트
