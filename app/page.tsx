@@ -163,7 +163,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
 
         {/* Newspaper Style 3-Column Layout */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-b-2 border-gray-900 pb-12">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-t-[0.5px] border-heritage-gold pt-12">
 
           {/* Column 1: Today's Obituary */}
           <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
@@ -233,7 +233,7 @@ export default function Home() {
                   <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
                     {editorPick.content?.substring(0, 100)}...
                   </p>
-                  <div className="aspect-video bg-gray-200 mb-4 overflow-hidden">
+                  <div className="aspect-video bg-gray-100 mb-4 overflow-hidden shadow-md">
                     {editorPick.main_image_url ? (
                       <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     ) : (
@@ -314,9 +314,9 @@ export default function Home() {
         </section>
 
         {/* Categories Grid (4 Columns) */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
           {['politics', 'economy', 'culture', 'society'].map((cat) => (
-            <div key={cat} className="flex flex-col border-t-4 border-gray-900 pt-4">
+            <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
               <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
                 {categoryNames[cat].split('&').map((line, i) => (
                   <span key={i} className="block">{line}</span>
@@ -330,7 +330,7 @@ export default function Home() {
 
                       {/* Desktop Layout (Large Card) */}
                       <div className="hidden lg:block">
-                        <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative">
+                        <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative shadow-sm">
                           {item.main_image_url ? (
                             <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={item.deceased_name} />
                           ) : null}
@@ -348,7 +348,7 @@ export default function Home() {
 
                       {/* Mobile Layout (List Card - Denser) */}
                       <div className="flex lg:hidden gap-3 items-center">
-                        <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
+                        <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100 shadow-sm">
                           {item.main_image_url ? (
                             <img src={item.main_image_url} alt={item.deceased_name} className="w-full h-full object-cover" />
                           ) : (
