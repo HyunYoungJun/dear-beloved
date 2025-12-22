@@ -137,32 +137,30 @@ export default function Home() {
           </div>
 
           {/* Mobile Header (Title + Key Actions) */}
-          <div className="lg:hidden flex flex-col items-center gap-4 mt-6 mb-8 px-2">
+          <div className="lg:hidden flex flex-col items-center gap-3 mt-2 mb-4 px-3">
             <div className="text-center">
-              <h2 className="text-base font-serif font-bold text-stone-600 tracking-tight">
+              <h2 className="text-[15px] font-serif font-bold text-stone-600 tracking-tight">
                 생애 마지막 선물, 메모리얼 리포트
               </h2>
             </div>
 
             <div className="w-full flex gap-2">
               {/* Mobile Search */}
-              <div className="relative flex-1 bg-white border-b border-gray-300 flex items-center pb-1">
+              <div className="relative flex-1 bg-stone-100 rounded-md flex items-center px-3 py-2.5 h-10">
                 <input
                   type="text"
                   placeholder="기사 검색"
-                  className="w-full text-sm outline-none bg-transparent placeholder:text-gray-400"
+                  className="w-full text-xs outline-none bg-transparent placeholder:text-gray-400"
                 />
-                <button className="text-gray-400 shrink-0 p-1">
+                <button className="text-gray-400 shrink-0">
                   <ArrowRight size={14} />
                 </button>
               </div>
 
-              {/* Mobile Write Button */}
-              <Link href="/write" className="flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 bg-gray-900 text-white rounded-full shrink-0 shadow-md active:scale-95 transition-transform">
-                <div className="w-4 h-4 rounded-full bg-red-700 text-white flex items-center justify-center font-serif font-bold text-[10px]">
-                  弔
-                </div>
-                <span className="font-bold text-xs tracking-tight">메모리얼 기사 작성</span>
+              {/* Mobile Write Button - Unify Style (No Red) */}
+              <Link href="/write" className="flex items-center gap-1.5 px-3 h-10 bg-gray-900 text-white rounded-md shrink-0 shadow-sm active:scale-95 transition-transform">
+                <span className="font-serif font-bold text-[11px]">弔</span>
+                <span className="font-bold text-xs tracking-tight">기사 작성</span>
               </Link>
             </div>
           </div>
