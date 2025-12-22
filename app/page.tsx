@@ -332,21 +332,48 @@ export default function Home() {
               <div className="space-y-8">
                 {categories[cat].length > 0 ? (
                   categories[cat].map((item) => (
-                    <Link href={`/obituary/${item.id}`} key={item.id} className="block group">
-                      <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative">
-                        {item.main_image_url ? (
-                          <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
-                        ) : null}
+                    <Link href={`/obituary/${item.id}`} key={item.id} className="block group border-b border-gray-100 last:border-0 pb-4 mb-4 lg:border-none lg:pb-0 lg:mb-0">
+
+                      {/* Desktop Layout (Large Card) */}
+                      <div className="hidden lg:block">
+                        <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative">
+                          {item.main_image_url ? (
+                            <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={item.deceased_name} />
+                          ) : null}
+                        </div>
+                        <h4 className="font-serif font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
+                          {item.deceased_name}
+                        </h4>
+                        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                          {item.title}
+                        </p>
+                        <div className="mt-2 text-xs text-gray-400 uppercase">
+                          {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+                        </div>
                       </div>
-                      <h4 className="font-serif font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
-                        {item.deceased_name}
-                      </h4>
-                      <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
-                        {item.title}
-                      </p>
-                      <div className="mt-2 text-xs text-gray-400 uppercase">
-                        {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+
+                      {/* Mobile Layout (List Card) */}
+                      <div className="flex lg:hidden gap-4 items-start">
+                        <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                          {item.main_image_url ? (
+                            <img src={item.main_image_url} alt={item.deceased_name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-xs text-center p-1">No Img</div>
+                          )}
+                        </div>
+                        <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
+                          <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
+                            {item.deceased_name}
+                          </h4>
+                          <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
+                            {item.title}
+                          </p>
+                          <div className="text-xs text-gray-400 mt-1">
+                            {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+                          </div>
+                        </div>
                       </div>
+
                     </Link>
                   ))
                 ) : (
