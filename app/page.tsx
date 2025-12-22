@@ -5,17 +5,9 @@ import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-type ObituarySummary = {
-  id: string;
-  deceased_name: string;
-  title: string;
-  main_image_url: string | null;
-  death_date: string | null;
-  service_type?: string | null;
-  category?: string | null; // Added category
-  content: string | null;
-  created_at: string;
-  biography_data?: any;
+content: string | null;
+created_at: string;
+biography_data ?: any;
 };
 
 import BannerCarousel from '@/components/BannerCarousel';
@@ -131,27 +123,27 @@ export default function Home() {
             {/* Mobile Carousel Banner */}
             <BannerCarousel mobile={true} />
             <div className="text-center">
-              <h2 className="text-[15px] font-serif font-bold text-stone-600 tracking-tight">
+              <h2 className="text-[15px] font-serif font-bold text-heritage-navy tracking-tight">
                 생애 마지막 선물, 메모리얼 리포트
               </h2>
             </div>
 
             <div className="w-full flex gap-2">
               {/* Mobile Search */}
-              <div className="relative flex-1 bg-stone-100 rounded-md flex items-center px-3 py-2.5 h-10">
+              <div className="relative flex-1 bg-white border border-gray-200 rounded-md flex items-center px-3 py-2.5 h-10">
                 <input
                   type="text"
                   placeholder="기사 검색"
-                  className="w-full text-xs outline-none bg-transparent placeholder:text-gray-400"
+                  className="w-full text-xs outline-none bg-transparent placeholder:text-gray-400 text-heritage-navy"
                 />
                 <button className="text-gray-400 shrink-0">
                   <ArrowRight size={14} />
                 </button>
               </div>
 
-              {/* Mobile Write Button - Unify Style (No Red) */}
-              <Link href="/write" className="flex items-center gap-1.5 px-3 h-10 bg-gray-900 text-white rounded-md shrink-0 shadow-sm active:scale-95 transition-transform">
-                <span className="font-serif font-bold text-[11px]">弔</span>
+              {/* Mobile Write Button */}
+              <Link href="/write" className="flex items-center gap-1.5 px-3 h-10 bg-heritage-navy text-white rounded-md shrink-0 shadow-sm active:scale-95 transition-transform hover:bg-[#0f2440]">
+                <span className="font-serif font-bold text-[11px] text-heritage-gold">弔</span>
                 <span className="font-bold text-xs tracking-tight">기사 작성</span>
               </Link>
             </div>

@@ -1,13 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FDFDFD;
+  /* Premium Off-white */
+  --foreground: #0A192F;
+  /* Deep Navy Default Text */
+  --heritage-navy: #0A192F;
+  --heritage-gold: #C5A059;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-heritage-navy: var(--heritage-navy);
+  --color-heritage-gold: var(--heritage-gold);
   --font-serif: var(--font-noto-serif-kr);
   --font-sans: var(--font-inter);
 }
@@ -16,4 +22,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
+  line-height: 1.75;
+  /* Relaxed body leading */
+}
+
+/* Typography Hierarchy */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-noto-serif-kr), serif;
+  letter-spacing: -0.025em;
+  /* Tight tracking for headers */
+  color: var(--heritage-navy);
 }
