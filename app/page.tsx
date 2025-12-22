@@ -5,9 +5,17 @@ import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-content: string | null;
-created_at: string;
-biography_data ?: any;
+type ObituarySummary = {
+  id: string;
+  deceased_name: string;
+  title: string;
+  main_image_url: string | null;
+  death_date: string | null;
+  service_type?: string | null;
+  category?: string | null;
+  content: string | null;
+  created_at: string;
+  biography_data?: any;
 };
 
 import BannerCarousel from '@/components/BannerCarousel';
