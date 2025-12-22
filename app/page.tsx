@@ -137,34 +137,32 @@ export default function Home() {
           </div>
 
           {/* Mobile Header (Title + Key Actions) */}
-          <div className="lg:hidden flex flex-col items-center gap-6">
+          <div className="lg:hidden flex flex-col items-center gap-6 mt-2 mb-6">
             <div className="text-center">
-              <h1 className="text-3xl font-serif font-black tracking-tighter mb-1">Dear˚Beloved</h1>
-              <p className="text-gray-400 font-serif italic text-xs">The Daily Memorial Archive</p>
+              <h2 className="text-lg font-serif font-bold text-stone-700 tracking-tight">
+                생애 마지막 선물, 메모리얼 리포트
+              </h2>
             </div>
 
-            <div className="w-full space-y-4 px-2">
+            <div className="w-full flex gap-3 px-2">
               {/* Mobile Search */}
-              <div className="relative w-full">
+              <div className="relative flex-1 bg-white border-b border-gray-400 flex items-center pb-1">
                 <input
                   type="text"
                   placeholder="기사 검색"
-                  className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent"
+                  className="w-full text-sm outline-none bg-transparent placeholder:text-gray-400"
                 />
-                <button className="absolute right-0 bottom-2 text-gray-400">
-                  <ArrowRight size={14} />
+                <button className="text-gray-400 shrink-0">
+                  <ArrowRight size={16} />
                 </button>
               </div>
 
               {/* Mobile Write Button */}
-              <Link href="/write" className="flex items-center justify-between w-full p-4 bg-stone-50 border border-stone-200 rounded-lg active:scale-98 transition-transform">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-800 text-white flex items-center justify-center font-serif font-bold text-sm">
-                    弔
-                  </div>
-                  <span className="text-sm font-bold text-gray-900">메모리얼 기사 작성</span>
+              <Link href="/write" className="flex items-center gap-2 pl-3 pr-4 py-2 bg-gray-900 text-white rounded-full shrink-0 shadow-lg active:scale-95 transition-transform">
+                <div className="w-5 h-5 rounded-full bg-red-700 text-white flex items-center justify-center font-serif font-bold text-xs">
+                  弔
                 </div>
-                <ArrowRight size={14} className="text-gray-400" />
+                <span className="font-bold text-xs">메모리얼 기사 작성</span>
               </Link>
             </div>
           </div>
