@@ -192,7 +192,7 @@ export default function Home() {
 
                 {/* Mobile Layout (List Card - Denser) */}
                 <div className="flex lg:hidden gap-3 items-center pb-4 border-b border-gray-100 last:border-0 mb-4 last:mb-0">
-                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
+                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100 shadow-sm">
                     {todayObituary.main_image_url ? (
                       <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover" />
                     ) : (
@@ -250,7 +250,7 @@ export default function Home() {
 
                 {/* Mobile Layout (List Card - Denser) */}
                 <div className="flex lg:hidden gap-3 items-center pb-4 border-b border-gray-100 last:border-0 mb-4 last:mb-0">
-                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
+                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100 shadow-sm">
                     {editorPick.main_image_url ? (
                       <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover" />
                     ) : (
