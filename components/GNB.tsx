@@ -52,6 +52,9 @@ export default function GNB() {
                         <Link href="/library" className="hover:text-gray-900 transition-colors">
                             인물 도서관
                         </Link>
+                        <Link href="/write" className="hover:text-gray-900 transition-colors">
+                            나의 메모리얼 리포트 미리쓰기
+                        </Link>
                         <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs">
                             앵커 콘텐츠
                         </Link>
@@ -99,6 +102,9 @@ export default function GNB() {
                         </Link>
                         <Link href="/library" onClick={closeMenu} className="border-b border-gray-100 pb-4">
                             인물 도서관
+                        </Link>
+                        <Link href="/write" onClick={closeMenu} className="border-b border-gray-100 pb-4">
+                            나의 메모리얼 리포트 미리쓰기
                         </Link>
                         <Link href="/anchor/create" onClick={closeMenu} className="border-b border-gray-100 pb-4 text-purple-700">
                             앵커 콘텐츠
