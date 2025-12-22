@@ -167,7 +167,7 @@ export default function Home() {
 
           {/* Column 1: Today's Obituary */}
           <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
-            <span className="inline-block bg-red-700 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
+            <span className="inline-block bg-heritage-navy text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
             {todayObituary ? (
               <Link href={`/obituary/${todayObituary.id}`} className="block group">
                 {/* Desktop Layout (Large Card) */}
@@ -179,7 +179,7 @@ export default function Home() {
                       <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지 없음</div>
                     )}
                   </div>
-                  <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer">
+                  <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer text-heritage-navy">
                     {todayObituary.title}
                   </h2>
                   <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
@@ -207,8 +207,8 @@ export default function Home() {
                       {todayObituary.title}
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-red-700 font-bold bg-red-50 px-1.5 py-0.5 rounded-sm">오늘의 고인</span>
-                      <span className="text-[10px] text-gray-400 uppercase tracking-wide">
+                      <span className="text-[10px] text-white font-bold bg-heritage-navy px-1.5 py-0.5 rounded-sm">오늘의 고인</span>
+                      <span className="text-[10px] text-heritage-gold uppercase tracking-wide">
                         {categoryNames[todayObituary.category || 'society']?.split('&')[0] || todayObituary.category}
                       </span>
                     </div>
@@ -222,7 +222,7 @@ export default function Home() {
 
           {/* Column 2: Editor's Pick */}
           <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
-            <span className="inline-block bg-gray-900 text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
+            <span className="inline-block bg-heritage-gold text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
             {editorPick ? (
               <Link href={`/obituary/${editorPick.id}`} className="block group">
                 {/* Desktop Layout (Large Card) */}
@@ -265,7 +265,7 @@ export default function Home() {
                       {editorPick.title}
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-gray-900 font-bold bg-gray-100 px-1.5 py-0.5 rounded-sm">에디터 픽</span>
+                      <span className="text-[10px] text-white font-bold bg-heritage-gold px-1.5 py-0.5 rounded-sm">에디터 픽</span>
                       <div className="text-[10px] text-gray-400 tracking-wide">
                         {new Date(editorPick.created_at).toLocaleDateString()}
                       </div>
