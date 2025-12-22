@@ -137,32 +137,32 @@ export default function Home() {
           </div>
 
           {/* Mobile Header (Title + Key Actions) */}
-          <div className="lg:hidden flex flex-col items-center gap-6 mt-2 mb-6">
+          <div className="lg:hidden flex flex-col items-center gap-4 mt-6 mb-8 px-2">
             <div className="text-center">
-              <h2 className="text-lg font-serif font-bold text-stone-700 tracking-tight">
+              <h2 className="text-base font-serif font-bold text-stone-600 tracking-tight">
                 생애 마지막 선물, 메모리얼 리포트
               </h2>
             </div>
 
-            <div className="w-full flex gap-3 px-2">
+            <div className="w-full flex gap-2">
               {/* Mobile Search */}
-              <div className="relative flex-1 bg-white border-b border-gray-400 flex items-center pb-1">
+              <div className="relative flex-1 bg-white border-b border-gray-300 flex items-center pb-1">
                 <input
                   type="text"
                   placeholder="기사 검색"
                   className="w-full text-sm outline-none bg-transparent placeholder:text-gray-400"
                 />
-                <button className="text-gray-400 shrink-0">
-                  <ArrowRight size={16} />
+                <button className="text-gray-400 shrink-0 p-1">
+                  <ArrowRight size={14} />
                 </button>
               </div>
 
               {/* Mobile Write Button */}
-              <Link href="/write" className="flex items-center gap-2 pl-3 pr-4 py-2 bg-gray-900 text-white rounded-full shrink-0 shadow-lg active:scale-95 transition-transform">
-                <div className="w-5 h-5 rounded-full bg-red-700 text-white flex items-center justify-center font-serif font-bold text-xs">
+              <Link href="/write" className="flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 bg-gray-900 text-white rounded-full shrink-0 shadow-md active:scale-95 transition-transform">
+                <div className="w-4 h-4 rounded-full bg-red-700 text-white flex items-center justify-center font-serif font-bold text-[10px]">
                   弔
                 </div>
-                <span className="font-bold text-xs">메모리얼 기사 작성</span>
+                <span className="font-bold text-xs tracking-tight">메모리얼 기사 작성</span>
               </Link>
             </div>
           </div>
@@ -200,24 +200,27 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Mobile Layout (List Card) */}
-                <div className="flex lg:hidden gap-4 items-start pb-4 border-b border-gray-100 last:border-0">
-                  <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                {/* Mobile Layout (List Card - Denser) */}
+                <div className="flex lg:hidden gap-3 items-center pb-4 border-b border-gray-100 last:border-0 mb-4 last:mb-0">
+                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
                     {todayObituary.main_image_url ? (
                       <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-xs text-center p-1">No Img</div>
+                      <div className="w-full h-full bg-stone-50 flex items-center justify-center text-stone-400 text-[10px] text-center p-1">No Img</div>
                     )}
                   </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
-                    <h2 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
+                  <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
+                    <h2 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
                       {todayObituary.deceased_name}
                     </h2>
-                    <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
+                    <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
                       {todayObituary.title}
                     </p>
-                    <div className="text-xs text-gray-400 uppercase mt-1">
-                      {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-red-700 font-bold bg-red-50 px-1.5 py-0.5 rounded-sm">오늘의 고인</span>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wide">
+                        {categoryNames[todayObituary.category || 'society']?.split('&')[0] || todayObituary.category}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -255,24 +258,27 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Mobile Layout (List Card) */}
-                <div className="flex lg:hidden gap-4 items-start pb-4 border-b border-gray-100 last:border-0">
-                  <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                {/* Mobile Layout (List Card - Denser) */}
+                <div className="flex lg:hidden gap-3 items-center pb-4 border-b border-gray-100 last:border-0 mb-4 last:mb-0">
+                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
                     {editorPick.main_image_url ? (
                       <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-xs text-center p-1">No Img</div>
+                      <div className="w-full h-full bg-stone-50 flex items-center justify-center text-stone-400 text-[10px] text-center p-1">No Img</div>
                     )}
                   </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
-                    <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
+                  <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
+                    <h4 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
                       {editorPick.deceased_name}
                     </h4>
-                    <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
+                    <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
                       {editorPick.title}
                     </p>
-                    <div className="text-xs text-gray-400 mt-1">
-                      {new Date(editorPick.created_at).toLocaleDateString()}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-gray-900 font-bold bg-gray-100 px-1.5 py-0.5 rounded-sm">에디터 픽</span>
+                      <div className="text-[10px] text-gray-400 tracking-wide">
+                        {new Date(editorPick.created_at).toLocaleDateString()}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -350,23 +356,23 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* Mobile Layout (List Card) */}
-                      <div className="flex lg:hidden gap-4 items-start">
-                        <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                      {/* Mobile Layout (List Card - Denser) */}
+                      <div className="flex lg:hidden gap-3 items-center">
+                        <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
                           {item.main_image_url ? (
                             <img src={item.main_image_url} alt={item.deceased_name} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-xs text-center p-1">No Img</div>
+                            <div className="w-full h-full bg-stone-50 flex items-center justify-center text-stone-400 text-[10px] text-center p-1">No Img</div>
                           )}
                         </div>
-                        <div className="flex flex-col flex-1 min-w-0 justify-center h-20">
-                          <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer line-clamp-2 tracking-tight">
+                        <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
+                          <h4 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
                             {item.deceased_name}
                           </h4>
-                          <p className="text-sm text-gray-800 font-sans leading-relaxed line-clamp-1 tracking-normal text-gray-600">
+                          <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
                             {item.title}
                           </p>
-                          <div className="text-xs text-gray-400 mt-1">
+                          <div className="text-[10px] text-gray-400 tracking-wide">
                             {item.death_date ? new Date(item.death_date).getFullYear() : ''}
                           </div>
                         </div>
