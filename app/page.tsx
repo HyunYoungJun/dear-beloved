@@ -20,11 +20,13 @@ type ObituarySummary = {
 };
 
 import BannerCarousel from '@/components/BannerCarousel';
+import ObituaryBlockCarousel from '@/components/ObituaryBlockCarousel';
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
   const [todayObituary, setTodayObituary] = useState<ObituarySummary | null>(null);
   const [editorPick, setEditorPick] = useState<ObituarySummary | null>(null);
+  const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
     economy: [],
@@ -54,7 +56,9 @@ export default function Home() {
         setEditorPick(editor);
       }
 
-      // 2. Fetch data for each category (Limit 3 per category)
+      // 1-b. Pass all recent data to Block Carousel (excluding Today/Editor if desired, but for now just pass all)
+      setRecentObituaries(recentData || []);
+
       const CATEGORIES = ['politics', 'economy', 'culture', 'society'];
       const newCategories: any = {};
 
@@ -280,36 +284,9 @@ export default function Home() {
             )}
           </div>
 
-          {/* Column 3: My Tribute */}
-          <div className="flex flex-col">
-            <span className="inline-block bg-gray-100 text-gray-900 text-xs font-bold px-2 py-1 mb-4 w-fit border border-gray-300">나의 조문</span>
-
-            <div className="bg-stone-50 p-6 border border-stone-100 h-full">
-              <p className="text-xs text-gray-400 mb-4">로그인이 필요합니다</p>
-              <h3 className="text-lg font-serif font-bold mb-4">
-                가장 최근에 남긴 조문
-              </h3>
-              <div className="space-y-4">
-                {/* Mock List Items */}
-                <div className="border-b border-gray-200 pb-3">
-                  <div className="text-xs text-gray-500 mb-1">2024.12.15</div>
-                  <p className="text-sm font-serif text-gray-800 line-clamp-2">
-                    "선생님의 가르침을 영원히 잊지 않겠습니다. 편히 쉬세요."
-                  </p>
-                  <div className="text-xs text-gray-400 mt-1 text-right">- 故 홍길동님께</div>
-                </div>
-                <div className="border-b border-gray-200 pb-3">
-                  <div className="text-xs text-gray-500 mb-1">2024.11.30</div>
-                  <p className="text-sm font-serif text-gray-800 line-clamp-2">
-                    "사랑하는 할머니, 하늘나라에서도 행복하세요."
-                  </p>
-                  <div className="text-xs text-gray-400 mt-1 text-right">- 故 박막례님께</div>
-                </div>
-              </div>
-              <button className="w-full mt-6 py-2 border border-gray-300 text-xs font-bold uppercase hover:bg-white transition-colors">
-                내 기록 더보기
-              </button>
-            </div>
+          {/* Column 3: Recent Obituaries Block Carousel */}
+          <div className="flex flex-col h-full">
+            <ObituaryBlockCarousel obituaries={recentObituaries} title="최근 부고" />
           </div>
 
         </section>
