@@ -6,9 +6,10 @@ import MemoryList from './MemoryList';
 
 interface MemoryWallProps {
     obituaryId: string;
+    onFlowerGiven: () => void;
 }
 
-export default function MemoryWall({ obituaryId }: MemoryWallProps) {
+export default function MemoryWall({ obituaryId, onFlowerGiven }: MemoryWallProps) {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     const handleMemoryAdded = () => {
@@ -29,6 +30,7 @@ export default function MemoryWall({ obituaryId }: MemoryWallProps) {
                 <MemoryForm
                     obituaryId={obituaryId}
                     onMemoryAdded={handleMemoryAdded}
+                    onFlowerGiven={onFlowerGiven}
                 />
 
                 <div className="mt-16">

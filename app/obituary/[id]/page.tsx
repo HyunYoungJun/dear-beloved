@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
 import Link from 'next/link';
-import { ArrowLeft, Quote } from 'lucide-react';
+import { ArrowLeft, Quote, Flower2 } from 'lucide-react';
 
 type ObituaryDetail = {
     id: string;
@@ -18,6 +18,7 @@ type ObituaryDetail = {
     main_image_url: string | null;
     biography_data?: any; // Added to access quote
     timeline_data?: any;
+    flower_count: number;
 };
 
 import TimelineViewer from '@/components/obituary/TimelineViewer';
@@ -50,12 +51,20 @@ export default function ObituaryDetailPage() {
             alert('기사를 찾을 수 없거나 접근 권한이 없습니다.');
             router.push('/library');
         } else {
+            console.log('Fetched obituary:', data); // Debugging
             setObituary(data);
         }
         setLoading(false);
     }
 
-
+    const handleFlowerGiven = () => {
+        if (obituary) {
+            setObituary({
+                ...obituary,
+                flower_count: (obituary.flower_count || 0) + 1
+            });
+        }
+    };
 
     if (loading) return <div className="min-h-screen flex items-center justify-center font-serif">불러오는 중...</div>;
     if (!obituary) return null;
@@ -79,10 +88,24 @@ export default function ObituaryDetailPage() {
                 )}
 
                 {/* Navigation Overlay */}
-                <div className="absolute top-0 left-0 w-full p-6 z-20">
+                <div className="absolute top-0 left-0 w-full p-6 z-20 flex justify-between items-start">
                     <Link href="/library" className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-black/10 px-4 py-2 rounded-full backdrop-blur-sm">
                         <ArrowLeft size={18} className="mr-2" /> 목록으로
                     </Link>
+
+                    {/* Flower Badge */}
+                    <div className="bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 animate-fade-in-up">
+                        <div className="bg-pink-100 p-1.5 rounded-full">
+                            <Flower2 className="w-5 h-5 text-pink-500" />
+                        </div>
+                        <div className="flex flex-col leading-none">
+                            <span className="text-[10px] text-gray-500 font-sans font-bold">헌화된 꽃</span>
+                            <span className="text-lg font-bold text-gray-900 font-serif">
+                                {obituary.flower_count?.toLocaleString() || 0}
+                                <span className="text-xs font-normal text-gray-500 ml-0.5">송이</span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Title Overlay */}
@@ -156,7 +179,7 @@ export default function ObituaryDetailPage() {
 
             {/* Memory Wall Section */}
             <div className="mt-12">
-                {id && <MemoryWall obituaryId={id as string} />}
+                {id && <MemoryWall obituaryId={id as string} onFlowerGiven={handleFlowerGiven} />}
             </div>
         </article>
     );

@@ -3,18 +3,20 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { uploadMemoryImage } from '@/lib/storageUtils';
-import { Loader2, Image as ImageIcon, Send } from 'lucide-react';
+import { Loader2, Image as ImageIcon, Send, Flower2 } from 'lucide-react';
 
 interface MemoryFormProps {
     obituaryId: string;
     onMemoryAdded: () => void;
+    onFlowerGiven: () => void;
 }
 
-export default function MemoryForm({ obituaryId, onMemoryAdded }: MemoryFormProps) {
+export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }: MemoryFormProps) {
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState<File | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isGivingFlower, setIsGivingFlower] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -48,6 +50,20 @@ export default function MemoryForm({ obituaryId, onMemoryAdded }: MemoryFormProp
             alert('메시지 등록에 실패했습니다.');
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleGiveFlower = async () => {
+        setIsGivingFlower(true);
+        try {
+            const { error } = await supabase.rpc('increment_obituary_flower_count', { row_id: obituaryId });
+            if (error) throw error;
+            onFlowerGiven();
+        } catch (error) {
+            console.error('Error giving flower:', error);
+            alert('헌화에 실패했습니다.');
+        } finally {
+            setIsGivingFlower(false);
         }
     };
 
@@ -93,8 +109,8 @@ export default function MemoryForm({ obituaryId, onMemoryAdded }: MemoryFormProp
                         <label
                             htmlFor="memory-image"
                             className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm cursor-pointer transition-all ${image
-                                    ? 'bg-[var(--heritage-navy)] text-white border-transparent'
-                                    : 'bg-white text-gray-600 border-gray-200 hover:border-[var(--heritage-navy)]'
+                                ? 'bg-[var(--heritage-navy)] text-white border-transparent'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-[var(--heritage-navy)]'
                                 }`}
                         >
                             <ImageIcon className="w-4 h-4" />
@@ -111,23 +127,39 @@ export default function MemoryForm({ obituaryId, onMemoryAdded }: MemoryFormProp
                         )}
                     </div>
 
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="flex items-center gap-2 bg-[var(--heritage-navy)] text-white px-6 py-2.5 rounded-full hover:bg-[var(--heritage-navy)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
-                    >
-                        {isSubmitting ? (
-                            <>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={handleGiveFlower}
+                            disabled={isGivingFlower}
+                            className="flex items-center gap-2 bg-white text-[var(--heritage-navy)] border border-[var(--heritage-navy)] px-5 py-2.5 rounded-full hover:bg-[var(--heritage-navy)]/5 disabled:opacity-50 transition-all font-serif"
+                        >
+                            {isGivingFlower ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                등록 중...
-                            </>
-                        ) : (
-                            <>
-                                <Send className="w-4 h-4" />
-                                메시지 등록
-                            </>
-                        )}
-                    </button>
+                            ) : (
+                                <Flower2 className="w-4 h-4" />
+                            )}
+                            헌화하기
+                        </button>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="flex items-center gap-2 bg-[var(--heritage-navy)] text-white px-6 py-2.5 rounded-full hover:bg-[var(--heritage-navy)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    등록 중...
+                                </>
+                            ) : (
+                                <>
+                                    <Send className="w-4 h-4" />
+                                    메시지 등록
+                                </>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

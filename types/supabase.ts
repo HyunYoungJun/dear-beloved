@@ -57,6 +57,7 @@ export interface Database {
                     main_image_url: string | null
                     is_public: boolean
                     timeline_data: Json | null
+                    flower_count: number
                 }
                 Insert: {
                     id?: string
