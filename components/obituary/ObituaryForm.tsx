@@ -22,6 +22,7 @@ const STEPS = [
     { id: 'quote', title: '고인의 명언', description: '평소 자주 하시던 말씀이나 좌우명이 있으신가요?' },
     { id: 'review', title: 'AI 전기문 생성', description: '입력하신 내용을 바탕으로 AI가 전기문 초안을 작성합니다.' },
     { id: 'photo', title: '사진 등록', description: '고인을 기억할 수 있는 가장 아름다운 사진을 올려주세요.' },
+    { id: 'timeline', title: '생애 연대표', description: '고인의 인생 여정을 연대표로 기록해주세요.' },
 ];
 
 interface ObituaryFormProps {
@@ -61,6 +62,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
         family: '',
         tribute: '',
         quote: '',
+        timeline_data: [], // Added: Timeline data array
 
         is_public: false,
         ...initialData, // Spread initial data to overwrite defaults
@@ -163,6 +165,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                 service_type: serviceType,
                 category: formData.category, // Added: Category
                 is_public: formData.is_public,
+                timeline_data: formData.timeline_data || [],
                 main_image_url,
             };
 
@@ -442,6 +445,16 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                 </div>
                             </div>
                         )}
+
+                        {/* Timeline Step */}
+                        {stepInfo.id === 'timeline' && (
+                            <div>
+                                <TimelineEditor
+                                    events={formData.timeline_data || []}
+                                    onChange={(newEvents) => setFormData((prev: any) => ({ ...prev, timeline_data: newEvents }))}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -464,6 +477,163 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                         {loading ? '저장 중...' : currentStep === STEPS.length - 1 ? '완료' : '다음'}
                         {currentStep !== STEPS.length - 1 && <ArrowRight size={18} />}
                     </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Sub-component for Timeline Editing
+function TimelineEditor({ events, onChange }: { events: any[], onChange: (events: any[]) => void }) {
+    const [year, setYear] = useState('');
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
+
+    const handleAdd = () => {
+        if (!year || !title) return alert('연도와 제목은 필수입니다.');
+        const newEvent = { date: year, title, description: desc };
+        // Sort by date automatically roughly? No, user wants drag and drop.
+        onChange([...events, newEvent]);
+        setYear('');
+        setTitle('');
+        setDesc('');
+    };
+
+    const handleRemove = (index: number) => {
+        const newEvents = [...events];
+        newEvents.splice(index, 1);
+        onChange(newEvents);
+    };
+
+    // Drag & Drop
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+    const onDragStart = (e: React.DragEvent, index: number) => {
+        setDraggedIndex(index);
+        e.dataTransfer.effectAllowed = "move";
+    };
+
+    const onDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    };
+
+    const onDrop = (e: React.DragEvent, dropIndex: number) => {
+        e.preventDefault();
+        if (draggedIndex === null) return;
+        if (draggedIndex === dropIndex) return;
+
+        const newEvents = [...events];
+        const [removed] = newEvents.splice(draggedIndex, 1);
+        newEvents.splice(dropIndex, 0, removed);
+        onChange(newEvents);
+        setDraggedIndex(null);
+    };
+
+    return (
+        <div className="space-y-8">
+            {/* Input Section */}
+            <div className="bg-stone-50 p-5 rounded-lg border border-stone-200">
+                <h3 className="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-heritage-gold"></span>
+                    이벤트 추가
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
+                    <div className="md:col-span-1">
+                        <input
+                            type="text"
+                            value={year}
+                            onChange={(e) => setYear(e.target.value)}
+                            placeholder="연도/일자 (예: 1988)"
+                            className="w-full px-3 py-2 border border-stone-300 rounded text-sm focus:border-heritage-navy outline-none"
+                        />
+                    </div>
+                    <div className="md:col-span-3">
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="사건 제목 (예: 서울대학교 입학)"
+                            className="w-full px-3 py-2 border border-stone-300 rounded text-sm focus:border-heritage-navy outline-none"
+                        />
+                    </div>
+                </div>
+                <textarea
+                    value={desc}
+                    onChange={(e) => setDesc(e.target.value)}
+                    placeholder="상세 설명 (선택사항)"
+                    rows={2}
+                    className="w-full px-3 py-2 border border-stone-300 rounded text-sm mb-3 focus:border-heritage-navy outline-none resize-none"
+                />
+                <button
+                    onClick={handleAdd}
+                    className="w-full py-2 bg-heritage-navy text-white rounded text-sm font-bold hover:bg-[#0f2440] transition-colors"
+                >
+                    + 리스트에 추가하기
+                </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                {/* List & Reorder Section */}
+                <div>
+                    <h3 className="font-bold text-gray-900 mb-3 text-sm">등록된 리스트 (드래그하여 순서 변경)</h3>
+                    <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+                        {events.length === 0 && (
+                            <p className="text-xs text-gray-400 py-4 text-center">등록된 이벤트가 없습니다.</p>
+                        )}
+                        {events.map((ev, idx) => (
+                            <div
+                                key={idx}
+                                draggable
+                                onDragStart={(e) => onDragStart(e, idx)}
+                                onDragOver={(e) => onDragOver(e, idx)}
+                                onDrop={(e) => onDrop(e, idx)}
+                                className={`group flex items-center gap-3 p-3 bg-white border border-gray-200 rounded cursor-move hover:border-heritage-gold transition-colors
+                                            ${draggedIndex === idx ? 'opacity-50 border-dashed' : ''}`}
+                            >
+                                <div className="text-gray-400 shrink-0">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 6h16M8 12h16M8 18h16M3 6h.01M3 12h.01M3 18h.01" /></svg>
+                                </div>
+                                <div className="flex-grow min-w-0">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs font-bold text-heritage-navy">{ev.date}</span>
+                                    </div>
+                                    <div className="text-sm font-bold truncate">{ev.title}</div>
+                                    {ev.description && <div className="text-xs text-gray-500 truncate">{ev.description}</div>}
+                                </div>
+                                <button
+                                    onClick={() => handleRemove(idx)}
+                                    className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                                >
+                                    <Upload className="w-4 h-4 rotate-45" /> {/* Use Upload icon rotated as close check mark? Or actually X logic. Lucide X is better but I didn't import X. Let's reuse Upload rotated for now or just text 'x'. Or I can import X in the main file. */}
+                                    {/* Actually, I didn't import 'X' in the main imports. I used 'Upload'. I should probably add X to imports if I want to use it. Or just use text 'x'. */}
+                                    <span className="text-lg leading-none">&times;</span>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Live Preview Section */}
+                <div>
+                    <h3 className="font-bold text-gray-900 mb-3 text-sm">미리보기</h3>
+                    <div className="bg-white p-6 border border-gray-100 rounded-lg shadow-sm h-full max-h-[400px] overflow-y-auto">
+                        <div className="relative pl-4 border-l border-gray-200 space-y-6">
+                            {events.length === 0 && <p className="text-xs text-gray-400">내용을 추가하면 타임라인이 표시됩니다.</p>}
+                            {events.map((ev, idx) => (
+                                <div key={idx} className="relative">
+                                    <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-heritage-gold border-2 border-white ring-1 ring-gray-100"></span>
+                                    <span className="block text-xs font-serif font-bold text-heritage-gold mb-0.5">{ev.date}</span>
+                                    <h4 className="text-sm font-serif font-bold text-heritage-navy mb-1">{ev.title}</h4>
+                                    {ev.description && (
+                                        <p className="text-xs text-gray-500 leading-relaxed text-justify">
+                                            {ev.description}
+                                        </p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

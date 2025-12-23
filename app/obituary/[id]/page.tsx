@@ -16,8 +16,12 @@ type ObituaryDetail = {
     title: string;
     content: string | null;
     main_image_url: string | null;
+    main_image_url: string | null;
     biography_data?: any; // Added to access quote
+    timeline_data?: any;
 };
+
+import TimelineViewer from '@/components/obituary/TimelineViewer';
 
 type Comment = {
     id: string;
@@ -166,6 +170,13 @@ export default function ObituaryDetailPage() {
                 <div className="prose prose-lg prose-gray max-w-none text-gray-700 leading-loose whitespace-pre-wrap font-['Nanum_Myeongjo'] mb-20 text-justify">
                     {obituary.content}
                 </div>
+
+                {/* Life Timeline Section */}
+                {obituary.timeline_data && Array.isArray(obituary.timeline_data) && obituary.timeline_data.length > 0 && (
+                    <div className="mb-20">
+                        <TimelineViewer events={obituary.timeline_data} />
+                    </div>
+                )}
 
                 {/* Edit/Delete Controls */}
                 {user && (user.id === obituary.user_id || user.email === 'youngjun88@gmail.com') && (
