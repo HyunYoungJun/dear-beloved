@@ -58,6 +58,9 @@ export default function GNB() {
                         <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs font-sans">
                             앵커 콘텐츠
                         </Link>
+                        <Link href="/family" className="hover:text-[var(--heritage-gold)] transition-colors">
+                            가족 아카이브
+                        </Link>
                         {user && user.email === 'youngjun88@gmail.com' && (
                             <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold bg-red-50 px-2 py-1 rounded text-xs ml-2 font-sans">
                                 관리자
@@ -108,6 +111,9 @@ export default function GNB() {
                         </Link>
                         <Link href="/anchor/create" onClick={closeMenu} className="border-b border-gray-100 pb-4 text-purple-700">
                             앵커 콘텐츠
+                        </Link>
+                        <Link href="/family" onClick={closeMenu} className="border-b border-gray-100 pb-4">
+                            가족 아카이브
                         </Link>
                         {user && user.email === 'youngjun88@gmail.com' && (
                             <Link href="/admin" onClick={closeMenu} className="border-b border-gray-100 pb-4 text-red-600">
