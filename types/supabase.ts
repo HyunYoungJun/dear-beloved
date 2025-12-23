@@ -56,6 +56,7 @@ export interface Database {
                     content: string | null
                     main_image_url: string | null
                     is_public: boolean
+                    timeline_data: Json | null
                 }
                 Insert: {
                     id?: string
@@ -69,6 +70,7 @@ export interface Database {
                     content?: string | null
                     main_image_url?: string | null
                     is_public?: boolean
+                    timeline_data?: Json | null
                 }
                 Update: {
                     id?: string
@@ -82,6 +84,7 @@ export interface Database {
                     content?: string | null
                     main_image_url?: string | null
                     is_public?: boolean
+                    timeline_data?: Json | null
                 }
                 Relationships: [
                     {

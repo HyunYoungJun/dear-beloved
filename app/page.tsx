@@ -16,6 +16,7 @@ type ObituarySummary = {
   content: string | null;
   created_at: string;
   biography_data?: any;
+  timeline_data?: any;
 };
 
 import BannerCarousel from '@/components/BannerCarousel';
