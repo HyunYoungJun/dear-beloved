@@ -286,6 +286,7 @@ export default function Home() {
 
           {/* Column 3: Recent Obituaries Block Carousel */}
           <div className="flex flex-col h-full">
+            {/* Recent Obituaries Carousel */}
             <ObituaryBlockCarousel obituaries={recentObituaries} title="최근 부고" />
           </div>
 
