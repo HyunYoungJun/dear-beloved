@@ -23,15 +23,15 @@ export default function GNB() {
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
+            <header className="fixed top-0 z-50 w-full border-b border-[var(--heritage-gold)]/30 bg-white/80 backdrop-blur-md transition-all duration-300">
                 <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-                    <Link href="/" className="text-xl font-bold tracking-tight text-gray-900 font-serif z-50" onClick={closeMenu}>
+                    <Link href="/" className="text-2xl font-bold tracking-tight text-[var(--heritage-navy)] font-serif z-50" onClick={closeMenu}>
                         Dear˚Beloved
                     </Link>
 
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden z-50 text-gray-900 focus:outline-none"
+                        className="md:hidden z-50 text-[var(--heritage-navy)] focus:outline-none"
                         onClick={toggleMenu}
                         aria-label="Toggle Menu"
                     >
@@ -39,27 +39,27 @@ export default function GNB() {
                     </button>
 
                     {/* Desktop Menu */}
-                    <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-                        <Link href="/" className="hover:text-gray-900 transition-colors">
+                    <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-[var(--heritage-navy)] font-serif">
+                        <Link href="/" className="hover:text-[var(--heritage-gold)] transition-colors">
                             홈
                         </Link>
-                        <Link href="/about" className="hover:text-gray-900 transition-colors">
+                        <Link href="/about" className="hover:text-[var(--heritage-gold)] transition-colors">
                             서비스 소개
                         </Link>
-                        <Link href="/write" className="hover:text-gray-900 transition-colors">
+                        <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
                             메모리얼 기사 의뢰
                         </Link>
-                        <Link href="/library" className="hover:text-gray-900 transition-colors">
+                        <Link href="/library" className="hover:text-[var(--heritage-gold)] transition-colors">
                             인물 도서관
                         </Link>
-                        <Link href="/write" className="hover:text-gray-900 transition-colors">
+                        <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
                             나의 메모리얼 리포트 미리쓰기
                         </Link>
-                        <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs">
+                        <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs font-sans">
                             앵커 콘텐츠
                         </Link>
                         {user && user.email === 'youngjun88@gmail.com' && (
-                            <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold bg-red-50 px-2 py-1 rounded text-xs ml-2">
+                            <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold bg-red-50 px-2 py-1 rounded text-xs ml-2 font-sans">
                                 관리자
                             </Link>
                         )}
@@ -67,19 +67,19 @@ export default function GNB() {
                         {loading ? (
                             <div className="w-12 h-4 bg-gray-100 animate-pulse rounded" />
                         ) : user ? (
-                            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-gray-200">
-                                <span className="text-gray-400 text-xs truncate max-w-[100px]">
+                            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-[var(--heritage-gold)]/30">
+                                <span className="text-gray-500 text-xs truncate max-w-[100px] font-sans">
                                     {user.email?.split('@')[0]}님
                                 </span>
                                 <button
                                     onClick={handleLogout}
-                                    className="hover:text-gray-900 transition-colors"
+                                    className="hover:text-[var(--heritage-gold)] transition-colors text-sm"
                                 >
                                     로그아웃
                                 </button>
                             </div>
                         ) : (
-                            <Link href="/login" className="ml-2 hover:text-gray-900 transition-colors">
+                            <Link href="/login" className="ml-2 hover:text-[var(--heritage-gold)] transition-colors">
                                 로그인
                             </Link>
                         )}
