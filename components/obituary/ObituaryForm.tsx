@@ -7,6 +7,7 @@ import { uploadObituaryImage } from '@/lib/storageUtils';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { ArrowLeft, ArrowRight, Upload } from 'lucide-react';
 import WheelDatePicker from '../ui/WheelDatePicker';
+import FamilyConnectForm, { FamilyRelationDraft } from './FamilyConnectForm';
 
 const STEPS = [
     { id: 'basics', title: '기본 정보', description: '고인의 성함과 생몰일을 입력해주세요.' },
@@ -21,6 +22,7 @@ const STEPS = [
     { id: 'tribute', title: '영면 및 추모', description: '마지막 순간과 남기신 말씀을 적어주세요.' },
     { id: 'quote', title: '고인의 명언', description: '평소 자주 하시던 말씀이나 좌우명이 있으신가요?' },
     { id: 'review', title: 'AI 전기문 생성', description: '입력하신 내용을 바탕으로 AI가 전기문 초안을 작성합니다.' },
+    { id: 'family_connect', title: '가족 연결', description: '이미 등록된 가족의 메모리얼 리포트를 연결합니다.' },
     { id: 'photo', title: '사진 등록', description: '고인을 기억할 수 있는 가장 아름다운 사진을 올려주세요.' },
     { id: 'timeline', title: '생애 연대표', description: '고인의 인생 여정을 연대표로 기록해주세요.' },
 ];
@@ -62,6 +64,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
         family: '',
         tribute: '',
         quote: '',
+        family_relations: [], // Added: Family relations draft
         timeline_data: [], // Added: Timeline data array
 
         is_public: false,
@@ -169,33 +172,74 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                 main_image_url,
             };
 
+            let res;
             let error;
 
             if (isEditMode && obituaryId) {
                 // UPDATE
-                const res = await supabase
+                res = await supabase
                     .from('obituaries')
                     .update(payload)
-                    .eq('id', obituaryId);
-                error = res.error;
+                    .eq('id', obituaryId)
+                    .select();
             } else {
                 // INSERT
-                const res = await supabase
+                res = await supabase
                     .from('obituaries')
                     .insert({
                         user_id: user.id,
                         ...payload
-                    });
-                error = res.error;
+                    })
+                    .select();
             }
 
+            error = res.error;
             if (error) throw error;
+
+            // Get the ID (either from existing ID in edit mode, or from inserted row)
+            const savedObituaryId = isEditMode && obituaryId ? obituaryId : (res.data && res.data[0]?.id) || null;
+            // Note: For INSERT, we need to make sure we select the returned ID. 
+            // supabase .insert().select() returns the array of inserted rows.
+            // Let's ensure we are getting the ID. Refactoring INSERT below to include select().
+
+            // Since we didn't change the INSERT call above yet, let's fix it now implicitly or separately. 
+            // CAUTION: The original code:
+            // const res = await supabase.from('obituaries').insert({...}).insert() DOES NOT return data by default unless .select() is chained.
+            // But we need the ID for family relations.
+
+            // Let's Rewrite the INSERT/UPDATE block slightly above to capture ID.
+            // Wait, I cannot easily rewrite the valid block above with this tool if I am just inserting here.
+            // I need to modify the block above. Let me use a separate `replace_file_content` for that or try to span it.
+            // I'll assume I will make a separate edit to ensure ID is returned.
+
+            // Placeholder: Assume we have savedObituaryId. 
+            // Actually, I should do the fetch ID logic properly.
+
+            // SAVE FAMILY RELATIONS
+            if (savedObituaryId && formData.family_relations && formData.family_relations.length > 0) {
+                // 1. Delete existing relations for this obituary (Simplest sync strategy for now)
+                // Or we could try upsert. Delete all where obituary_id = this.id is easiest.
+                // But wait, what if I am the 'target' in someone else's link? 
+                // The form only manages "Links I initiated" (where I am obituary_id).
+                // So deleting where obituary_id = savedObituaryId is safe for this form's scope.
+
+                await supabase.from('family_relations').delete().eq('obituary_id', savedObituaryId);
+
+                const relationsToInsert = formData.family_relations.map((rel: FamilyRelationDraft) => ({
+                    obituary_id: savedObituaryId,
+                    related_obituary_id: rel.related_obituary_id,
+                    relation_type: rel.relation_type
+                }));
+
+                const { error: relError } = await supabase.from('family_relations').insert(relationsToInsert);
+                if (relError) console.error("Error saving family relations:", relError);
+            }
 
             if (isEditMode) {
                 alert('수정되었습니다.');
                 router.push(`/obituary/${obituaryId}`);
             } else {
-                router.push('/library');
+                router.push('/library'); // Or redirect to the new obituary if we had the ID
             }
             router.refresh();
 
