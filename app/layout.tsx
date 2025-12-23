@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <GNB />
-          <main className="min-h-[calc(100vh-64px)] w-full">
+          <main className="min-h-screen w-full pt-16">
             {children}
           </main>
         </AuthProvider>
