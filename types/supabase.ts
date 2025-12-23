@@ -95,6 +95,40 @@ export interface Database {
                     }
                 ]
             }
+            memories: {
+                Row: {
+                    id: string
+                    obituary_id: string
+                    author: string
+                    content: string
+                    image_url: string | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    obituary_id: string
+                    author: string
+                    content: string
+                    image_url?: string | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    obituary_id?: string
+                    author?: string
+                    content?: string
+                    image_url?: string | null
+                    created_at?: string
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "memories_obituary_id_fkey"
+                        columns: ["obituary_id"]
+                        referencedRelation: "obituaries"
+                        referencedColumns: ["id"]
+                    }
+                ]
+            }
         }
         Views: {
             [_ in never]: never
