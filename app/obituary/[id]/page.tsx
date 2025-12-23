@@ -93,26 +93,25 @@ export default function ObituaryDetailPage() {
                         <ArrowLeft size={18} className="mr-2" /> 목록으로
                     </Link>
 
-                    {/* Flower Badge */}
-                    <div className="bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 animate-fade-in-up">
-                        <div className="bg-pink-100 p-1.5 rounded-full">
-                            <Flower2 className="w-5 h-5 text-pink-500" />
-                        </div>
-                        <div className="flex flex-col leading-none">
-                            <span className="text-[10px] text-gray-500 font-sans font-bold">헌화된 꽃</span>
-                            <span className="text-lg font-bold text-gray-900 font-serif">
-                                {obituary.flower_count?.toLocaleString() || 0}
-                                <span className="text-xs font-normal text-gray-500 ml-0.5">송이</span>
-                            </span>
-                        </div>
-                    </div>
+
                 </div>
 
                 {/* Title Overlay */}
                 <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 bg-gradient-to-t from-black/80 to-transparent text-white">
                     <div className="max-w-3xl mx-auto">
-                        <div className="inline-block border border-white/30 px-3 py-1 rounded-full text-xs md:text-sm mb-4 bg-white/10 backdrop-blur-md">
-                            메모리얼
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="inline-block border border-white/30 px-3 py-1 rounded-full text-xs md:text-sm bg-white/10 backdrop-blur-md text-white">
+                                메모리얼
+                            </div>
+
+                            {/* Relocated Flower Badge - Compact Version */}
+                            <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 animate-fade-in-up">
+                                <Flower2 className="w-3.5 h-3.5 text-pink-500 fill-pink-100" />
+                                <span className="text-sm font-bold text-gray-900 font-serif">
+                                    {obituary.flower_count?.toLocaleString() || 0}
+                                    <span className="text-xs font-normal text-gray-500 ml-0.5">송이</span>
+                                </span>
+                            </div>
                         </div>
                         <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-normal font-['Nanum_Myeongjo']">
                             {obituary.title}
