@@ -103,6 +103,7 @@ export interface Database {
                     content: string
                     image_url: string | null
                     created_at: string
+                    flower_count: number
                 }
                 Insert: {
                     id?: string
@@ -111,6 +112,7 @@ export interface Database {
                     content: string
                     image_url?: string | null
                     created_at?: string
+                    flower_count?: number
                 }
                 Update: {
                     id?: string
@@ -119,6 +121,7 @@ export interface Database {
                     content?: string
                     image_url?: string | null
                     created_at?: string
+                    flower_count?: number
                 }
                 Relationships: [
                     {
