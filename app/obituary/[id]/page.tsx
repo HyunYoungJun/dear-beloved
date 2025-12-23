@@ -23,7 +23,7 @@ type ObituaryDetail = {
 
 import TimelineViewer from '@/components/obituary/TimelineViewer';
 import MemoryWall from '@/components/obituary/MemoryWall';
-import FamilyList from '@/components/obituary/FamilyList';
+import FamilyTree from '@/components/obituary/FamilyTree';
 
 
 
@@ -177,8 +177,8 @@ export default function ObituaryDetailPage() {
                 )}
             </div>
 
-            {/* Family Archives */}
-            <FamilyList obituaryId={obituary.id} />
+            {/* Family Archives (Tree View) */}
+            <FamilyTree obituaryId={obituary.id} />
 
             {/* Memory Wall */}
             <div className="mt-16">

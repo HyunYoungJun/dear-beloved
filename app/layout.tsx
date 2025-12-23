@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Serif_KR, Inter } from "next/font/google"; // Import Inter
 import GNB from "@/components/GNB";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import "./globals.css";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
           <main className="min-h-screen w-full pt-16">
             {children}
           </main>
+          <MobileBottomNav />
         </AuthProvider>
       </body>
     </html>
