@@ -133,6 +133,43 @@ export interface Database {
                     }
                 ]
             }
+            family_relations: {
+                Row: {
+                    id: string
+                    obituary_id: string
+                    related_obituary_id: string
+                    relation_type: string
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    obituary_id: string
+                    related_obituary_id: string
+                    relation_type: string
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    obituary_id?: string
+                    related_obituary_id?: string
+                    relation_type?: string
+                    created_at?: string
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "family_relations_obituary_id_fkey"
+                        columns: ["obituary_id"]
+                        referencedRelation: "obituaries"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "family_relations_related_obituary_id_fkey"
+                        columns: ["related_obituary_id"]
+                        referencedRelation: "obituaries"
+                        referencedColumns: ["id"]
+                    }
+                ]
+            }
         }
         Views: {
             [_ in never]: never
