@@ -214,131 +214,131 @@ export default function Home() {
                   </p>
                 </div>
 
-              </div>
+
 
                 {/* Mobile Layout - Hidden because it's now in TopStoryCarousel */}
-            <div className="hidden">
-              {/* ... Original list card code was here ... */}
-            </div>
-          </Link>
-          ) : (
-          <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
+                <div className="hidden">
+                  {/* ... Original list card code was here ... */}
+                </div>
+              </Link>
+            ) : (
+              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
             )}
-      </div>
+          </div>
 
-      {/* Column 2: Editor's Pick */}
-      <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
-        <span className="inline-block bg-heritage-gold text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
-        {editorPick ? (
-          <Link href={`/obituary/${editorPick.id}`} className="block group">
-            {/* Desktop Layout (Large Card) */}
-            <div className="hidden lg:block">
-              <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
-                {editorPick.title}
-              </h3>
-              <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
-                {editorPick.content?.substring(0, 100)}...
-              </p>
-              <div className="aspect-video bg-gray-100 mb-4 overflow-hidden shadow-md">
-                {editorPick.main_image_url ? (
-                  <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                ) : (
-                  <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
-                )}
-              </div>
-              <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
-                {editorPick.deceased_name}
-              </h4>
-              <div className="text-xs text-gray-400 mb-2">
-                {new Date(editorPick.created_at).toLocaleDateString()}
-              </div>
-            </div>
-
-            {/* Mobile Layout - Hidden because it's now in TopStoryCarousel */}
-            <div className="hidden">
-              {/* ... Original list card code was here ... */}
-            </div>
-
-          </Link>
-        ) : (
-          <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
-        )}
-      </div>
-
-      {/* Column 3: Recent Obituaries Block Carousel */}
-      <div className="flex flex-col h-full">
-        {/* Recent Obituaries Carousel */}
-        <ObituaryBlockCarousel obituaries={recentObituaries} title="최근 부고" />
-      </div>
-
-    </section>
-
-        {/* Categories Grid (4 Columns) */ }
-  <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
-    {['politics', 'economy', 'culture', 'society'].map((cat) => (
-      <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
-        <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
-          {categoryNames[cat].split('&').map((line, i) => (
-            <span key={i} className="block">{line}</span>
-          ))}
-        </h3>
-
-        <div className="space-y-8">
-          {categories[cat].length > 0 ? (
-            categories[cat].map((item) => (
-              <Link href={`/obituary/${item.id}`} key={item.id} className="block group border-b border-gray-100 last:border-0 pb-4 mb-4 lg:border-none lg:pb-0 lg:mb-0">
-
+          {/* Column 2: Editor's Pick */}
+          <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
+            <span className="inline-block bg-heritage-gold text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
+            {editorPick ? (
+              <Link href={`/obituary/${editorPick.id}`} className="block group">
                 {/* Desktop Layout (Large Card) */}
                 <div className="hidden lg:block">
-                  <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative shadow-sm">
-                    {item.main_image_url ? (
-                      <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={item.deceased_name} />
-                    ) : null}
-                  </div>
-                  <h4 className="font-serif font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
-                    {item.deceased_name}
-                  </h4>
-                  <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
-                    {item.title}
+                  <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
+                    {editorPick.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
+                    {editorPick.content?.substring(0, 100)}...
                   </p>
-                  <div className="mt-2 text-xs text-gray-400 uppercase">
-                    {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+                  <div className="aspect-video bg-gray-100 mb-4 overflow-hidden shadow-md">
+                    {editorPick.main_image_url ? (
+                      <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
+                    )}
+                  </div>
+                  <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
+                    {editorPick.deceased_name}
+                  </h4>
+                  <div className="text-xs text-gray-400 mb-2">
+                    {new Date(editorPick.created_at).toLocaleDateString()}
                   </div>
                 </div>
 
-                {/* Mobile Layout (List Card - Denser) */}
-                <div className="flex lg:hidden gap-3 items-center">
-                  <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100 shadow-sm">
-                    {item.main_image_url ? (
-                      <img src={item.main_image_url} alt={item.deceased_name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full bg-stone-50 flex items-center justify-center text-stone-400 text-[10px] text-center p-1">No Img</div>
-                    )}
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
-                    <h4 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
-                      {item.deceased_name}
-                    </h4>
-                    <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
-                      {item.title}
-                    </p>
-                    <div className="text-[10px] text-gray-400 tracking-wide">
-                      {item.death_date ? new Date(item.death_date).getFullYear() : ''}
-                    </div>
-                  </div>
+                {/* Mobile Layout - Hidden because it's now in TopStoryCarousel */}
+                <div className="hidden">
+                  {/* ... Original list card code was here ... */}
                 </div>
 
               </Link>
-            ))
-          ) : (
-            <div className="text-gray-300 text-sm py-10 text-center italic">
-              No stories yet
+            ) : (
+              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
+            )}
+          </div>
+
+          {/* Column 3: Recent Obituaries Block Carousel */}
+          <div className="flex flex-col h-full">
+            {/* Recent Obituaries Carousel */}
+            <ObituaryBlockCarousel obituaries={recentObituaries} title="최근 부고" />
+          </div>
+
+        </section>
+
+        {/* Categories Grid (4 Columns) */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
+          {['politics', 'economy', 'culture', 'society'].map((cat) => (
+            <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
+              <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
+                {categoryNames[cat].split('&').map((line, i) => (
+                  <span key={i} className="block">{line}</span>
+                ))}
+              </h3>
+
+              <div className="space-y-8">
+                {categories[cat].length > 0 ? (
+                  categories[cat].map((item) => (
+                    <Link href={`/obituary/${item.id}`} key={item.id} className="block group border-b border-gray-100 last:border-0 pb-4 mb-4 lg:border-none lg:pb-0 lg:mb-0">
+
+                      {/* Desktop Layout (Large Card) */}
+                      <div className="hidden lg:block">
+                        <div className="aspect-video bg-gray-100 mb-3 overflow-hidden relative shadow-sm">
+                          {item.main_image_url ? (
+                            <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={item.deceased_name} />
+                          ) : null}
+                        </div>
+                        <h4 className="font-serif font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
+                          {item.deceased_name}
+                        </h4>
+                        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                          {item.title}
+                        </p>
+                        <div className="mt-2 text-xs text-gray-400 uppercase">
+                          {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+                        </div>
+                      </div>
+
+                      {/* Mobile Layout (List Card - Denser) */}
+                      <div className="flex lg:hidden gap-3 items-center">
+                        <div className="w-[72px] h-[72px] rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100 shadow-sm">
+                          {item.main_image_url ? (
+                            <img src={item.main_image_url} alt={item.deceased_name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-stone-50 flex items-center justify-center text-stone-400 text-[10px] text-center p-1">No Img</div>
+                          )}
+                        </div>
+                        <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
+                          <h4 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
+                            {item.deceased_name}
+                          </h4>
+                          <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
+                            {item.title}
+                          </p>
+                          <div className="text-[10px] text-gray-400 tracking-wide">
+                            {item.death_date ? new Date(item.death_date).getFullYear() : ''}
+                          </div>
+                        </div>
+                      </div>
+
+                    </Link>
+                  ))
+                ) : (
+                  <div className="text-gray-300 text-sm py-10 text-center italic">
+                    No stories yet
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-    ))}
-  </section>
+          ))}
+        </section>
 
       </div >
     </main >
