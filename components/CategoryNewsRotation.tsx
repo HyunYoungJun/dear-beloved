@@ -51,7 +51,7 @@ export default function CategoryNewsRotation({ categories }: CategoryNewsRotatio
             {/* Header / Indicator */}
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
                 <h3 className="text-sm font-bold text-[var(--heritage-navy)] tracking-wider uppercase border-l-2 border-[var(--heritage-gold)] pl-2">
-                    {CATEGORY_TITLES[currentCategory].split('&')[0]} NEWS
+                    {CATEGORY_TITLES[currentCategory].split('&')[0]}
                 </h3>
                 <div className="flex gap-1">
                     {availableCategories.map((cat, idx) => (
