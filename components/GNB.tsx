@@ -44,33 +44,25 @@ export default function GNB() {
                             홈
                         </Link>
                         <Link href="/about" className="hover:text-[var(--heritage-gold)] transition-colors">
-                            서비스 소개
+                            서비스소개
                         </Link>
                         <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
                             메모리얼 기사 의뢰
                         </Link>
-                        <Link href="/library" className="hover:text-[var(--heritage-gold)] transition-colors">
-                            인물 도서관
-                        </Link>
                         <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
                             나의 메모리얼 리포트 미리쓰기
                         </Link>
-                        <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold bg-purple-50 px-2 py-1 rounded text-xs font-sans">
-                            앵커 콘텐츠
-                        </Link>
                         <Link href="/family" className="hover:text-[var(--heritage-gold)] transition-colors">
-                            가족 아카이브
+                            가족아카이브
                         </Link>
-                        {user && user.email === 'youngjun88@gmail.com' && (
-                            <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold bg-red-50 px-2 py-1 rounded text-xs ml-2 font-sans">
-                                관리자
-                            </Link>
-                        )}
+                        <Link href="/library" className="hover:text-[var(--heritage-gold)] transition-colors">
+                            인물도서관
+                        </Link>
 
                         {loading ? (
                             <div className="w-12 h-4 bg-gray-100 animate-pulse rounded" />
                         ) : user ? (
-                            <div className="flex items-center gap-4 ml-2 pl-4 border-l border-[var(--heritage-gold)]/30">
+                            <div className="flex items-center gap-4 ml-6 pl-6 border-l border-[var(--heritage-gold)]/30">
                                 <span className="text-gray-500 text-xs truncate max-w-[100px] font-sans">
                                     {user.email?.split('@')[0]}님
                                 </span>
@@ -80,6 +72,18 @@ export default function GNB() {
                                 >
                                     로그아웃
                                 </button>
+
+                                {/* Moved Menu Items */}
+                                <div className="flex flex-col gap-1 items-start ml-2 scale-90 origin-left">
+                                    <Link href="/anchor/create" className="text-purple-600 hover:text-purple-800 transition-colors font-bold text-[10px] font-sans">
+                                        앵커콘텐츠
+                                    </Link>
+                                    {user.email === 'youngjun88@gmail.com' && (
+                                        <Link href="/admin" className="text-red-600 hover:text-red-800 transition-colors font-bold text-[10px] font-sans">
+                                            관리자
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ) : (
                             <Link href="/login" className="ml-2 hover:text-[var(--heritage-gold)] transition-colors">
