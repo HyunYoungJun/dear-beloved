@@ -21,7 +21,7 @@ type ObituarySummary = {
 
 import BannerCarousel from '@/components/BannerCarousel';
 import ObituaryBlockCarousel from '@/components/ObituaryBlockCarousel';
-import TopStoryMobileCarousel from '@/components/TopStoryMobileCarousel';
+import CategoryNewsRotation from '@/components/CategoryNewsRotation';
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
@@ -70,7 +70,7 @@ export default function Home() {
           .eq('is_public', true)
           .eq('category', cat)
           .order('created_at', { ascending: false })
-          .limit(3);
+          .limit(5);
         newCategories[cat] = data || [];
       }));
 
@@ -168,17 +168,11 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
 
-        {/* Mobile Top Story Carousel */}
+        {/* Mobile Top Story Rotation */}
         {loading ? (
           <div className="lg:hidden h-[300px] w-full bg-gray-100 animate-pulse mb-8 rounded-lg"></div>
         ) : (
-          <TopStoryMobileCarousel
-            items={[
-              ...(todayObituary ? [todayObituary] : []),
-              ...(editorPick ? [editorPick] : []),
-              ...(recentObituaries.slice(0, 3))
-            ].filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i)} // Remove duplicates
-          />
+          <CategoryNewsRotation categories={categories} />
         )}
 
         {/* Newspaper Style 3-Column Layout */}
