@@ -19,10 +19,10 @@ interface CategoryNewsRotationProps {
 
 const CATEGORY_ORDER = ['politics', 'economy', 'culture', 'society'];
 const CATEGORY_TITLES: { [key: string]: string } = {
-    politics: 'Politics & Public Service',
-    economy: 'Economy & Business',
-    culture: 'Culture & Arts',
-    society: 'Family & Society'
+    politics: '정치·공무',
+    economy: '경제·경영',
+    culture: '문화·예술·종교',
+    society: '가족·사회'
 };
 
 export default function CategoryNewsRotation({ categories }: CategoryNewsRotationProps) {

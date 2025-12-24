@@ -142,23 +142,17 @@ export default function Home() {
               </h2>
             </div>
 
-            <div className="w-full flex gap-2">
-              {/* Mobile Search */}
-              <div className="relative flex-1 bg-white border border-gray-200 rounded-md flex items-center px-3 py-2.5 h-10">
-                <input
-                  type="text"
-                  placeholder="기사 검색"
-                  className="w-full text-xs outline-none bg-transparent placeholder:text-gray-400 text-heritage-navy"
-                />
-                <button className="text-gray-400 shrink-0">
-                  <ArrowRight size={14} />
-                </button>
-              </div>
+            <div className="w-full flex gap-3 px-2">
+              {/* Mobile Search Button */}
+              <button className="flex-1 flex items-center justify-center gap-2 h-12 bg-white border border-[#C5A059] rounded-lg shadow-sm active:scale-95 transition-transform text-[#0A192F]">
+                <ArrowRight size={16} className="rotate-[-45deg]" /> {/* Using ArrowRight as a makeshift Search icon for now, or use Search if available */}
+                <span className="font-serif font-bold text-sm">기사 검색</span>
+              </button>
 
               {/* Mobile Write Button */}
-              <Link href="/write" className="flex items-center gap-1.5 px-3 h-10 bg-heritage-navy text-white rounded-md shrink-0 shadow-sm active:scale-95 transition-transform hover:bg-[#0f2440]">
-                <span className="font-serif font-bold text-[11px] text-heritage-gold">弔</span>
-                <span className="font-bold text-xs tracking-tight">기사 작성</span>
+              <Link href="/write" className="flex-1 flex items-center justify-center gap-2 h-12 bg-[#0A192F] border border-[#0A192F] rounded-lg shadow-sm active:scale-95 transition-transform text-white">
+                <span className="font-serif font-bold text-sm text-[#C5A059]">弔</span>
+                <span className="font-serif font-bold text-sm">기사 작성</span>
               </Link>
             </div>
           </div>

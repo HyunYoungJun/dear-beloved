@@ -86,12 +86,12 @@ export default function BannerCarousel({ mobile = false }: { mobile?: boolean })
 
     // Mobile Style (Dense & Compact)
     return (
-        <Link href={slide.link} className={`flex items-center justify-center gap-2 mb-3 py-2 px-3 rounded-full border w-fit mx-auto shadow-sm active:scale-95 transition-all duration-500 ${theme.mobile}`}>
-            <div key={slide.id + "_mb_icon"} className={`w-4 h-4 rounded-full flex items-center justify-center font-serif font-bold text-[10px] animate-in fade-in duration-300 ${theme.mobileIcon}`}>
+        <Link href={slide.link} key={slide.id + "_mobile"} className={`flex items-center justify-center gap-3 mb-4 py-3 px-6 rounded-full border w-[90%] mx-auto shadow-md active:scale-95 transition-all duration-500 overflow-hidden ${theme.mobile}`}>
+            <div key={slide.id + "_mb_icon"} className={`w-8 h-8 rounded-full flex items-center justify-center font-serif font-bold text-sm shrink-0 animate-in fade-in zoom-in duration-500 ${theme.mobileIcon}`}>
                 {slide.icon}
             </div>
-            <span key={slide.id + "_mb_text"} className="text-xs font-bold text-stone-600 tracking-tight animate-in fade-in slide-in-from-bottom-1 duration-500">
-                {slide.subtitle || slide.title.replace('\n', ' ')} <ArrowRight size={10} className="inline ml-0.5" />
+            <span key={slide.id + "_mb_text"} className="text-sm font-bold text-stone-700 tracking-tight animate-in fade-in slide-in-from-right-10 duration-700 whitespace-nowrap">
+                {slide.subtitle || slide.title.replace('\n', ' ')} <ArrowRight size={14} className="inline ml-1" />
             </span>
         </Link>
     );
