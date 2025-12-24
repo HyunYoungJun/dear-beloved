@@ -23,20 +23,26 @@ export default function GNB() {
 
     return (
         <>
-            <header className="fixed top-0 z-50 w-full border-b border-[var(--heritage-gold)]/30 bg-white/80 backdrop-blur-md transition-all duration-300">
-                <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-                    <Link href="/" className="text-2xl font-bold tracking-tight text-[var(--heritage-navy)] font-serif z-50" onClick={closeMenu}>
-                        Dear˚Beloved
-                    </Link>
+            <header className="fixed top-0 z-50 w-full transition-all duration-300 border-b border-[#C5A059]/30 md:bg-white/80 md:backdrop-blur-md bg-[#0A192F]">
+                <div className="container mx-auto flex h-[60px] md:h-16 items-center justify-between px-4 md:px-6 relative">
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Button - Absolute Correct Positioning for Centering Logo */}
                     <button
-                        className="md:hidden z-50 text-[var(--heritage-navy)] focus:outline-none"
+                        className="md:hidden z-50 text-[#C5A059] focus:outline-none absolute left-4"
                         onClick={toggleMenu}
                         aria-label="Toggle Menu"
                     >
                         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
+
+                    {/* Logo - Centered on Mobile */}
+                    <Link
+                        href="/"
+                        className="text-xl md:text-2xl font-bold tracking-tight font-serif z-50 w-full text-center md:text-left md:w-auto text-[#C5A059] md:text-[#0A192F]"
+                        onClick={closeMenu}
+                    >
+                        Dear˚Beloved
+                    </Link>
 
                     {/* Desktop Menu */}
                     <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-[var(--heritage-navy)] font-serif">
