@@ -133,7 +133,7 @@ export default function Home() {
           </div>
 
           {/* Mobile Header (Title + Key Actions) */}
-          <div className="lg:hidden flex flex-col items-center gap-3 mt-2 mb-4 px-3">
+          <div className="lg:hidden flex flex-col items-center gap-2 mt-1 mb-2 px-3">
             {/* Mobile Carousel Banner */}
             <BannerCarousel mobile={true} />
             <div className="text-center">
