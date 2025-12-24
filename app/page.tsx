@@ -136,11 +136,7 @@ export default function Home() {
           <div className="lg:hidden flex flex-col items-center gap-2 mt-1 mb-2 px-3">
             {/* Mobile Carousel Banner */}
             <BannerCarousel mobile={true} />
-            <div className="text-center">
-              <h2 className="text-[15px] font-serif font-bold text-heritage-navy tracking-tight">
-                생애 마지막 선물, 메모리얼 리포트
-              </h2>
-            </div>
+
 
             <div className="w-full flex gap-3 px-2">
               {/* Mobile Search Button */}

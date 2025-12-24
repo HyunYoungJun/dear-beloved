@@ -23,12 +23,12 @@ export default function GNB() {
 
     return (
         <>
-            <header className="fixed top-0 z-50 w-full transition-all duration-300 border-b border-[#C5A059]/30 md:bg-white/80 md:backdrop-blur-md bg-[#0A192F]">
-                <div className="container mx-auto flex h-[60px] md:h-16 items-center justify-between px-4 md:px-6 relative">
+            <header className="fixed top-0 z-50 w-full transition-all duration-300 border-b border-[#C5A059]/30 md:bg-white/80 md:backdrop-blur-md bg-[#0A192F] py-2 md:py-0">
+                <div className="container mx-auto flex h-auto md:h-16 items-center justify-between px-4 md:px-6 relative">
 
                     {/* Mobile Menu Button - Absolute Correct Positioning for Centering Logo */}
                     <button
-                        className="md:hidden z-50 text-[#C5A059] focus:outline-none absolute left-4"
+                        className="md:hidden z-50 text-[#C5A059] focus:outline-none absolute left-4 top-1/2 -translate-y-1/2"
                         onClick={toggleMenu}
                         aria-label="Toggle Menu"
                     >
@@ -38,10 +38,15 @@ export default function GNB() {
                     {/* Logo - Centered on Mobile */}
                     <Link
                         href="/"
-                        className="text-xl md:text-2xl font-bold tracking-tight font-serif z-50 w-full text-center md:text-left md:w-auto text-[#C5A059] md:text-[#0A192F]"
+                        className="flex flex-col items-center justify-center z-50 w-full md:w-auto md:block"
                         onClick={closeMenu}
                     >
-                        Dear˚Beloved
+                        <span className="text-xl md:text-2xl font-bold tracking-tight font-serif text-[#C5A059] md:text-[#0A192F]">
+                            Dear˚Beloved
+                        </span>
+                        <span className="md:hidden text-[10px] text-[#C5A059] font-serif tracking-tight mt-0.5 opacity-90">
+                            생애 마지막 선물, 메모리얼 리포트
+                        </span>
                     </Link>
 
                     {/* Desktop Menu */}
