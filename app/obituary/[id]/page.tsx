@@ -32,6 +32,7 @@ export default function ObituaryDetailPage() {
     const { user } = useAuth();
     const [obituary, setObituary] = useState<ObituaryDetail | null>(null);
     const [loading, setLoading] = useState(true);
+    const [featuredImage, setFeaturedImage] = useState<string | null>(null); // State for rotated header image
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
     useEffect(() => {
@@ -54,6 +55,25 @@ export default function ObituaryDetailPage() {
         } else {
             console.log('Fetched obituary:', data); // Debugging
             setObituary(data);
+
+            // Feature Photo Rotation Logic
+            let displayImage = data.main_image_url;
+
+            // Fetch featured photos
+            const { data: featuredData } = await supabase
+                .from('album_photos')
+                .select('image_url')
+                .eq('obituary_id', id)
+                .eq('is_featured', true);
+
+            if (featuredData && featuredData.length > 0) {
+                const hour = new Date().getHours();
+                const index = hour % featuredData.length;
+                displayImage = featuredData[index].image_url;
+                console.log(`[Rotation] Hour: ${hour}, Count: ${featuredData.length}, Index: ${index}`);
+            }
+
+            setFeaturedImage(displayImage);
         }
         setLoading(false);
     }
@@ -80,12 +100,13 @@ export default function ObituaryDetailPage() {
 
                     {/* Left: Passport Style Photo (Fixed 120x160px) */}
                     <div className="shrink-0 relative group">
-                        {obituary.main_image_url ? (
+                        {featuredImage ? (
                             <div className="relative">
                                 <img
-                                    src={obituary.main_image_url}
+                                    key={featuredImage} // Trigger animation on change
+                                    src={featuredImage}
                                     alt={obituary.deceased_name}
-                                    className="w-[120px] h-[160px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105"
+                                    className="w-[120px] h-[160px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
                                 />
                                 {/* Optional: Corner accent can be added here if needed */}
                             </div>
