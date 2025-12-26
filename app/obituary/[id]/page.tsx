@@ -144,10 +144,10 @@ export default function ObituaryDetailPage() {
                         <div className="absolute -bottom-4 -right-1 z-20">
                             <button
                                 onClick={handleFlowerGiven}
-                                className="group relative flex items-center bg-white pl-2.5 pr-3 py-1.5 rounded-full shadow-lg border border-[#C5A059]/20 transition-all duration-300 hover:scale-105 hover:shadow-[#C5A059]/20 cursor-pointer overflow-hidden"
+                                className="group relative flex items-center bg-[#0A192F] pl-2.5 pr-3 py-1.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 hover:bg-[#112240] cursor-pointer overflow-hidden"
                             >
-                                <WhiteChrysanthemum className="w-4 h-4 text-white drop-shadow-md text-slate-200" />
-                                <span className="ml-1.5 text-xs font-bold text-[#0A192F] font-serif tabular-nums">
+                                <WhiteChrysanthemum className="w-4 h-4 text-white drop-shadow-md" />
+                                <span className="ml-1.5 text-xs font-bold text-white font-serif tabular-nums tracking-wide">
                                     {obituary.flower_count?.toLocaleString() || 0}
                                 </span>
 
