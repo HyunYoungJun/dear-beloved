@@ -31,7 +31,7 @@ export default function MemoryWall({ obituaryId, onFlowerGiven }: MemoryWallProp
                     obituaryId={obituaryId}
                     onMemoryAdded={handleMemoryAdded}
                     onFlowerGiven={onFlowerGiven}
-                    onOpenAlbumUpload={onOpenAlbumUpload}
+
                 />
 
                 <div className="mt-16">

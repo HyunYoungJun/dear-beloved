@@ -39,16 +39,22 @@ export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadOpen, 
             <div className="max-w-[850px] mx-auto px-6">
 
                 {/* Header */}
-                <div className="relative flex items-center justify-center gap-3 mb-12">
-                    <span className="w-8 h-[1px] bg-[#C5A059]"></span>
-                    <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">MEMORIAL ALBUM</h3>
-                    <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
+                <div className="relative h-12 flex items-center justify-between mb-12">
+                    {/* Centered Title */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-3 w-full pointer-events-none">
+                        <span className="w-8 h-[1px] bg-[#C5A059]"></span>
+                        <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest whitespace-nowrap">MEMORIAL ALBUM</h3>
+                        <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
+                    </div>
 
-                    {/* Upload Button (Absolute Right) */}
+                    {/* Left Spacer (Empty) */}
+                    <div></div>
+
+                    {/* Upload Button (Right) */}
                     {onUploadOpen && (
                         <button
                             onClick={onUploadOpen}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-[#0A192F] text-[#C5A059] border border-[#C5A059] text-[10px] font-bold tracking-wider uppercase rounded-sm hover:bg-[#C5A059] hover:text-[#0A192F] transition-colors shadow-sm"
+                            className="relative z-10 flex items-center gap-1.5 px-3 py-1.5 bg-[#0A192F] text-[#C5A059] border border-[#C5A059] text-[10px] font-bold tracking-wider uppercase rounded-sm hover:bg-[#C5A059] hover:text-[#0A192F] transition-colors shadow-sm"
                         >
                             <Plus className="w-3 h-3" />
                             <span className="hidden md:inline">ADD PHOTO</span>
