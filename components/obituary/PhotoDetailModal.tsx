@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { X, Heart, Send, Calendar } from 'lucide-react';
+import { X, Heart, Send, Calendar, Star } from 'lucide-react';
 // import { format } from 'date-fns';
 
 interface PhotoDetailModalProps {
@@ -18,6 +18,7 @@ export default function PhotoDetailModal({ isOpen, onClose, photo, onUpdate }: P
     const [author, setAuthor] = useState('');
     const [missYouCount, setMissYouCount] = useState(0);
     const [isSending, setIsSending] = useState(false);
+    const [isFeatured, setIsFeatured] = useState(false);
     const [isLiked, setIsLiked] = useState(false); // Local state for visual feedback
 
     useEffect(() => {
@@ -25,6 +26,7 @@ export default function PhotoDetailModal({ isOpen, onClose, photo, onUpdate }: P
             fetchComments();
             setMissYouCount(photo.miss_you_count || 0);
             setIsLiked(false);
+            setIsFeatured(photo.is_featured || false);
         }
     }, [isOpen, photo]);
 
@@ -39,6 +41,24 @@ export default function PhotoDetailModal({ isOpen, onClose, photo, onUpdate }: P
 
         if (!error && data) {
             setComments(data);
+        }
+    };
+
+    const handleToggleFeatured = async () => {
+        const newState = !isFeatured;
+        setIsFeatured(newState); // Optimistic
+
+        const { error } = await supabase
+            .from('album_photos')
+            .update({ is_featured: newState })
+            .eq('id', photo.id);
+
+        if (error) {
+            console.error('Error updating featured status:', error);
+            setIsFeatured(!newState); // Revert
+            alert('설정 변경에 실패했습니다.');
+        } else {
+            onUpdate(); // Background refresh
         }
     };
 
@@ -125,17 +145,31 @@ export default function PhotoDetailModal({ isOpen, onClose, photo, onUpdate }: P
 
                     {/* Header Info */}
                     <div className="p-6 border-b border-gray-100 bg-white">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 rounded-full bg-[#0A192F] flex items-center justify-center text-[#C5A059] font-bold text-sm">
-                                {photo.contributor_name.charAt(0)}
+                        <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-[#0A192F] flex items-center justify-center text-[#C5A059] font-bold text-sm">
+                                    {photo.contributor_name.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className="font-bold text-[#0A192F] text-sm">{photo.contributor_name}님의 추억</p>
+                                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(photo.created_at).toISOString().split('T')[0].replace(/-/g, '.')}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-bold text-[#0A192F] text-sm">{photo.contributor_name}님의 추억</p>
-                                <p className="text-xs text-gray-400 flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    {new Date(photo.created_at).toISOString().split('T')[0].replace(/-/g, '.')}
-                                </p>
-                            </div>
+
+                            {/* Featured Toggle Button */}
+                            <button
+                                onClick={handleToggleFeatured}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-medium ${isFeatured
+                                    ? 'bg-[#C5A059]/10 border-[#C5A059] text-[#C5A059]'
+                                    : 'border-gray-200 text-gray-400 hover:border-[#C5A059] hover:text-[#C5A059]'
+                                    }`}
+                            >
+                                <Star className={`w-3 h-3 ${isFeatured ? 'fill-[#C5A059]' : ''}`} />
+                                {isFeatured ? '대표 사진' : '대표 지정'}
+                            </button>
                         </div>
                         {photo.description && (
                             <p className="text-gray-600 text-sm leading-relaxed mt-3 pl-1 border-l-2 border-[#C5A059]/30">
