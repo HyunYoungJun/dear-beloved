@@ -116,7 +116,7 @@ export default function ObituaryDetailPage() {
                             </Link>
                         </div>
 
-                        <h1 className="text-2xl md:text-4xl font-bold text-white font-['Nanum_Myeongjo'] mb-3 leading-snug break-keep">
+                        <h1 className="text-2xl md:text-4xl font-bold text-[#C5A059] font-['Nanum_Myeongjo'] mb-3 leading-snug break-keep">
                             {obituary.title}
                         </h1>
 
