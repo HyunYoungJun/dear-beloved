@@ -211,6 +211,7 @@ export default function ObituaryDetailPage() {
                         <MemorialAlbum
                             obituaryId={obituary.id}
                             isUploadOpen={isUploadModalOpen}
+                            onUploadOpen={() => setIsUploadModalOpen(true)}
                             onUploadClose={() => setIsUploadModalOpen(false)}
                         />
                     </div>
@@ -250,7 +251,6 @@ export default function ObituaryDetailPage() {
                     <MemoryWall
                         obituaryId={obituary.id}
                         onFlowerGiven={handleFlowerGiven}
-                        onOpenAlbumUpload={() => setIsUploadModalOpen(true)}
                     />
                 </div>
             </div>

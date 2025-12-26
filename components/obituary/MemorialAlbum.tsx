@@ -9,20 +9,12 @@ import PhotoDetailModal from './PhotoDetailModal';
 
 interface MemorialAlbumProps {
     obituaryId: string;
-    // We can pass a prop to trigger upload from parent if needed, 
-    // but for now this component will manage its state or expose a ref.
-    // Actually, distinct upload button logic might reside in MemoryForm, 
-    // so we need a way to open this modal from outside. 
-    // For now, let's keep the upload modal management internal 
-    // and rely on a ref or context, OR simply let the parent `page.tsx` pass down an "isUploadOpen" prop.
-    // To simplify: I'll export this component and also a separate provider or just control props.
-    // Wait, the user asked to change the button in `MemoryForm`. 
-    // So `page.tsx` will likely hold the "isUploadModalOpen" state.
     isUploadOpen?: boolean;
+    onUploadOpen?: () => void;
     onUploadClose?: () => void;
 }
 
-export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadClose }: MemorialAlbumProps) {
+export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadOpen, onUploadClose }: MemorialAlbumProps) {
     const [photos, setPhotos] = useState<any[]>([]);
     const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
 
@@ -47,10 +39,22 @@ export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadClose 
             <div className="max-w-[850px] mx-auto px-6">
 
                 {/* Header */}
-                <div className="flex items-center justify-center gap-3 mb-12">
+                <div className="relative flex items-center justify-center gap-3 mb-12">
                     <span className="w-8 h-[1px] bg-[#C5A059]"></span>
                     <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">MEMORIAL ALBUM</h3>
                     <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
+
+                    {/* Upload Button (Absolute Right) */}
+                    {onUploadOpen && (
+                        <button
+                            onClick={onUploadOpen}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-[#0A192F] text-[#C5A059] border border-[#C5A059] text-[10px] font-bold tracking-wider uppercase rounded-sm hover:bg-[#C5A059] hover:text-[#0A192F] transition-colors shadow-sm"
+                        >
+                            <Plus className="w-3 h-3" />
+                            <span className="hidden md:inline">ADD PHOTO</span>
+                            <span className="md:hidden">ADD</span>
+                        </button>
+                    )}
                 </div>
 
                 {/* Grid (CSS Columns Masonry) */}

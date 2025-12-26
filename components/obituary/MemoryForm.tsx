@@ -9,10 +9,9 @@ interface MemoryFormProps {
     obituaryId: string;
     onMemoryAdded: () => void;
     onFlowerGiven: () => void;
-    onOpenAlbumUpload: () => void;
 }
 
-export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven, onOpenAlbumUpload }: MemoryFormProps) {
+export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }: MemoryFormProps) {
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState<File | null>(null);
@@ -99,20 +98,9 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven, o
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4 md:gap-0">
-                    {/* Image Upload Trigger - Renamed to 'Memorial Album' with Pastel Style */}
-                    <div className="w-full md:w-auto flex justify-start">
-                        <button
-                            type="button"
-                            onClick={onOpenAlbumUpload}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-[4px] border border-transparent text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide bg-[#0A192F]/5 text-[#0A192F] hover:bg-[#0A192F]/10"
-                        >
-                            <ImageIcon className="w-4 h-4" />
-                            추모앨범
-                        </button>
-                    </div>
 
-                    {/* Action Buttons: Flower & Submit (Icon Only) */}
-                    <div className="flex flex-row items-center gap-2 w-full md:w-auto justify-end">
+                    {/* Action Buttons: Flower & Submit (Icon Only) - Justify End */}
+                    <div className="flex flex-row items-center gap-2 w-full justify-end">
                         <button
                             type="button"
                             onClick={handleGiveFlower}
