@@ -73,106 +73,119 @@ export default function ObituaryDetailPage() {
     const quote = obituary.biography_data?.quote;
 
     return (
-    return (
         <article className="min-h-screen bg-[#F9F9F9] font-serif pb-32">
-            {/* PC: Book Container / Mobile: Full Width */}
-            <div className="md:max-w-[900px] md:mx-auto md:bg-white md:shadow-xl md:my-10 md:overflow-hidden relative transition-all duration-300">
+            {/* 1. Header Section: Deep Navy Background, Flex Layout */}
+            <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
+                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-8">
 
-                {/* Header Image Section */}
-                <div className="w-full h-[50vh] md:h-auto md:aspect-video relative overflow-hidden group">
-                    {obituary.main_image_url ? (
-                        <img
-                            src={obituary.main_image_url}
-                            alt={obituary.deceased_name}
-                            className="w-full h-full object-cover grayscale brightness-75 md:brightness-[0.85] transition-transform duration-700 md:group-hover:scale-105"
-                        />
-                    ) : (
-                        <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">
-                            사진 없음
+                    {/* Left: Passport Style Photo (Fixed 120x160px) */}
+                    <div className="shrink-0 relative group">
+                        {obituary.main_image_url ? (
+                            <div className="relative">
+                                <img
+                                    src={obituary.main_image_url}
+                                    alt={obituary.deceased_name}
+                                    className="w-[120px] h-[160px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105"
+                                />
+                                {/* Optional: Corner accent can be added here if needed */}
+                            </div>
+                        ) : (
+                            <div className="w-[120px] h-[160px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
+                                <span className="font-serif">No Photo</span>
+                            </div>
+                        )}
+
+                        {/* Flower Badge Positioned relative to photo */}
+                        <div className="absolute -bottom-3 -right-3 bg-white px-2.5 py-1 rounded-full shadow-lg border border-[#C5A059]/20 flex items-center gap-1.5 z-10">
+                            <Flower2 className="w-3.5 h-3.5 text-[#C5A059] fill-[#C5A059]/20" />
+                            <span className="text-xs font-bold text-[#0A192F] font-serif tabular-nums">
+                                {obituary.flower_count?.toLocaleString() || 0}
+                            </span>
                         </div>
-                    )}
-
-                    {/* Navigation Overlay */}
-                    <div className="absolute top-0 left-0 w-full p-6 z-20 flex justify-between items-start">
-                        <Link href="/library" className="inline-flex items-center text-white/90 hover:text-white transition-colors bg-black/20 hover:bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10">
-                            <ArrowLeft size={18} className="mr-2" /> 목록으로
-                        </Link>
                     </div>
 
-                    {/* Title Overlay */}
-                    <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 bg-gradient-to-t from-black/90 via-black/40 to-transparent text-white">
-                        <div className="max-w-3xl mx-auto md:mx-0">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="inline-block border border-[#C5A059]/50 px-3 py-1 rounded-full text-xs md:text-sm bg-[#0A192F]/80 backdrop-blur-md text-[#C5A059]">
-                                    메모리얼
-                                </div>
+                    {/* Right: Information */}
+                    <div className="flex flex-col items-center md:items-start text-center md:text-left flex-1 min-w-0 pt-2">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="px-2 py-0.5 border border-[#C5A059]/60 text-[#C5A059] text-[10px] font-bold tracking-[0.2em] rounded-sm uppercase">
+                                In Loving Memory
+                            </span>
+                            <Link href="/library" className="inline-flex items-center text-gray-400 hover:text-[#C5A059] transition-colors text-xs font-medium group">
+                                <ArrowLeft size={12} className="mr-1 group-hover:-translate-x-0.5 transition-transform" />
+                                목록으로 돌아가기
+                            </Link>
+                        </div>
 
-                                {/* Flower Badge */}
-                                <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 animate-fade-in-up">
-                                    <Flower2 className="w-3.5 h-3.5 text-pink-500 fill-pink-100" />
-                                    <span className="text-sm font-bold text-gray-900 font-serif">
-                                        {obituary.flower_count?.toLocaleString() || 0}
-                                        <span className="text-xs font-normal text-gray-500 ml-0.5">송이</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-normal font-['Nanum_Myeongjo'] text-white drop-shadow-lg">
-                                {obituary.title}
-                            </h1>
-                            <p className="text-lg md:text-xl text-white/90 font-light drop-shadow-md">
-                                故 {obituary.deceased_name} 님 | {obituary.birth_date} ~ {obituary.death_date}
+                        <h1 className="text-2xl md:text-4xl font-bold text-white font-['Nanum_Myeongjo'] mb-3 leading-snug break-keep">
+                            {obituary.title}
+                        </h1>
+
+                        <div className="space-y-1.5">
+                            <p className="text-lg md:text-xl text-[#C5A059] font-medium font-serif">
+                                故 {obituary.deceased_name}
                             </p>
+                            <div className="flex items-center justify-center md:justify-start gap-2 text-sm md:text-base text-gray-300 font-light tracking-wide opacity-80 font-serif">
+                                <span>{obituary.birth_date}</span>
+                                <span className="text-[#C5A059]/50">•</span>
+                                <span>{obituary.death_date}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </header>
 
-                {/* Main Content */}
-                <div className="max-w-2xl mx-auto px-6 py-16 md:py-24 bg-white md:bg-transparent shadow-sm md:shadow-none -mt-10 md:mt-0 relative z-10 rounded-t-lg md:rounded-none">
+            {/* 2. Content Section: White Background, Constrained Width */}
+            <div className="max-w-[850px] mx-auto bg-white shadow-sm -mt-0 relative z-10 min-h-[600px]">
 
-                    {/* Deceased's Quote (Calligraphy Style) */}
+                <div className="px-6 py-12 md:px-12 md:py-16">
+                    {/* Deceased's Quote */}
                     {quote && (
-                        <div className="mb-16 text-center px-4 py-10 border-y border-[#C5A059]/20 bg-[#FDFBF7]">
-                            <Quote className="w-8 h-8 mx-auto text-[#C5A059] mb-4 opacity-70" />
-                            <p className="text-2xl md:text-3xl text-[#0A192F] leading-relaxed font-['Gowun_Batang'] break-keep">
+                        <div className="mb-14 text-center px-8 py-10 border-y border-[#C5A059]/15 bg-[#FDFBF7]">
+                            <Quote className="w-5 h-5 mx-auto text-[#C5A059] mb-5 opacity-60" />
+                            <p className="text-xl md:text-2xl text-[#0A192F] leading-relaxed font-['Gowun_Batang'] break-keep">
                                 "{quote}"
                             </p>
                         </div>
                     )}
 
-                    {/* Biography Content with Gold Bar Styling */}
-                    <div className="relative mb-20 px-0 md:px-4">
-                        {/* Visual Point: Vertical Gold Bar for PC */}
-                        <div className="hidden md:block absolute left-0 top-0 bottom-0 w-[2px] bg-[#C5A059]/30 -ml-6"></div>
-
-                        <div className="prose prose-lg prose-gray max-w-none text-gray-700 leading-[2.2] whitespace-pre-wrap font-['Nanum_Myeongjo'] text-justify">
+                    {/* Biography Content / Article Body */}
+                    <div className="relative mb-20">
+                        <div className="prose prose-lg prose-slate max-w-none text-gray-700 leading-[2.2] whitespace-pre-wrap font-['Nanum_Myeongjo'] text-justify">
                             {obituary.content}
+
+                            {/* Example of how an embedded image would look within content if user adds one (rendered by prose) */}
                         </div>
                     </div>
 
+                    {/* Separator */}
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-[#C5A059]/30 to-transparent my-16"></div>
+
                     {/* Life Timeline Section */}
                     {obituary.timeline_data && Array.isArray(obituary.timeline_data) && obituary.timeline_data.length > 0 && (
-                        <div className="mb-20 pt-10 border-t border-gray-100">
-                            <div className="flex items-center gap-3 mb-8">
-                                <span className="w-1 h-6 bg-[#C5A059] inline-block"></span>
-                                <h3 className="text-2xl font-serif font-bold text-[#0A192F]">생애 기록</h3>
+                        <div className="mb-16">
+                            <div className="flex items-center justify-center md:justify-start gap-3 mb-10">
+                                <span className="w-8 h-[1px] bg-[#C5A059]"></span>
+                                <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">LIFE JOURNEY</h3>
+                                <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
                             </div>
                             <TimelineViewer events={obituary.timeline_data} />
                         </div>
                     )}
 
-                    {/* Family Archives (Tree View) - Integrated inside container for PC */}
-                    <div className="pt-10 border-t border-gray-100 mb-10">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="w-1 h-6 bg-[#C5A059] inline-block"></span>
-                            <h3 className="text-2xl font-serif font-bold text-[#0A192F]">가족 관계</h3>
+                    {/* Family Archives */}
+                    <div className="mb-10">
+                        <div className="flex items-center justify-center md:justify-start gap-3 mb-10">
+                            <span className="w-8 h-[1px] bg-[#C5A059]"></span>
+                            <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">FAMILY TREE</h3>
+                            <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
                         </div>
                         <FamilyTree obituaryId={obituary.id} />
                     </div>
 
 
-                    {/* Edit/Delete Controls (Standardized UI) */}
+                    {/* Edit/Delete Controls */}
                     {user && (user.id === obituary.user_id || user.email === 'youngjun88@gmail.com') && (
-                        <div className="flex justify-end gap-3 pt-8 mt-8 border-t border-[#C5A059]/20">
+                        <div className="flex justify-end gap-3 pt-8 mt-12 border-t border-[#C5A059]/10">
                             <button
                                 onClick={async () => {
                                     if (confirm('정말 삭제하시겠습니까?')) {
@@ -184,31 +197,24 @@ export default function ObituaryDetailPage() {
                                         }
                                     }
                                 }}
-                                className="px-6 py-2 bg-[#0A192F] border border-[#C5A059] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-colors duration-300 text-sm font-bold font-serif"
+                                className="px-4 py-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors text-xs font-medium rounded-sm"
                             >
-                                삭제
+                                삭제하기
                             </button>
                             <button
                                 onClick={() => router.push(`/obituary/${obituary.id}/edit`)}
-                                className="px-6 py-2 bg-[#0A192F] border border-[#C5A059] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-colors duration-300 text-sm font-bold font-serif"
+                                className="px-6 py-2 bg-[#0A192F] text-[#C5A059] border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase"
                             >
-                                수정
+                                <span className="mr-2">EDIT</span> 수정하기
                             </button>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Memory Wall - Kept separate for full width feel or integrated? User said "PC environment layout ... fixed container". Keeping Memory Wall outside might be better for layout, or inside? 
-               Usually comments section is distinct. Let's keep it outside the "Book" for now to separate "Content" vs "Community", matches "Article" vs "Comments" pattern. 
-               BUT, for a contained book feel, maybe inside is better? 
-               The request said "전체 본문 영역" width fixed. 
-               I'll move MemoryWall component closer visually but maybe keep it centered. 
-               Actually, for a "Digital Archive" book feel, the memory wall is like the guestbook at the end.
-               Let's put it in a container following the same width constraint.
-            */}
-            <div className="md:max-w-[900px] md:mx-auto">
-                <div className="mt-10 md:bg-white md:shadow-lg md:p-10 md:rounded-lg">
+            {/* Memory Wall */}
+            <div className="max-w-[850px] mx-auto">
+                <div className="mt-8 bg-white shadow-sm p-6 md:p-10 border-t border-gray-100">
                     <MemoryWall obituaryId={obituary.id} onFlowerGiven={handleFlowerGiven} />
                 </div>
             </div>
