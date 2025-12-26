@@ -98,7 +98,7 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4 md:gap-0">
-                    {/* Image Upload Trigger - Styled as a subtle text link or refined button */}
+                    {/* Image Upload Trigger - Renamed to 'Memorial Album' with Pastel Style */}
                     <div className="w-full md:w-auto flex justify-start">
                         <input
                             type="file"
@@ -110,13 +110,13 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                         <div className="flex items-center gap-3">
                             <label
                                 htmlFor="memory-image"
-                                className={`flex items-center gap-2 px-4 py-2 rounded-[4px] border text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide ${image
-                                    ? 'bg-[#0A192F] text-[#C5A059] border-[#0A192F]'
-                                    : 'bg-white text-gray-500 border-gray-200 hover:border-[#0A192F] hover:text-[#0A192F]'
+                                className={`flex items-center gap-2 px-5 py-2.5 rounded-[4px] border border-transparent text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide ${image
+                                    ? 'bg-[#0A192F] text-[#C5A059]'
+                                    : 'bg-[#0A192F]/5 text-[#0A192F] hover:bg-[#0A192F]/10' /* Pastel Navy */
                                     }`}
                             >
                                 <ImageIcon className="w-4 h-4" />
-                                {image ? '사진 선택됨' : '사진 추가'}
+                                {image ? '사진 선택됨' : '추모앨범'}
                             </label>
                             {image && (
                                 <button
@@ -130,37 +130,32 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                         </div>
                     </div>
 
-                    {/* Action Buttons: Flower & Submit */}
-                    <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+                    {/* Action Buttons: Flower & Submit (Icon Only) */}
+                    <div className="flex flex-row items-center gap-2 w-full md:w-auto justify-end">
                         <button
                             type="button"
                             onClick={handleGiveFlower}
                             disabled={isGivingFlower}
-                            className="w-full md:w-auto flex items-center justify-center gap-2 bg-[#0A192F] text-[#C5A059] border border-[#0A192F] px-6 py-3 rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-serif font-medium tracking-wider shadow-sm"
+                            title="헌화하기"
+                            className="w-12 h-12 flex items-center justify-center bg-[#0A192F] text-[#C5A059] border border-[#0A192F] rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-sm"
                         >
                             {isGivingFlower ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                <Flower2 className="w-4 h-4" />
+                                <Flower2 className="w-5 h-5" />
                             )}
-                            헌화하기
                         </button>
 
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full md:w-auto flex items-center justify-center gap-2 bg-[#0A192F] text-[#C5A059] border border-[#0A192F] px-8 py-3 rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-serif font-medium tracking-wider shadow-sm"
+                            title="메시지 등록"
+                            className="w-12 h-12 flex items-center justify-center bg-[#0A192F] text-[#C5A059] border border-[#0A192F] rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-sm"
                         >
                             {isSubmitting ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                    등록 중...
-                                </>
+                                <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                <>
-                                    <Send className="w-4 h-4" />
-                                    메시지 등록
-                                </>
+                                <Send className="w-5 h-5" />
                             )}
                         </button>
                     </div>

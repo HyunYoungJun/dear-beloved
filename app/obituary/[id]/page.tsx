@@ -200,13 +200,13 @@ export default function ObituaryDetailPage() {
                                         }
                                     }
                                 }}
-                                className="w-full md:w-auto px-6 py-2.5 text-gray-400 border border-gray-200 hover:border-red-200 hover:bg-red-50 hover:text-red-500 transition-all duration-300 text-xs font-medium rounded-[4px] tracking-widest uppercase"
+                                className="w-full md:w-auto px-6 py-2.5 bg-red-50 text-red-400 border border-red-100 hover:bg-red-100 hover:text-red-500 transition-all duration-300 text-xs font-medium rounded-[4px] tracking-widest uppercase"
                             >
                                 삭제하기
                             </button>
                             <button
                                 onClick={() => router.push(`/obituary/${obituary.id}/edit`)}
-                                className="w-full md:w-auto px-8 py-2.5 bg-transparent text-[#C5A059] border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase rounded-[4px]"
+                                className="w-full md:w-auto px-8 py-2.5 bg-[#C5A059]/10 text-[#C5A059] border border-[#C5A059]/30 hover:bg-[#C5A059]/20 hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase rounded-[4px]"
                             >
                                 <span className="mr-2">EDIT</span> 수정하기
                             </button>
