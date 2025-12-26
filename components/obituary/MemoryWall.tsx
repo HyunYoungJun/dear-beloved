@@ -7,9 +7,10 @@ import MemoryList from './MemoryList';
 interface MemoryWallProps {
     obituaryId: string;
     onFlowerGiven: () => void;
+    onOpenAlbumUpload: () => void;
 }
 
-export default function MemoryWall({ obituaryId, onFlowerGiven }: MemoryWallProps) {
+export default function MemoryWall({ obituaryId, onFlowerGiven, onOpenAlbumUpload }: MemoryWallProps) {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     const handleMemoryAdded = () => {
@@ -31,6 +32,7 @@ export default function MemoryWall({ obituaryId, onFlowerGiven }: MemoryWallProp
                     obituaryId={obituaryId}
                     onMemoryAdded={handleMemoryAdded}
                     onFlowerGiven={onFlowerGiven}
+                    onOpenAlbumUpload={onOpenAlbumUpload}
                 />
 
                 <div className="mt-16">

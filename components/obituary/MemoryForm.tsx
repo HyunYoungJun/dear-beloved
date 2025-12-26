@@ -9,9 +9,10 @@ interface MemoryFormProps {
     obituaryId: string;
     onMemoryAdded: () => void;
     onFlowerGiven: () => void;
+    onOpenAlbumUpload: () => void;
 }
 
-export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }: MemoryFormProps) {
+export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven, onOpenAlbumUpload }: MemoryFormProps) {
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState<File | null>(null);
@@ -100,34 +101,14 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                 <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4 md:gap-0">
                     {/* Image Upload Trigger - Renamed to 'Memorial Album' with Pastel Style */}
                     <div className="w-full md:w-auto flex justify-start">
-                        <input
-                            type="file"
-                            id="memory-image"
-                            accept="image/*"
-                            onChange={(e) => setImage(e.target.files?.[0] || null)}
-                            className="hidden"
-                        />
-                        <div className="flex items-center gap-3">
-                            <label
-                                htmlFor="memory-image"
-                                className={`flex items-center gap-2 px-5 py-2.5 rounded-[4px] border border-transparent text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide ${image
-                                    ? 'bg-[#0A192F] text-[#C5A059]'
-                                    : 'bg-[#0A192F]/5 text-[#0A192F] hover:bg-[#0A192F]/10' /* Pastel Navy */
-                                    }`}
-                            >
-                                <ImageIcon className="w-4 h-4" />
-                                {image ? '사진 선택됨' : '추모앨범'}
-                            </label>
-                            {image && (
-                                <button
-                                    type="button"
-                                    onClick={() => setImage(null)}
-                                    className="text-xs text-red-400 hover:text-red-600 transition-colors underline underline-offset-2"
-                                >
-                                    삭제
-                                </button>
-                            )}
-                        </div>
+                        <button
+                            type="button"
+                            onClick={onOpenAlbumUpload}
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-[4px] border border-transparent text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide bg-[#0A192F]/5 text-[#0A192F] hover:bg-[#0A192F]/10"
+                        >
+                            <ImageIcon className="w-4 h-4" />
+                            추모앨범
+                        </button>
                     </div>
 
                     {/* Action Buttons: Flower & Submit (Icon Only) */}

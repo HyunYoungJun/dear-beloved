@@ -24,8 +24,7 @@ type ObituaryDetail = {
 import TimelineViewer from '@/components/obituary/TimelineViewer';
 import MemoryWall from '@/components/obituary/MemoryWall';
 import FamilyTree from '@/components/obituary/FamilyTree';
-
-
+import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
 export default function ObituaryDetailPage() {
     const { id } = useParams();
@@ -33,6 +32,7 @@ export default function ObituaryDetailPage() {
     const { user } = useAuth();
     const [obituary, setObituary] = useState<ObituaryDetail | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -185,6 +185,14 @@ export default function ObituaryDetailPage() {
                         <FamilyTree obituaryId={obituary.id} />
                     </div>
 
+                    {/* NEW: Memorial Album Section */}
+                    <div className="mb-10 w-full">
+                        <MemorialAlbum
+                            obituaryId={obituary.id}
+                            isUploadOpen={isUploadModalOpen}
+                            onUploadClose={() => setIsUploadModalOpen(false)}
+                        />
+                    </div>
 
                     {/* Edit/Delete Controls - Sub Actions */}
                     {user && (user.id === obituary.user_id || user.email === 'youngjun88@gmail.com') && (
@@ -218,7 +226,11 @@ export default function ObituaryDetailPage() {
             {/* Memory Wall */}
             <div className="max-w-[850px] mx-auto">
                 <div className="mt-8 bg-white shadow-sm p-6 md:p-10 border-t border-gray-100">
-                    <MemoryWall obituaryId={obituary.id} onFlowerGiven={handleFlowerGiven} />
+                    <MemoryWall
+                        obituaryId={obituary.id}
+                        onFlowerGiven={handleFlowerGiven}
+                        onOpenAlbumUpload={() => setIsUploadModalOpen(true)}
+                    />
                 </div>
             </div>
 
