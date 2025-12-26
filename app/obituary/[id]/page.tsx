@@ -206,15 +206,7 @@ export default function ObituaryDetailPage() {
                         <FamilyTree obituaryId={obituary.id} />
                     </div>
 
-                    {/* NEW: Memorial Album Section */}
-                    <div className="mb-10 w-full">
-                        <MemorialAlbum
-                            obituaryId={obituary.id}
-                            isUploadOpen={isUploadModalOpen}
-                            onUploadOpen={() => setIsUploadModalOpen(true)}
-                            onUploadClose={() => setIsUploadModalOpen(false)}
-                        />
-                    </div>
+
 
                     {/* Edit/Delete Controls - Sub Actions */}
                     {user && (user.id === obituary.user_id || user.email === 'youngjun88@gmail.com') && (
@@ -251,6 +243,18 @@ export default function ObituaryDetailPage() {
                     <MemoryWall
                         obituaryId={obituary.id}
                         onFlowerGiven={handleFlowerGiven}
+                    />
+                </div>
+            </div>
+
+            {/* Memorial Album (New Position - Independent Plate) */}
+            <div className="max-w-[850px] mx-auto">
+                <div className="mt-8">
+                    <MemorialAlbum
+                        obituaryId={obituary.id}
+                        isUploadOpen={isUploadModalOpen}
+                        onUploadOpen={() => setIsUploadModalOpen(true)}
+                        onUploadClose={() => setIsUploadModalOpen(false)}
                     />
                 </div>
             </div>
