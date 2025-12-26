@@ -26,6 +26,26 @@ import MemoryWall from '@/components/obituary/MemoryWall';
 import FamilyTree from '@/components/obituary/FamilyTree';
 import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
+// 1. Custom White Chrysanthemum SVG Component
+const WhiteChrysanthemum = ({ className }: { className?: string }) => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M12 2C13.1 2 14 2.9 14 4V6H10V4C10 2.9 10.9 2 12 2Z" fillOpacity="0.9" />
+        <path d="M12 22C10.9 22 10 21.1 10 20V18H14V20C14 21.1 13.1 22 12 22Z" fillOpacity="0.9" />
+        <path d="M22 12C22 13.1 21.1 14 20 14H18V10H20C21.1 10 22 10.9 22 12Z" fillOpacity="0.9" />
+        <path d="M2 12C2 10.9 2.9 10 4 10H6V14H4C2.9 14 2 13.1 2 12Z" fillOpacity="0.9" />
+        <path d="M19.07 4.93C19.85 5.71 19.85 6.98 19.07 7.76L17.66 9.17L14.83 6.34L16.24 4.93C17.02 4.15 18.29 4.15 19.07 4.93Z" fillOpacity="0.8" />
+        <path d="M4.93 19.07C4.15 18.29 4.15 17.02 4.93 16.24L6.34 14.83L9.17 17.66L7.76 19.07C6.98 19.85 5.71 19.85 4.93 19.07Z" fillOpacity="0.8" />
+        <path d="M19.07 19.07C18.29 19.85 17.02 19.85 16.24 19.07L14.83 17.66L17.66 14.83L19.07 16.24C19.85 17.02 19.85 18.29 19.07 19.07Z" fillOpacity="0.8" />
+        <path d="M4.93 4.93C5.71 4.15 6.98 4.15 7.76 4.93L9.17 6.34L6.34 9.17L4.93 7.76C4.15 6.98 4.15 5.71 4.93 4.93Z" fillOpacity="0.8" />
+        <circle cx="12" cy="12" r="3" fill="#FFD700" fillOpacity="0.3" />
+    </svg>
+);
+
 export default function ObituaryDetailPage() {
     const { id } = useParams();
     const router = useRouter();
@@ -78,12 +98,16 @@ export default function ObituaryDetailPage() {
         setLoading(false);
     }
 
-    const handleFlowerGiven = () => {
+    const handleFlowerGiven = async () => {
         if (obituary) {
+            // Optimistic UI update
             setObituary({
                 ...obituary,
                 flower_count: (obituary.flower_count || 0) + 1
             });
+
+            // In a real app, you would send this to the server here
+            // await supabase.rpc('increment_flower_count', { obituary_id: id });
         }
     };
 
@@ -116,12 +140,22 @@ export default function ObituaryDetailPage() {
                             </div>
                         )}
 
-                        {/* Flower Badge Positioned relative to photo */}
-                        <div className="absolute -bottom-3 -right-3 bg-white px-2.5 py-1 rounded-full shadow-lg border border-[#C5A059]/20 flex items-center gap-1.5 z-10">
-                            <Flower2 className="w-3.5 h-3.5 text-[#C5A059] fill-[#C5A059]/20" />
-                            <span className="text-xs font-bold text-[#0A192F] font-serif tabular-nums">
-                                {obituary.flower_count?.toLocaleString() || 0}
-                            </span>
+                        {/* Flower Badge & Interaction */}
+                        <div className="absolute -bottom-4 -right-1 z-20">
+                            <button
+                                onClick={handleFlowerGiven}
+                                className="group relative flex items-center bg-white pl-2.5 pr-3 py-1.5 rounded-full shadow-lg border border-[#C5A059]/20 transition-all duration-300 hover:scale-105 hover:shadow-[#C5A059]/20 cursor-pointer overflow-hidden"
+                            >
+                                <WhiteChrysanthemum className="w-4 h-4 text-white drop-shadow-md text-slate-200" />
+                                <span className="ml-1.5 text-xs font-bold text-[#0A192F] font-serif tabular-nums">
+                                    {obituary.flower_count?.toLocaleString() || 0}
+                                </span>
+
+                                {/* Hover Reveal Text */}
+                                <div className="w-0 overflow-hidden group-hover:w-auto group-hover:pl-2 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                                    <span className="text-[10px] text-[#C5A059] font-bold tracking-tight">헌화하기</span>
+                                </div>
+                            </button>
                         </div>
                     </div>
 
