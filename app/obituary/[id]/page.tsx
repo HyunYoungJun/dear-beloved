@@ -183,9 +183,9 @@ export default function ObituaryDetailPage() {
                     </div>
 
 
-                    {/* Edit/Delete Controls */}
+                    {/* Edit/Delete Controls - Sub Actions */}
                     {user && (user.id === obituary.user_id || user.email === 'youngjun88@gmail.com') && (
-                        <div className="flex justify-end gap-3 pt-8 mt-12 border-t border-[#C5A059]/10">
+                        <div className="flex flex-col md:flex-row justify-end gap-3 pt-10 mt-12 border-t border-[#C5A059]/10">
                             <button
                                 onClick={async () => {
                                     if (confirm('정말 삭제하시겠습니까?')) {
@@ -197,13 +197,13 @@ export default function ObituaryDetailPage() {
                                         }
                                     }
                                 }}
-                                className="px-4 py-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors text-xs font-medium rounded-sm"
+                                className="w-full md:w-auto px-6 py-2.5 text-gray-400 border border-gray-200 hover:border-red-200 hover:bg-red-50 hover:text-red-500 transition-all duration-300 text-xs font-medium rounded-[4px] tracking-widest uppercase"
                             >
                                 삭제하기
                             </button>
                             <button
                                 onClick={() => router.push(`/obituary/${obituary.id}/edit`)}
-                                className="px-6 py-2 bg-[#0A192F] text-[#C5A059] border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase"
+                                className="w-full md:w-auto px-8 py-2.5 bg-transparent text-[#C5A059] border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase rounded-[4px]"
                             >
                                 <span className="mr-2">EDIT</span> 수정하기
                             </button>

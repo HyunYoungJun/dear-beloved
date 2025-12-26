@@ -97,8 +97,9 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                     />
                 </div>
 
-                <div className="flex items-center justify-between pt-2">
-                    <div className="flex items-center gap-2">
+                <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4 md:gap-0">
+                    {/* Image Upload Trigger - Styled as a subtle text link or refined button */}
+                    <div className="w-full md:w-auto flex justify-start">
                         <input
                             type="file"
                             id="memory-image"
@@ -106,33 +107,36 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                             onChange={(e) => setImage(e.target.files?.[0] || null)}
                             className="hidden"
                         />
-                        <label
-                            htmlFor="memory-image"
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm cursor-pointer transition-all ${image
-                                ? 'bg-[var(--heritage-navy)] text-white border-transparent'
-                                : 'bg-white text-gray-600 border-gray-200 hover:border-[var(--heritage-navy)]'
-                                }`}
-                        >
-                            <ImageIcon className="w-4 h-4" />
-                            {image ? '사진 선택됨' : '사진 추가'}
-                        </label>
-                        {image && (
-                            <button
-                                type="button"
-                                onClick={() => setImage(null)}
-                                className="text-xs text-red-500 hover:underline"
+                        <div className="flex items-center gap-3">
+                            <label
+                                htmlFor="memory-image"
+                                className={`flex items-center gap-2 px-4 py-2 rounded-[4px] border text-sm cursor-pointer transition-all duration-300 font-medium tracking-wide ${image
+                                    ? 'bg-[#0A192F] text-[#C5A059] border-[#0A192F]'
+                                    : 'bg-white text-gray-500 border-gray-200 hover:border-[#0A192F] hover:text-[#0A192F]'
+                                    }`}
                             >
-                                삭제
-                            </button>
-                        )}
+                                <ImageIcon className="w-4 h-4" />
+                                {image ? '사진 선택됨' : '사진 추가'}
+                            </label>
+                            {image && (
+                                <button
+                                    type="button"
+                                    onClick={() => setImage(null)}
+                                    className="text-xs text-red-400 hover:text-red-600 transition-colors underline underline-offset-2"
+                                >
+                                    삭제
+                                </button>
+                            )}
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    {/* Action Buttons: Flower & Submit */}
+                    <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
                         <button
                             type="button"
                             onClick={handleGiveFlower}
                             disabled={isGivingFlower}
-                            className="flex items-center gap-2 bg-white text-[var(--heritage-navy)] border border-[var(--heritage-navy)] px-5 py-2.5 rounded-full hover:bg-[var(--heritage-navy)]/5 disabled:opacity-50 transition-all font-serif"
+                            className="w-full md:w-auto flex items-center justify-center gap-2 bg-[#0A192F] text-[#C5A059] border border-[#0A192F] px-6 py-3 rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-serif font-medium tracking-wider shadow-sm"
                         >
                             {isGivingFlower ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -145,7 +149,7 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="flex items-center gap-2 bg-[var(--heritage-navy)] text-white px-6 py-2.5 rounded-full hover:bg-[var(--heritage-navy)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+                            className="w-full md:w-auto flex items-center justify-center gap-2 bg-[#0A192F] text-[#C5A059] border border-[#0A192F] px-8 py-3 rounded-[4px] hover:bg-[#C5A059] hover:text-[#0A192F] hover:border-[#C5A059] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-serif font-medium tracking-wider shadow-sm"
                         >
                             {isSubmitting ? (
                                 <>
