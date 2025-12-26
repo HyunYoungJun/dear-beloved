@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { uploadObituaryImage } from '@/lib/storageUtils';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { ArrowLeft, ArrowRight, Upload } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Upload, Star, X, Check } from 'lucide-react';
 import WheelDatePicker from '../ui/WheelDatePicker';
 import FamilyConnectForm, { FamilyRelationDraft } from './FamilyConnectForm';
 
@@ -40,8 +40,10 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.main_image_url || null);
+    // Photo State
+    const [photos, setPhotos] = useState<{ file: File | null; preview: string; isMain: boolean }[]>(
+        initialData?.main_image_url ? [{ file: null, preview: initialData.main_image_url, isMain: true }] : []
+    );
 
     const [serviceType, setServiceType] = useState<'ai' | 'expert' | 'premium' | null>(initialData?.service_type || null);
 
@@ -79,12 +81,35 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
         setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            setImageFile(file);
-            setPreviewUrl(URL.createObjectURL(file));
+    const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newPhotos = Array.from(e.target.files).map((file, index) => ({
+                file,
+                preview: URL.createObjectURL(file),
+                isMain: photos.length === 0 && index === 0, // Set first uploaded as main if list was empty
+            }));
+            setPhotos((prev) => [...prev, ...newPhotos]);
         }
+    };
+
+    const handleSetMainPhoto = (index: number) => {
+        setPhotos((prev) =>
+            prev.map((photo, i) => ({
+                ...photo,
+                isMain: i === index,
+            }))
+        );
+    };
+
+    const handleDeletePhoto = (index: number) => {
+        setPhotos((prev) => {
+            const newPhotos = prev.filter((_, i) => i !== index);
+            // If we deleted the main photo, set the first available one as main
+            if (prev[index].isMain && newPhotos.length > 0) {
+                newPhotos[0].isMain = true;
+            }
+            return newPhotos;
+        });
     };
 
     const handleGenerateAI = async () => {
@@ -134,9 +159,25 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
         setLoading(true);
 
         try {
-            let main_image_url = previewUrl; // Default to existing URL
-            if (imageFile) {
-                main_image_url = await uploadObituaryImage(imageFile);
+            // 1. Handle Main Image URL
+            let main_image_url = initialData?.main_image_url || null;
+            const mainPhoto = photos.find(p => p.isMain);
+
+            if (mainPhoto) {
+                if (mainPhoto.file) {
+                    // Upload new main file to 'obituaries' bucket
+                    main_image_url = await uploadObituaryImage(mainPhoto.file);
+                } else {
+                    // Existing URL
+                    main_image_url = mainPhoto.preview;
+                }
+            } else if (photos.length > 0) {
+                // Fallback: If no main selected but photos exist, use the first one
+                if (photos[0].file) {
+                    main_image_url = await uploadObituaryImage(photos[0].file);
+                } else {
+                    main_image_url = photos[0].preview;
+                }
             }
 
             // Pack 10-step data into JSONB
@@ -214,6 +255,39 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
 
             // Placeholder: Assume we have savedObituaryId. 
             // Actually, I should do the fetch ID logic properly.
+
+            // 2. Handle Album Photos (Remaining photos) - Upload to memorial_album bucket
+            const albumPhotos = photos.filter(p => !p.isMain && p.file);
+
+            if (albumPhotos.length > 0 && savedObituaryId) {
+                await Promise.all(albumPhotos.map(async (p) => {
+                    if (!p.file) return;
+
+                    const file = p.file;
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                    const filePath = `${savedObituaryId}/${fileName}`;
+
+                    // Upload to 'memorial_album' bucket
+                    const { error: uploadError } = await supabase.storage
+                        .from('memorial_album')
+                        .upload(filePath, file);
+
+                    if (!uploadError) {
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('memorial_album')
+                            .getPublicUrl(filePath);
+
+                        // Insert into album_photos
+                        await supabase.from('album_photos').insert({
+                            obituary_id: savedObituaryId,
+                            image_url: publicUrl,
+                            contributor_name: '가족 대표',
+                            description: '메모리얼 기사와 함께 등록된 사진입니다.',
+                        });
+                    }
+                }));
+            }
 
             // SAVE FAMILY RELATIONS
             if (savedObituaryId && formData.family_relations && formData.family_relations.length > 0) {
@@ -453,29 +527,80 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                             </div>
                         )}
 
-                        {/* Photo Step */}
+                        {/* Photo Step - Premium Masonry Grid */}
                         {stepInfo.id === 'photo' && (
-                            <div className="text-center py-8">
-                                <input
-                                    type="file"
-                                    id="photo-upload"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                    className="hidden"
-                                />
-                                <label
-                                    htmlFor="photo-upload"
-                                    className="cursor-pointer inline-flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 transition-colors"
-                                >
-                                    {previewUrl ? (
-                                        <img src={previewUrl} alt="Preview" className="h-full object-contain" />
-                                    ) : (
-                                        <>
-                                            <Upload className="w-10 h-10 text-gray-400 mb-2" />
-                                            <span className="text-gray-500">클릭하여 사진 업로드</span>
-                                        </>
-                                    )}
-                                </label>
+                            <div className="py-2">
+                                {/* Upload Button - Adaptive */}
+                                <div className="mb-8">
+                                    <input
+                                        type="file"
+                                        id="photo-upload"
+                                        accept="image/*"
+                                        multiple // Enable multiple files
+                                        onChange={handlePhotoSelect}
+                                        className="hidden"
+                                    />
+                                    <label
+                                        htmlFor="photo-upload"
+                                        className={`cursor-pointer flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${photos.length > 0 ? 'h-32' : 'h-64'
+                                            }`}
+                                    >
+                                        <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                                        <span className="text-gray-500 font-medium">
+                                            {photos.length > 0 ? '추가 사진 업로드' : '클릭하여 사진 업로드 (여러 장 선택 가능)'}
+                                        </span>
+                                        <span className="text-xs text-gray-400 mt-1">첫 번째 사진이 대표 사진으로 지정됩니다.</span>
+                                    </label>
+                                </div>
+
+                                {/* Photo Preview - Masonry Grid */}
+                                {photos.length > 0 && (
+                                    <div className="columns-2 md:columns-3 gap-4 space-y-4">
+                                        {photos.map((photo, index) => (
+                                            <div
+                                                key={index}
+                                                className={`relative group break-inside-avoid rounded-[2px] overflow-hidden shadow-md transition-all duration-300 ${photo.isMain ? 'ring-2 ring-[#C5A059] ring-offset-2' : 'border border-[#C5A059]/30'
+                                                    }`}
+                                            >
+                                                <img
+                                                    src={photo.preview}
+                                                    alt={`Photo ${index + 1}`}
+                                                    className="w-full h-auto object-cover block"
+                                                />
+
+                                                {/* Main Badge */}
+                                                {photo.isMain && (
+                                                    <div className="absolute top-2 left-2 bg-[#C5A059] text-[#0A192F] text-[10px] font-bold px-2 py-0.5 rounded-sm shadow-sm z-10 flex items-center gap-1">
+                                                        <Star className="w-3 h-3 fill-[#0A192F]" />
+                                                        대표 사진
+                                                    </div>
+                                                )}
+
+                                                {/* Hover Overlay & Actions */}
+                                                <div className="absolute inset-0 bg-[#0A192F]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
+                                                    {!photo.isMain && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleSetMainPhoto(index)}
+                                                            className="flex items-center gap-2 px-3 py-1.5 bg-transparent border border-[#C5A059] text-[#C5A059] rounded-[2px] text-xs font-bold hover:bg-[#C5A059] hover:text-[#0A192F] transition-all"
+                                                        >
+                                                            <Star className="w-3 h-3" />
+                                                            대표 지정
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDeletePhoto(index)}
+                                                        className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-400 text-red-400 rounded-[2px] text-xs font-bold hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
+                                                    >
+                                                        <X className="w-3 h-3" />
+                                                        삭제
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
 
                                 <div className="mt-8 flex items-center justify-center gap-2">
                                     <input
@@ -483,9 +608,9 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                         id="is_public"
                                         checked={formData.is_public}
                                         onChange={(e) => setFormData((prev: any) => ({ ...prev, is_public: e.target.checked }))}
-                                        className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                                        className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900 accent-[#0A192F]"
                                     />
-                                    <label htmlFor="is_public" className="text-gray-700">인물 도서관에 공개하기 (체크 시 모두가 볼 수 있습니다)</label>
+                                    <label htmlFor="is_public" className="text-gray-700 font-serif">인물 도서관에 공개하기 (체크 시 모두가 볼 수 있습니다)</label>
                                 </div>
                             </div>
                         )}
