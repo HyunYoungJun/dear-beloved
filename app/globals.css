@@ -42,3 +42,22 @@ h6 {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 20px);
 }
+
+/* Custom Animations */
+@keyframes fadeLoop {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fade-loop {
+  animation: fadeLoop 3s ease-in-out infinite;
+}
