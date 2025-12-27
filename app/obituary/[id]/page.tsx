@@ -27,11 +27,11 @@ import FamilyTree from '@/components/obituary/FamilyTree';
 import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
 const WhiteChrysanthemum = ({ className }: { className?: string }) => (
-    <div className={`${className} bg-[#0A192F]`}>
+    <div className={`${className} rounded-sm overflow-hidden`}>
         <img
             src="/flower-badge-wide.png"
             alt="헌화 배지"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-left"
         />
     </div>
 );
@@ -131,24 +131,25 @@ export default function ObituaryDetailPage() {
                         )}
 
                         {/* Flower Badge & Interaction */}
-                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-20 w-[240px] h-[64px]">
+                        {/* Flower Badge & Interaction */}
+                        <div className="absolute -bottom-6 left-0 z-20 w-[144px] h-[38px]">
                             <button
                                 onClick={handleFlowerGiven}
-                                className="group relative w-full h-full flex items-center rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden"
+                                className="group relative w-full h-full flex flex-row items-center gap-2 rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden bg-[#0A192F] px-3"
                             >
                                 {/* SVG Background & Icon */}
-                                <WhiteChrysanthemum className="absolute inset-0 w-full h-full text-white" />
+                                <WhiteChrysanthemum className="w-12 h-full text-white shrink-0 object-contain" />
 
                                 {/* Text Content Overlay */}
-                                <div className="relative z-10 w-full flex items-center justify-end pr-8 gap-3">
-                                    <span className="text-2xl font-bold text-[#C5A059] font-serif tabular-nums tracking-wide drop-shadow-sm">
+                                <div className="relative z-10 flex items-center justify-end">
+                                    <span className="text-sm font-bold text-[#C5A059] font-serif tabular-nums tracking-wide drop-shadow-sm">
                                         {obituary.flower_count?.toLocaleString() || 0}
                                     </span>
                                 </div>
 
                                 {/* Hover Reveal Text (Optional - preserved but styled for new layout) */}
-                                <div className="absolute inset-0 bg-[#0A192F]/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                                    <span className="text-lg text-[#C5A059] font-bold tracking-tight">헌화하기</span>
+                                <div className="absolute inset-0 bg-[#0A192F]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    <span className="text-xs text-[#C5A059] font-bold tracking-tight">헌화하기</span>
                                 </div>
                             </button>
                         </div>
