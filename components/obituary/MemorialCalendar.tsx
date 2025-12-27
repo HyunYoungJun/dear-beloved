@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { differenceInDays, format, parseISO, addYears, getYear } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { supabase } from '@/lib/supabaseClient';
+import { differenceInDays, parseISO, addYears, getYear, isToday as isTodayFns } from 'date-fns';
 
 interface Obituary {
     id: string;
@@ -11,41 +11,63 @@ interface Obituary {
     main_image_url: string;
 }
 
-export default function MemorialCalendar({ obituaries }: { obituaries: Obituary[] }) {
+export default function MemorialCalendar() {
+    const [upcomingMemorials, setUpcomingMemorials] = useState<any[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
 
-    // 1. 기일 계산 및 정렬 로직
-    const upcomingMemorials = obituaries
-        .map((item) => {
-            const today = new Date();
-            const deathDate = parseISO(item.death_date);
-            const deathYear = getYear(deathDate);
+    useEffect(() => {
+        async function fetchMemorials() {
+            // 1. 수퍼베이스에서 부고 데이터 가져오기
+            const { data, error } = await supabase
+                .from('obituaries')
+                .select('id, deceased_name, death_date, main_image_url')
+                .not('death_date', 'is', null);
 
-            // 올해 기일 설정
-            let nextAnniversary = new Date(getYear(today), deathDate.getMonth(), deathDate.getDate());
-
-            // 이미 올해 기일이 지났다면 내년으로 설정
-            if (nextAnniversary < today && !isToday(nextAnniversary)) {
-                nextAnniversary = addYears(nextAnniversary, 1);
+            if (error) {
+                console.error('데이터 호출 오류:', error);
+                return;
             }
 
-            const daysLeft = differenceInDays(nextAnniversary, today);
-            const anniversaryCount = getYear(nextAnniversary) - deathYear;
+            // 2. 기일 계산 및 정렬 로직
+            const processed = data.map((item) => {
+                const today = new Date();
+                const deathDate = parseISO(item.death_date);
+                const deathYear = getYear(deathDate);
 
-            return { ...item, daysLeft, anniversaryCount };
-        })
-        .sort((a, b) => a.daysLeft - b.daysLeft)
-        .slice(0, 5); // 가장 가까운 5명만 추출
+                let nextAnniversary = new Date(getYear(today), deathDate.getMonth(), deathDate.getDate());
 
-    // 2. 5초 간격 자동 캐러셀 로직
+                if (nextAnniversary < today && !isTodayFns(nextAnniversary)) {
+                    nextAnniversary = addYears(nextAnniversary, 1);
+                }
+
+                const daysLeft = differenceInDays(nextAnniversary, today);
+                const anniversaryCount = getYear(nextAnniversary) - deathYear;
+
+                return { ...item, daysLeft, anniversaryCount };
+            })
+                .sort((a, b) => a.daysLeft - b.daysLeft)
+                .slice(0, 5);
+
+            setUpcomingMemorials(processed);
+            setLoading(false);
+        }
+
+        fetchMemorials();
+    }, []);
+
+    // 자동 캐러셀 로직 (5초)
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % upcomingMemorials.length);
-        }, 5000);
-        return () => clearInterval(timer);
+        if (upcomingMemorials.length > 0) {
+            const timer = setInterval(() => {
+                setCurrentIndex((prev) => (prev + 1) % upcomingMemorials.length);
+            }, 5000);
+            return () => clearInterval(timer);
+        }
     }, [upcomingMemorials.length]);
 
-    if (upcomingMemorials.length === 0) return null;
+    if (loading) return <div className="h-[200px] flex items-center justify-center text-xs text-gray-400">추모 기록을 불러오는 중...</div>;
+    if (upcomingMemorials.length === 0) return <div className="h-[200px] flex items-center justify-center text-xs text-gray-400">등록된 추모 일정이 없습니다.</div>;
 
     const current = upcomingMemorials[currentIndex];
 
@@ -91,9 +113,9 @@ export default function MemorialCalendar({ obituaries }: { obituaries: Obituary[
                             ? "오늘은 고인께서 우리 곁을 떠나신 지 " + current.anniversaryCount + "주기가 되는 날입니다."
                             : "기일 도래까지 " + current.daysLeft + "일 남았습니다. 마음으로 준비해 주세요."}
                     </p>
-                    <button className="text-[10px] text-[#C5A059] font-bold border-b border-[#C5A059]/40 pb-0.5 hover:text-[#0A192F] transition-colors">
+                    <a href={`/obituary/${current.id}`} className="inline-block text-[10px] text-[#C5A059] font-bold border-b border-[#C5A059]/40 pb-0.5 hover:text-[#0A192F] transition-colors">
                         추모 페이지로 이동 →
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -109,9 +131,4 @@ export default function MemorialCalendar({ obituaries }: { obituaries: Obituary[
             </div>
         </div>
     );
-}
-
-function isToday(date: Date) {
-    const today = new Date();
-    return date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
 }

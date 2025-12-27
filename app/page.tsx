@@ -190,7 +190,7 @@ export default function Home() {
                 or ensure types match. Calendar expects {id, deceased_name, death_date, main_image_url}. 
                 Summary has these fields. */}
             <div className="h-full min-h-[400px]">
-              <MemorialCalendar obituaries={recentObituaries as any[]} />
+              <MemorialCalendar />
             </div>
           </div>
 
