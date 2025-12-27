@@ -129,30 +129,30 @@ export default function ObituaryDetailPage() {
                                     key={featuredImage} // Trigger animation on change
                                     src={featuredImage}
                                     alt={obituary.deceased_name}
-                                    className="w-[120px] h-[160px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
+                                    className="w-[360px] h-[480px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
                                 />
                                 {/* Optional: Corner accent can be added here if needed */}
                             </div>
                         ) : (
-                            <div className="w-[120px] h-[160px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
+                            <div className="w-[360px] h-[480px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
                                 <span className="font-serif">No Photo</span>
                             </div>
                         )}
 
                         {/* Flower Badge & Interaction */}
-                        <div className="absolute -bottom-4 -right-1 z-20">
+                        <div className="absolute -bottom-10 -right-2 z-20">
                             <button
                                 onClick={handleFlowerGiven}
-                                className="group relative flex items-center bg-[#0A192F] pl-2.5 pr-3 py-1.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 hover:bg-[#112240] cursor-pointer overflow-hidden"
+                                className="group relative flex items-center bg-[#0A192F] pl-8 pr-10 py-5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 hover:bg-[#112240] cursor-pointer overflow-hidden"
                             >
-                                <WhiteChrysanthemum className="w-4 h-4 text-white drop-shadow-md" />
-                                <span className="ml-1.5 text-xs font-bold text-white font-serif tabular-nums tracking-wide">
+                                <WhiteChrysanthemum className="w-12 h-12 text-white drop-shadow-md" />
+                                <span className="ml-1.5 text-2xl font-bold text-white font-serif tabular-nums tracking-wide">
                                     {obituary.flower_count?.toLocaleString() || 0}
                                 </span>
 
                                 {/* Hover Reveal Text */}
                                 <div className="w-0 overflow-hidden group-hover:w-auto group-hover:pl-2 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 whitespace-nowrap">
-                                    <span className="text-[10px] text-[#C5A059] font-bold tracking-tight">헌화하기</span>
+                                    <span className="text-lg text-[#C5A059] font-bold tracking-tight">헌화하기</span>
                                 </div>
                             </button>
                         </div>
