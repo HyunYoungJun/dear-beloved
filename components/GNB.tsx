@@ -57,12 +57,27 @@ export default function GNB() {
                         <Link href="/about" className="hover:text-[var(--heritage-gold)] transition-colors">
                             서비스소개
                         </Link>
-                        <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
-                            메모리얼 기사 의뢰
-                        </Link>
-                        <Link href="/write" className="hover:text-[var(--heritage-gold)] transition-colors">
-                            나의 메모리얼 리포트 미리쓰기
-                        </Link>
+                        <div className="relative group h-full flex items-center">
+                            <span className="hover:text-[var(--heritage-gold)] transition-colors cursor-pointer py-4">
+                                메모리얼 리포트
+                            </span>
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
+                                <div className="bg-[#FDFBF7] border border-[#C5A059]/20 shadow-xl rounded-sm py-2 min-w-[240px] flex flex-col">
+                                    <Link
+                                        href="/write"
+                                        className="px-6 py-3.5 text-[#0A192F] text-sm hover:text-[var(--heritage-gold)] hover:bg-[#0A192F]/5 transition-colors border-b border-[#C5A059]/10 text-center font-medium"
+                                    >
+                                        메모리얼 기사 의뢰
+                                    </Link>
+                                    <Link
+                                        href="/write"
+                                        className="px-6 py-3.5 text-[#0A192F] text-sm hover:text-[var(--heritage-gold)] hover:bg-[#0A192F]/5 transition-colors text-center font-medium"
+                                    >
+                                        나의 메모리얼 리포트 미리쓰기
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
                         <Link href="/family" className="hover:text-[var(--heritage-gold)] transition-colors">
                             가족아카이브
                         </Link>
