@@ -129,12 +129,12 @@ export default function ObituaryDetailPage() {
                                     key={featuredImage} // Trigger animation on change
                                     src={featuredImage}
                                     alt={obituary.deceased_name}
-                                    className="w-[360px] h-[480px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
+                                    className="w-[240px] h-[320px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
                                 />
                                 {/* Optional: Corner accent can be added here if needed */}
                             </div>
                         ) : (
-                            <div className="w-[360px] h-[480px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
+                            <div className="w-[240px] h-[320px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
                                 <span className="font-serif">No Photo</span>
                             </div>
                         )}
