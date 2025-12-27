@@ -4,127 +4,106 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { differenceInDays, parseISO, addYears, getYear, isToday as isTodayFns } from 'date-fns';
 
-interface Obituary {
-    id: string;
-    deceased_name: string;
-    death_date: string;
-    main_image_url: string;
-}
-
 export default function MemorialCalendar() {
-    const [upcomingMemorials, setUpcomingMemorials] = useState<any[]>([]);
+    const [memorials, setMemorials] = useState<any[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchMemorials() {
-            // 1. 수퍼베이스에서 부고 데이터 가져오기
             const { data, error } = await supabase
                 .from('obituaries')
                 .select('id, deceased_name, death_date, main_image_url')
                 .not('death_date', 'is', null);
 
-            if (error) {
-                console.error('데이터 호출 오류:', error);
-                return;
-            }
+            if (error) return;
 
-            // 2. 기일 계산 및 정렬 로직
             const processed = data.map((item) => {
                 const today = new Date();
                 const deathDate = parseISO(item.death_date);
-                const deathYear = getYear(deathDate);
+                const nextAnniversary = isTodayFns(new Date(getYear(today), deathDate.getMonth(), deathDate.getDate()))
+                    ? new Date(getYear(today), deathDate.getMonth(), deathDate.getDate())
+                    : (new Date(getYear(today), deathDate.getMonth(), deathDate.getDate()) < today
+                        ? addYears(new Date(getYear(today), deathDate.getMonth(), deathDate.getDate()), 1)
+                        : new Date(getYear(today), deathDate.getMonth(), deathDate.getDate()));
 
-                let nextAnniversary = new Date(getYear(today), deathDate.getMonth(), deathDate.getDate());
-
-                if (nextAnniversary < today && !isTodayFns(nextAnniversary)) {
-                    nextAnniversary = addYears(nextAnniversary, 1);
-                }
-
-                const daysLeft = differenceInDays(nextAnniversary, today);
-                const anniversaryCount = getYear(nextAnniversary) - deathYear;
-
-                return { ...item, daysLeft, anniversaryCount };
+                return {
+                    ...item,
+                    daysLeft: differenceInDays(nextAnniversary, today),
+                    anniversaryCount: getYear(nextAnniversary) - getYear(deathDate)
+                };
             })
                 .sort((a, b) => a.daysLeft - b.daysLeft)
-                .slice(0, 5);
+                .slice(0, 6); // 2명씩 짝을 맞추기 위해 6명까지 가져옵니다.
 
-            setUpcomingMemorials(processed);
+            setMemorials(processed);
             setLoading(false);
         }
-
         fetchMemorials();
     }, []);
 
-    // 자동 캐러셀 로직 (5초)
+    // 5초 간격으로 2명씩 전환 (0,1 -> 2,3 -> 4,5)
     useEffect(() => {
-        if (upcomingMemorials.length > 0) {
+        if (memorials.length > 0) {
             const timer = setInterval(() => {
-                setCurrentIndex((prev) => (prev + 1) % upcomingMemorials.length);
+                setCurrentIndex((prev) => (prev + 2) % (Math.ceil(memorials.length / 2) * 2));
             }, 5000);
             return () => clearInterval(timer);
         }
-    }, [upcomingMemorials.length]);
+    }, [memorials.length]);
 
-    if (loading) return <div className="h-[200px] flex items-center justify-center text-xs text-gray-400">추모 기록을 불러오는 중...</div>;
-    if (upcomingMemorials.length === 0) return <div className="h-[200px] flex items-center justify-center text-xs text-gray-400">등록된 추모 일정이 없습니다.</div>;
+    if (loading || memorials.length === 0) return <div className="h-full bg-[#FDFBF7] animate-pulse" />;
 
-    const current = upcomingMemorials[currentIndex];
+    // 현재 화면에 보여줄 2명 선택
+    const visibleItems = memorials.slice(currentIndex % memorials.length, (currentIndex % memorials.length) + 2);
 
     return (
-        <div className="bg-[#FDFBF7] border border-[#C5A059]/20 rounded-sm p-8 h-full flex flex-col justify-center relative overflow-hidden shadow-inner">
-            {/* 배경 장식: 경건한 분위기의 로고나 문양 배치 가능 */}
-            <div className="absolute top-4 right-6 text-[10px] tracking-[0.3em] text-[#C5A059]/40 font-serif uppercase">
+        <div className="bg-[#FDFBF7] border border-[#C5A059]/20 rounded-sm p-6 h-full flex flex-col justify-between relative overflow-hidden">
+            <div className="text-[10px] tracking-[0.3em] text-[#C5A059]/40 font-serif mb-4 uppercase text-right">
                 Memorial Calendar
             </div>
 
-            <div className="flex items-center gap-8 animate-in fade-in slide-in-from-right-4 duration-1000">
-                {/* 고인 영정 스타일 사진 */}
-                <div className="relative shrink-0">
-                    <img
-                        src={current.main_image_url || '/placeholder.png'}
-                        alt={current.deceased_name}
-                        className="w-24 h-32 object-cover border border-[#C5A059]/40 grayscale-[30%] brightness-105 rounded-sm"
-                    />
-                    {/* 배지 시스템 */}
-                    <div className="absolute -top-3 -left-3">
-                        {current.daysLeft === 0 ? (
-                            <span className="bg-[#C5A059] text-white text-[10px] px-2 py-1 font-bold shadow-md animate-pulse">오늘 기일</span>
-                        ) : current.daysLeft === 1 ? (
-                            <span className="bg-[#0A192F] text-white text-[10px] px-2 py-1 font-bold">내일 기일</span>
-                        ) : (
-                            <span className="bg-white border border-[#C5A059] text-[#C5A059] text-[10px] px-2 py-1 font-bold">
-                                D-{current.daysLeft}
-                            </span>
-                        )}
-                    </div>
-                </div>
+            <div className="flex-1 flex flex-col gap-6">
+                {visibleItems.map((item, idx) => (
+                    <div key={item.id} className="flex items-center gap-5 animate-in fade-in slide-in-from-right-4 duration-700">
+                        {/* 고인 사진 */}
+                        <div className="relative shrink-0">
+                            <img
+                                src={item.main_image_url || '/placeholder.png'}
+                                className="w-16 h-20 object-cover border border-[#C5A059]/30 rounded-sm"
+                            />
+                            <div className="absolute -top-2 -left-2 scale-75">
+                                {item.daysLeft === 0 ? (
+                                    <span className="bg-[#C5A059] text-white text-[9px] px-1.5 py-0.5 font-bold shadow-sm">오늘 기일</span>
+                                ) : (
+                                    <span className="bg-white border border-[#C5A059] text-[#C5A059] text-[9px] px-1.5 py-0.5 font-bold shadow-sm">
+                                        D-{item.daysLeft}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
 
-                {/* 기일 정보 */}
-                <div className="flex-1 space-y-3">
-                    <p className="text-[#C5A059] text-xs font-bold tracking-widest font-serif">
-                        {current.anniversaryCount}주기 추모일
-                    </p>
-                    <h3 className="text-2xl font-['Nanum_Myeongjo'] font-bold text-[#0A192F]">
-                        故 {current.deceased_name}
-                    </h3>
-                    <p className="text-gray-500 text-sm font-light leading-relaxed">
-                        {current.daysLeft === 0
-                            ? "오늘은 고인께서 우리 곁을 떠나신 지 " + current.anniversaryCount + "주기가 되는 날입니다."
-                            : "기일 도래까지 " + current.daysLeft + "일 남았습니다. 마음으로 준비해 주세요."}
-                    </p>
-                    <a href={`/obituary/${current.id}`} className="inline-block text-[10px] text-[#C5A059] font-bold border-b border-[#C5A059]/40 pb-0.5 hover:text-[#0A192F] transition-colors">
-                        추모 페이지로 이동 →
-                    </a>
-                </div>
+                        {/* 정보 영역 */}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-[#C5A059] text-[9px] font-bold tracking-wider">{item.anniversaryCount}주기 추모일</p>
+                            <h3 className="text-lg font-bold text-[#0A192F] truncate">故 {item.deceased_name}</h3>
+                            <button
+                                onClick={() => window.location.href = `/obituary/${item.id}`}
+                                className="mt-1 text-[9px] text-[#C5A059] border-b border-[#C5A059]/30 pb-0.5"
+                            >
+                                추모 페이지로 이동 →
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {/* 캐러셀 인디케이터 */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-                {upcomingMemorials.map((_, i) => (
+            {/* 인디케이터 (2명씩 묶음 기준) */}
+            <div className="mt-4 flex justify-center gap-1.5">
+                {Array.from({ length: Math.ceil(memorials.length / 2) }).map((_, i) => (
                     <div
                         key={i}
-                        className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${i === currentIndex ? 'bg-[#C5A059] w-4' : 'bg-gray-200'
+                        className={`w-1 h-1 rounded-full transition-all ${i === Math.floor(currentIndex / 2) ? 'bg-[#C5A059] w-3' : 'bg-gray-200'
                             }`}
                     />
                 ))}
