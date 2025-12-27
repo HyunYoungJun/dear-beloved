@@ -26,22 +26,12 @@ import MemoryWall from '@/components/obituary/MemoryWall';
 import FamilyTree from '@/components/obituary/FamilyTree';
 import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
-// 1. Custom White Chrysanthemum SVG Component (Re-designed based on reference)
 const WhiteChrysanthemum = ({ className }: { className?: string }) => (
-    <svg
-        viewBox="0 0 32 32"
-        fill="none"
-        className={className}
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        {/* Background: Dark Charcoal Circle */}
-        <circle cx="16" cy="16" r="16" fill="#333333" />
-
-        {/* Foreground: White Chrysanthemum Silhouette */}
-        <path
-            fill="#FFFFFF"
-            d="M16 5.5C13.2 5.5 10.8 7.2 9.8 9.8C9.2 11.5 9.5 13.2 10.5 14.6C9.8 15.5 9.5 16.8 9.8 18C10.2 19.5 11.2 20.8 12.5 21.5L15 22.8V25H14C13.4 25 13 25.4 13 26C13 26.6 13.4 27 14 27H18C18.6 27 19 26.6 19 26C19 25.4 18.6 25 18 25H17V22.8L19.5 21.5C20.8 20.8 21.8 19.5 22.2 18C22.5 16.8 22.2 15.5 21.5 14.6C22.5 13.2 22.8 11.5 22.2 9.8C21.2 7.2 18.8 5.5 16 5.5ZM16 8C17.5 8 18.8 9 19.2 10.5C19.5 11.8 19 13 18 13.8C18.2 13.2 18.2 12.5 18 11.8C17.6 11.2 16.9 10.8 16.2 10.8H15.8C15.1 10.8 14.4 11.2 14 11.8C13.8 12.5 13.8 13.2 14 13.8C13 13 12.5 11.8 12.8 10.5C13.2 9 14.5 8 16 8ZM16 11.8C16.4 11.8 16.8 12 17 12.4C17.1 12.6 17.1 12.9 17 13.1C16.9 13.4 16.6 13.6 16.3 13.7C16.9 14 17.2 14.6 17.2 15.2C17.2 16.2 16.4 17 15.4 17H16.6C17.6 17 18.4 16.2 18.4 15.2C18.4 14.6 18.1 14 17.6 13.7C17.9 14.1 18.2 14.5 18.2 15C18.2 16.1 17.3 17 16.2 17H15V15.2C15 14.9 15.1 14.6 15.3 14.4L15.6 14.1C15.8 13.9 16 13.8 16.2 13.8H16V11.8Z"
-        />
+    <svg viewBox="0 0 200 60" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+        {/* 배경: 진한 네이비 직사각형 */}
+        <rect width="200" height="60" rx="4" fill="#0A192F" />
+        {/* 국화 꽃, 줄기, 잎 (흰색 실루엣) */}
+        <path fill="#FFFFFF" d="M50 30c-2-5-5-8-9-8-3 0-5 3-5 7s2 7 5 7c4 0 7-3 9-8zm-9-6c2 0 3 2 3 5s-1 5-3 5-3-2-3-5 1-5 3-5zm23 6c0 5-3 8-7 8-3 0-5-3-5-7s2-7 5-7c4 0 7 3 7 8zm-6 0c0 3-1 5-3 5s-3-2-3-5 1-5 3-5 3 2 3 5zm-28 0c0 5-3 8-7 8-3 0-5-3-5-7s2-7 5-7c4 0 7 3 7 8zm-6 0c0 3-1 5-3 5s-3-2-3-5 1-5 3-5 3 2 3 5zm54 6c-2 5-5 8-9 8-3 0-5-3-5-7s2-7 5-7c4 0 7-3 9-8zm-9 6c2 0 3 2 3 5s-1 5-3 5-3-2-3-5 1-5 3-5zm-12 3c-2 3-5 5-8 5-4 0-6-3-6-7s2-7 6-7c3 0 6 2 8 5zm-7-1c3 0 5-2 5-5s-2-5-5-5-5 2-5 5 2 5 5 5zm-25 0c3 0 5-2 5-5s-2-5-5-5-5 2-5 5 2 5 5 5zm-7-1c-2 3-5 5-8 5-4 0-6-3-6-7s2-7 6-7c3 0 6 2 8 5zm107 2H70v-2h117v2zm-97 2c-6 5-14 7-21 4l1-2c5 2 12 0 17-4l3 2zm10-6c-6-5-14-7-21-4l1 2c5-2 12 0 17 4l3-2z" />
     </svg>
 );
 
@@ -140,18 +130,23 @@ export default function ObituaryDetailPage() {
                         )}
 
                         {/* Flower Badge & Interaction */}
-                        <div className="absolute -bottom-10 -right-2 z-20">
+                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-20 w-[240px] h-[64px]">
                             <button
                                 onClick={handleFlowerGiven}
-                                className="group relative flex items-center bg-[#0A192F] pl-8 pr-10 py-5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 hover:bg-[#112240] cursor-pointer overflow-hidden"
+                                className="group relative w-full h-full flex items-center rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden"
                             >
-                                <WhiteChrysanthemum className="w-12 h-12 text-white drop-shadow-md" />
-                                <span className="ml-1.5 text-2xl font-bold text-white font-serif tabular-nums tracking-wide">
-                                    {obituary.flower_count?.toLocaleString() || 0}
-                                </span>
+                                {/* SVG Background & Icon */}
+                                <WhiteChrysanthemum className="absolute inset-0 w-full h-full text-white" />
 
-                                {/* Hover Reveal Text */}
-                                <div className="w-0 overflow-hidden group-hover:w-auto group-hover:pl-2 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                                {/* Text Content Overlay */}
+                                <div className="relative z-10 w-full flex items-center justify-end pr-8 gap-3">
+                                    <span className="text-2xl font-bold text-[#C5A059] font-serif tabular-nums tracking-wide drop-shadow-sm">
+                                        {obituary.flower_count?.toLocaleString() || 0}
+                                    </span>
+                                </div>
+
+                                {/* Hover Reveal Text (Optional - preserved but styled for new layout) */}
+                                <div className="absolute inset-0 bg-[#0A192F]/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
                                     <span className="text-lg text-[#C5A059] font-bold tracking-tight">헌화하기</span>
                                 </div>
                             </button>
