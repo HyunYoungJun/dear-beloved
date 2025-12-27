@@ -28,10 +28,39 @@ import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
 const WhiteChrysanthemum = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 200 60" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
-        {/* 배경: 진한 네이비 직사각형 */}
+        {/* Background: Rounded Navy Rectangle */}
         <rect width="200" height="60" rx="4" fill="#0A192F" />
-        {/* 국화 꽃, 줄기, 잎 (흰색 실루엣) */}
-        <path fill="#FFFFFF" d="M50 30c-2-5-5-8-9-8-3 0-5 3-5 7s2 7 5 7c4 0 7-3 9-8zm-9-6c2 0 3 2 3 5s-1 5-3 5-3-2-3-5 1-5 3-5zm23 6c0 5-3 8-7 8-3 0-5-3-5-7s2-7 5-7c4 0 7 3 7 8zm-6 0c0 3-1 5-3 5s-3-2-3-5 1-5 3-5 3 2 3 5zm-28 0c0 5-3 8-7 8-3 0-5-3-5-7s2-7 5-7c4 0 7 3 7 8zm-6 0c0 3-1 5-3 5s-3-2-3-5 1-5 3-5 3 2 3 5zm54 6c-2 5-5 8-9 8-3 0-5-3-5-7s2-7 5-7c4 0 7-3 9-8zm-9 6c2 0 3 2 3 5s-1 5-3 5-3-2-3-5 1-5 3-5zm-12 3c-2 3-5 5-8 5-4 0-6-3-6-7s2-7 6-7c3 0 6 2 8 5zm-7-1c3 0 5-2 5-5s-2-5-5-5-5 2-5 5 2 5 5 5zm-25 0c3 0 5-2 5-5s-2-5-5-5-5 2-5 5 2 5 5 5zm-7-1c-2 3-5 5-8 5-4 0-6-3-6-7s2-7 6-7c3 0 6 2 8 5zm107 2H70v-2h117v2zm-97 2c-6 5-14 7-21 4l1-2c5 2 12 0 17-4l3 2zm10-6c-6-5-14-7-21-4l1 2c5-2 12 0 17 4l3-2z" />
+
+        <g transform="translate(45, 30)">
+            {/* Long horizontal stem */}
+            <path d="M0 0 H130" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+
+            {/* Leaves */}
+            <path d="M10 0 Q20 -15 35 -12 Q20 -5 10 0" fill="white" />
+            <path d="M10 0 Q20 15 35 12 Q20 5 10 0" fill="white" />
+
+            {/* Stylized Flower Head (Left side, Side Profile) */}
+            <g transform="translate(-5, 0)">
+                {/* Connection cup */}
+                <path d="M0 -4 L0 4 Q6 0 0 -4" fill="white" />
+
+                {/* Petals Fan */}
+                <g transform="rotate(180)">
+                    {/* Top Petals */}
+                    <path d="M0 0 Q15 10 25 5 Q5 2 0 0" fill="white" transform="rotate(60)" />
+                    <path d="M0 0 Q18 12 28 8 Q5 4 0 0" fill="white" transform="rotate(40)" />
+                    <path d="M0 0 Q20 8 30 4 Q5 2 0 0" fill="white" transform="rotate(20)" />
+
+                    {/* Center Petal */}
+                    <path d="M0 0 Q22 0 32 0 Q5 0 0 0" fill="white" />
+
+                    {/* Bottom Petals */}
+                    <path d="M0 0 Q20 -8 30 -4 Q5 -2 0 0" fill="white" transform="rotate(-20)" />
+                    <path d="M0 0 Q18 -12 28 -8 Q5 -4 0 0" fill="white" transform="rotate(-40)" />
+                    <path d="M0 0 Q15 -10 25 -5 Q5 -2 0 0" fill="white" transform="rotate(-60)" />
+                </g>
+            </g>
+        </g>
     </svg>
 );
 
