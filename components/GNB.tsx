@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from './auth/AuthProvider';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 
 export default function GNB() {
     const { user, loading } = useAuth();
@@ -48,6 +48,14 @@ export default function GNB() {
                             생애 마지막 선물, 메모리얼 리포트
                         </span>
                     </Link>
+
+                    {/* Search Icon - Absolute Right on Mobile */}
+                    <button
+                        className="md:hidden z-[60] text-[#C5A059] focus:outline-none absolute right-4 top-1/2 -translate-y-1/2 p-2"
+                        aria-label="Search"
+                    >
+                        <Search size={24} />
+                    </button>
 
                     {/* Desktop Menu */}
                     <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-[var(--heritage-navy)] font-serif">
