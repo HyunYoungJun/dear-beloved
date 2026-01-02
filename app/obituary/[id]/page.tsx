@@ -188,12 +188,10 @@ export default function ObituaryDetailPage() {
                 </div>
             </header>
 
-            {/* Mobile Only: Life Timeline (Memorial Calendar) */}
+            {/* Life Timeline (Universal - Positioned at Header Area) */}
             {obituary.timeline_data && Array.isArray(obituary.timeline_data) && obituary.timeline_data.length > 0 && (
-                <div className="md:hidden block w-full bg-white relative z-20">
-                    <div className="w-full h-px bg-[#C5A059]/20"></div>
+                <div className="w-full bg-white relative z-20 border-b border-[#C5A059]/10">
                     <TimelineViewer events={obituary.timeline_data} />
-                    <div className="w-full h-px bg-[#C5A059]/20"></div>
                 </div>
             )}
 
@@ -223,17 +221,7 @@ export default function ObituaryDetailPage() {
                     {/* Separator */}
                     <div className="w-full h-px bg-gradient-to-r from-transparent via-[#C5A059]/30 to-transparent my-16"></div>
 
-                    {/* Life Timeline Section (Desktop) */}
-                    {obituary.timeline_data && Array.isArray(obituary.timeline_data) && obituary.timeline_data.length > 0 && (
-                        <div className="mb-16 hidden md:block">
-                            <div className="flex items-center justify-center md:justify-start gap-3 mb-10">
-                                <span className="w-8 h-[1px] bg-[#C5A059]"></span>
-                                <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">LIFE JOURNEY</h3>
-                                <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
-                            </div>
-                            <TimelineViewer events={obituary.timeline_data} />
-                        </div>
-                    )}
+
 
                     {/* Family Archives */}
                     <div className="mb-10">
