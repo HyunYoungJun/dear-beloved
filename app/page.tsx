@@ -22,6 +22,9 @@ type ObituarySummary = {
 import BannerCarousel from '@/components/BannerCarousel';
 import ObituaryBlockCarousel from '@/components/ObituaryBlockCarousel';
 import CategoryNewsRotation from '@/components/CategoryNewsRotation';
+import FeaturedDeceased from '@/components/main/FeaturedDeceased';
+import MemorialCalendar from '@/components/obituary/MemorialCalendar';
+import EditorPick from '@/components/main/EditorPick';
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
@@ -171,88 +174,30 @@ export default function Home() {
             The grid-cols-1 on mobile makes it a vertical stack. 
             We will keep the desktop layout as is (hidden lg:block inner divs) and hide the mobile list divs. 
         */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-t-[0.5px] border-heritage-gold pt-12">
+        {/* Newspaper Style 3-Column Layout (Refactored) */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-t-[0.5px] border-[#C5A059] pt-12">
 
-          {/* Column 1: Today's Obituary */}
-          <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
-            <span className="inline-block bg-heritage-navy text-white text-xs font-bold px-2 py-1 mb-4 w-fit">오늘의 고인</span>
-            {todayObituary ? (
-              <Link href={`/obituary/${todayObituary.id}`} className="block group">
-                {/* Desktop Layout (Large Card) */}
-                <div className="hidden lg:block">
-                  <div className="aspect-[4/3] bg-gray-200 mb-4 overflow-hidden relative">
-                    {todayObituary.main_image_url ? (
-                      <img src={todayObituary.main_image_url} alt={todayObituary.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    ) : (
-                      <div className="w-full h-full bg-stone-300 flex items-center justify-center text-stone-500 text-sm">이미지 없음</div>
-                    )}
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold leading-tight mb-2 group-hover:underline cursor-pointer text-heritage-navy">
-                    {todayObituary.title}
-                  </h2>
-                  <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">
-                    {new Date(todayObituary.created_at).toLocaleDateString()} | {categoryNames[todayObituary.category || 'society'] || todayObituary.category}
-                  </div>
-                  <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4">
-                    {todayObituary.content?.substring(0, 150) || "고인의 평안한 안식을 빕니다."}...
-                  </p>
-                </div>
-
-
-
-                {/* Mobile Layout - Hidden because it's now in TopStoryCarousel */}
-                <div className="hidden">
-                  {/* ... Original list card code was here ... */}
-                </div>
-              </Link>
-            ) : (
-              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
-            )}
+          {/* 1. 오늘의 고인 */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">오늘의 고인</h2>
+            <FeaturedDeceased data={todayObituary} />
           </div>
 
-          {/* Column 2: Editor's Pick */}
-          <div className="flex flex-col border-r border-gray-200 pr-0 lg:pr-8">
-            <span className="inline-block bg-heritage-gold text-white text-xs font-bold px-2 py-1 mb-4 w-fit">에디터 픽</span>
-            {editorPick ? (
-              <Link href={`/obituary/${editorPick.id}`} className="block group">
-                {/* Desktop Layout (Large Card) */}
-                <div className="hidden lg:block">
-                  <h3 className="text-xl font-serif font-bold leading-snug mb-3 group-hover:underline cursor-pointer">
-                    {editorPick.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 font-serif leading-relaxed mb-6 line-clamp-2">
-                    {editorPick.content?.substring(0, 100)}...
-                  </p>
-                  <div className="aspect-video bg-gray-100 mb-4 overflow-hidden shadow-md">
-                    {editorPick.main_image_url ? (
-                      <img src={editorPick.main_image_url} alt={editorPick.deceased_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    ) : (
-                      <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 text-sm">이미지 없음</div>
-                    )}
-                  </div>
-                  <h4 className="text-lg font-serif font-bold leading-tight mb-1 group-hover:underline cursor-pointer">
-                    {editorPick.deceased_name}
-                  </h4>
-                  <div className="text-xs text-gray-400 mb-2">
-                    {new Date(editorPick.created_at).toLocaleDateString()}
-                  </div>
-                </div>
-
-                {/* Mobile Layout - Hidden because it's now in TopStoryCarousel */}
-                <div className="hidden">
-                  {/* ... Original list card code was here ... */}
-                </div>
-
-              </Link>
-            ) : (
-              <div className="p-10 text-center text-gray-400 bg-gray-100">등록된 기사가 없습니다.</div>
-            )}
+          {/* 2. 추모 캘린더 (중앙 배치) */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#C5A059] pl-3 uppercase">추모 캘린더</h2>
+            {/* Convert Summary to Obituary interface expected by Calendar if needed, 
+                or ensure types match. Calendar expects {id, deceased_name, death_date, main_image_url}. 
+                Summary has these fields. */}
+            <div className="h-full min-h-[400px]">
+              <MemorialCalendar />
+            </div>
           </div>
 
-          {/* Column 3: Recent Obituaries Block Carousel */}
-          <div className="flex flex-col h-full">
-            {/* Recent Obituaries Carousel */}
-            <ObituaryBlockCarousel obituaries={recentObituaries} title="최근 부고" />
+          {/* 3. 에디터 픽 */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">에디터 픽</h2>
+            <EditorPick data={editorPick} />
           </div>
 
         </section>
