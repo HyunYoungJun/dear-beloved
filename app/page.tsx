@@ -100,8 +100,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-stone-50 text-gray-900 pb-20 relative">
-      {/* Header */}
-      <div className="border-b border-gray-200 bg-white">
+      {/* Header (Desktop Only) */}
+      <div className="border-b border-gray-200 bg-white hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
 
           {/* Top Row: Memorial Banner - Title - Search (Desktop) */}
@@ -135,31 +135,12 @@ export default function Home() {
 
           </div>
 
-          {/* Mobile Header (Title + Key Actions) */}
-          <div className="lg:hidden flex flex-col items-center gap-2 mt-1 mb-2 px-3">
-            {/* Mobile Carousel Banner */}
-            <BannerCarousel mobile={true} />
 
-
-            <div className="w-full flex gap-3 px-2">
-              {/* Mobile Search Button */}
-              <button className="flex-1 flex items-center justify-center gap-2 h-12 bg-white border border-[#C5A059] rounded-lg shadow-sm active:scale-95 transition-transform text-[#0A192F]">
-                <ArrowRight size={16} className="rotate-[-45deg]" /> {/* Using ArrowRight as a makeshift Search icon for now, or use Search if available */}
-                <span className="font-serif font-bold text-sm">기사 검색</span>
-              </button>
-
-              {/* Mobile Write Button */}
-              <Link href="/write" className="flex-1 flex items-center justify-center gap-2 h-12 bg-[#0A192F] border border-[#0A192F] rounded-lg shadow-sm active:scale-95 transition-transform text-white">
-                <span className="font-serif font-bold text-sm text-[#C5A059]">弔</span>
-                <span className="font-serif font-bold text-sm">기사 작성</span>
-              </Link>
-            </div>
-          </div>
 
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-12">
 
         {/* Mobile Top Story Rotation */}
         {loading ? (
