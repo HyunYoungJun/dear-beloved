@@ -60,7 +60,7 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary | nul
             <div className="lg:hidden flex flex-col gap-3 mb-8">
                 <div className="flex items-center gap-2 mb-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
-                    <span className="text-xs font-bold text-[#C5A059] uppercase tracking-widest">Today's Remembrance</span>
+                    <span className="text-xs font-bold text-[#C5A059] uppercase tracking-widest">오늘의 고인</span>
                 </div>
 
                 <div className="aspect-video w-full bg-gray-100 overflow-hidden relative shadow-sm rounded-sm">
