@@ -142,6 +142,15 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-12">
 
+        {/* Mobile Featured Deceased (Moved to Top) */}
+        <div className="lg:hidden mb-10 border-b border-[#C5A059]/30 pb-10">
+          {loading ? (
+            <div className="w-full aspect-video bg-gray-100 animate-pulse rounded-sm" />
+          ) : (
+            <FeaturedDeceased data={todayObituary} />
+          )}
+        </div>
+
         {/* Mobile Top Story Rotation */}
         {loading ? (
           <div className="lg:hidden h-[300px] w-full bg-gray-100 animate-pulse mb-8 rounded-lg"></div>
@@ -158,8 +167,8 @@ export default function Home() {
         {/* Newspaper Style 3-Column Layout (Refactored) */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-t-[0.5px] border-[#C5A059] pt-12">
 
-          {/* 1. 오늘의 고인 */}
-          <div className="flex flex-col gap-4">
+          {/* 1. 오늘의 고인 (Desktop Only - Mobile Moved to Top) */}
+          <div className="hidden lg:flex flex-col gap-4">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">오늘의 고인</h2>
             <FeaturedDeceased data={todayObituary} />
           </div>
