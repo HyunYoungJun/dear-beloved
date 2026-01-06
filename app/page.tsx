@@ -29,7 +29,7 @@ import EditorPick from '@/components/main/EditorPick';
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
   const [todayObituary, setTodayObituary] = useState<ObituarySummary | null>(null);
-  const [editorPick, setEditorPick] = useState<ObituarySummary | null>(null);
+  const [editorPicks, setEditorPicks] = useState<ObituarySummary[]>([]);
   const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
@@ -54,10 +54,20 @@ export default function Home() {
         const today = recentData.find((item: any) => item.biography_data?.feature_tag === 'today') || recentData[0];
         setTodayObituary(today);
 
-        // Find Editor's Pick (avoid duplicate if possible)
-        const editor = recentData.find((item: any) => item.biography_data?.feature_tag === 'editor') ||
-          recentData.find((item: any) => item.id !== today?.id) || null;
-        setEditorPick(editor);
+        // Find Editor's Picks (Multiple)
+        // 1. Explicitly tagged 'editor'
+        let picks = recentData.filter((item: any) => item.biography_data?.feature_tag === 'editor');
+
+        // 2. Fill if not enough (up to 5), excluding 'today'
+        if (picks.length < 5) {
+          const others = recentData.filter((item: any) =>
+            item.id !== today?.id &&
+            !picks.find((p: any) => p.id === item.id)
+          );
+          picks = [...picks, ...others].slice(0, 5);
+        }
+
+        setEditorPicks(picks);
       }
 
       // 1-b. Pass all recent data to Block Carousel (excluding Today/Editor if desired, but for now just pass all)
@@ -187,7 +197,7 @@ export default function Home() {
           {/* 3. 에디터 픽 */}
           <div className="flex flex-col gap-4">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">에디터 픽</h2>
-            <EditorPick data={editorPick} />
+            <EditorPick data={editorPicks} />
           </div>
 
         </section>
