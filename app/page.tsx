@@ -28,7 +28,7 @@ import EditorPick from '@/components/main/EditorPick';
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
-  const [todayObituary, setTodayObituary] = useState<ObituarySummary | null>(null);
+  const [todayObituaries, setTodayObituaries] = useState<ObituarySummary[]>([]);
   const [editorPicks, setEditorPicks] = useState<ObituarySummary[]>([]);
   const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
@@ -50,18 +50,24 @@ export default function Home() {
         .limit(20);
 
       if (recentData) {
-        // Find Today's Obituary
-        const today = recentData.find((item: any) => item.biography_data?.feature_tag === 'today') || recentData[0];
-        setTodayObituary(today);
+        // Find Today's Obituaries (Multiple)
+        let todays = recentData.filter((item: any) => item.biography_data?.feature_tag === 'today');
+
+        // Fill if fewer than 3, defaulting to recent (excluding existing todays)
+        if (todays.length < 3) {
+          const others = recentData.filter((item: any) => !todays.find((t: any) => t.id === item.id));
+          todays = [...todays, ...others].slice(0, 5);
+        }
+        setTodayObituaries(todays);
 
         // Find Editor's Picks (Multiple)
         // 1. Explicitly tagged 'editor'
         let picks = recentData.filter((item: any) => item.biography_data?.feature_tag === 'editor');
 
-        // 2. Fill if not enough (up to 5), excluding 'today'
+        // 2. Fill if not enough (up to 5), excluding 'today' features if possible (optional, but keep simple)
         if (picks.length < 5) {
           const others = recentData.filter((item: any) =>
-            item.id !== today?.id &&
+            !todays.find((t: any) => t.id === item.id) &&
             !picks.find((p: any) => p.id === item.id)
           );
           picks = [...picks, ...others].slice(0, 5);
@@ -157,7 +163,7 @@ export default function Home() {
           {loading ? (
             <div className="w-full aspect-video bg-gray-100 animate-pulse rounded-sm" />
           ) : (
-            <FeaturedDeceased data={todayObituary} />
+            <FeaturedDeceased data={todayObituaries} />
           )}
         </div>
 
@@ -180,7 +186,7 @@ export default function Home() {
           {/* 1. 오늘의 고인 (Desktop Only - Mobile Moved to Top) */}
           <div className="hidden lg:flex flex-col gap-4">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">오늘의 고인</h2>
-            <FeaturedDeceased data={todayObituary} />
+            <FeaturedDeceased data={todayObituaries} />
           </div>
 
           {/* 2. 추모 캘린더 (중앙 배치) */}
