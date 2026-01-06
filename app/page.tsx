@@ -174,7 +174,7 @@ export default function Home() {
           </div>
 
           {/* 2. 추모 캘린더 (중앙 배치) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="memorial-calendar">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#C5A059] pl-3 uppercase">추모 캘린더</h2>
             {/* Convert Summary to Obituary interface expected by Calendar if needed, 
                 or ensure types match. Calendar expects {id, deceased_name, death_date, main_image_url}. 

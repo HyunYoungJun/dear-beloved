@@ -2,19 +2,23 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Book, PenTool, Heart, User } from 'lucide-react';
+import { Home, Calendar, PenTool, Info, User } from 'lucide-react';
 
 export default function MobileBottomNav() {
     const pathname = usePathname();
 
-    const isActive = (path: string) => pathname === path;
+    const isActive = (path: string) => {
+        if (path === '/') return pathname === '/';
+        // Handle hash links or subpaths if needed, but for now exact match or hash
+        return pathname === path.split('#')[0];
+    };
 
     const navItems = [
         { name: '홈', path: '/', icon: Home },
-        { name: '도서관', path: '/library', icon: Book },
-        { name: '글쓰기', path: '/write', icon: PenTool, isMain: true },
-        { name: '추모의 벽', path: '/memorials', icon: Heart }, // Placeholder path
-        { name: '마이', path: '/my', icon: User }, // Placeholder path
+        { name: '추모 캘린더', path: '/#memorial-calendar', icon: Calendar },
+        { name: '기사 의뢰', path: '/write', icon: PenTool, isMain: true },
+        { name: 'About Us', path: '/about', icon: Info },
+        { name: '마이', path: '/my', icon: User },
     ];
 
     return (
