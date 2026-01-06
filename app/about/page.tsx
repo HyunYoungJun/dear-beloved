@@ -81,17 +81,17 @@ export default function AboutPage() {
                         </div>
 
                         {/* Card 2 */}
-                        <div className="bg-[#0A192F] rounded-2xl p-6 shadow-lg text-white relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                        <div className="bg-white rounded-2xl p-6 shadow-md border border-[#C5A059] relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
                             <div className="flex justify-between items-start mb-4 relative z-10">
                                 <div className="text-3xl">✒️</div>
                                 <span className="bg-[#C5A059] text-[#0A192F] text-[11px] px-2 py-1 rounded font-bold">BEST</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2 relative z-10">전문 기자에게 맡기기</h3>
-                            <p className="text-sm text-gray-300 mb-4 leading-relaxed relative z-10">
+                            <h3 className="text-xl font-bold text-[#0A192F] mb-2 relative z-10">전문 기자에게 맡기기</h3>
+                            <p className="text-sm text-[#555] mb-4 leading-relaxed relative z-10">
                                 전현직 언론인의 세심한 리라이팅과<br />팩트 체크로 완벽한 기사를 제공합니다.
                             </p>
-                            <Link href="/write" className="flex items-center justify-center w-full h-12 bg-[#C5A059] rounded-xl text-[#0A192F] font-bold text-sm hover:bg-white transition-colors relative z-10">
+                            <Link href="/write" className="flex items-center justify-center w-full h-12 bg-[#0A192F] rounded-xl text-white font-bold text-sm hover:bg-[#112240] transition-colors relative z-10">
                                 전문가 의뢰하기
                             </Link>
                         </div>
