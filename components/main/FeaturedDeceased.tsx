@@ -71,8 +71,8 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
                         <Link href={`/obituary/${currentItem.id}`} className="block h-full">
                             {/* Mobile Label */}
                             <div className="lg:hidden flex items-center gap-2 mb-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
-                                <span className="text-xs font-bold text-[#C5A059] uppercase tracking-widest">오늘의 고인</span>
+                                <span className="w-1 h-3.5 bg-[#0A192F]"></span>
+                                <span className="text-sm font-bold text-[#0A192F] uppercase tracking-tighter">오늘의 고인</span>
                             </div>
 
                             {/* Image Container */}
