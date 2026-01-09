@@ -15,7 +15,7 @@ export default function MobileBottomNav() {
 
     const navItems = [
         { name: '홈', path: '/', icon: Home },
-        { name: '추모 캘린더', path: '/#memorial-calendar', icon: Calendar },
+        { name: '추모 캘린더', path: '/memorial-calendar', icon: Calendar },
         { name: '기사 의뢰', path: '/write', icon: PenTool, isMain: true },
         { name: 'About Us', path: '/about', icon: Info },
         { name: '마이', path: '/my', icon: User },
