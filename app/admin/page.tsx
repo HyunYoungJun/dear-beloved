@@ -60,10 +60,10 @@ export default function AdminPage() {
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">관리자 페이지 - 기사 관리</h1>
                 <Link
-                    href="/admin/overseas/create"
+                    href="/anchor/create"
                     className="bg-[#0A192F] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#112240] transition-colors flex items-center gap-2"
                 >
-                    + 해외기사 작성
+                    + 기사 작성 (앵커/해외)
                 </Link>
             </div>
 
