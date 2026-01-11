@@ -112,47 +112,52 @@ export default function ObituaryDetailPage() {
             <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
                 <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-8">
 
-                    {/* Left: Passport Style Photo (Fixed 120x160px) */}
-                    <div className="shrink-0 relative group">
-                        {featuredImage ? (
-                            <div className="relative">
+                    {/* Left: Passport Style Photo & Tribute Bar (Aligned) */}
+                    <div className="shrink-0 flex flex-col gap-0 w-[240px] shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+                        {/* 1. Photo Section */}
+                        <div className="relative w-full h-[320px] bg-[#112240] border-2 border-[#C5A059] border-b-0 rounded-t-sm overflow-hidden group">
+                            {featuredImage ? (
                                 <img
-                                    key={featuredImage} // Trigger animation on change
+                                    key={featuredImage}
                                     src={featuredImage}
                                     alt={obituary.deceased_name}
-                                    className="w-[240px] h-[320px] object-cover border-2 border-[#C5A059] rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)] filter brightness-105 animate-in fade-in duration-1000"
+                                    className="w-full h-full object-cover filter brightness-105 animate-in fade-in duration-1000 group-hover:scale-105 transition-transform duration-700"
                                 />
-                                {/* Optional: Corner accent can be added here if needed */}
-                            </div>
-                        ) : (
-                            <div className="w-[240px] h-[320px] bg-[#112240] border-2 border-[#C5A059] rounded-sm flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
-                                <span className="font-serif">No Photo</span>
-                            </div>
-                        )}
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
+                                    <span className="font-serif">No Photo</span>
+                                </div>
+                            )}
+                        </div>
 
-                        {/* Flower Badge & Interaction */}
-                        {/* Flower Badge & Interaction */}
-                        <div className="absolute -bottom-6 left-0 z-20 w-[144px] h-[38px]">
-                            <button
-                                onClick={handleFlowerGiven}
-                                className="group relative w-full h-full flex flex-row items-center gap-2 rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-[#C5A059] transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden bg-[#0A192F] px-3"
-                            >
-                                {/* SVG Background & Icon */}
-                                <WhiteChrysanthemum className="w-12 h-full text-white shrink-0 object-contain" />
+                        {/* 2. Tribute Bar Section (Exact Width Match) */}
+                        <button
+                            onClick={handleFlowerGiven}
+                            className="w-full h-[50px] bg-[#0A192F] border-2 border-t-0 border-[#C5A059] rounded-b-sm flex items-center px-4 hover:bg-[#112240] transition-colors relative group overflow-hidden"
+                        >
+                            {/* Hover Effect Background */}
+                            <div className="absolute inset-0 bg-[#C5A059] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
 
-                                {/* Text Content Overlay */}
-                                <div className="relative z-10 flex items-center justify-end">
-                                    <span className="text-sm font-bold text-[#C5A059] font-serif tabular-nums tracking-wide drop-shadow-sm">
-                                        {obituary.flower_count?.toLocaleString() || 0}
+                            {/* Content Flex Layout */}
+                            <div className="w-full flex items-center justify-between relative z-10">
+                                {/* Left: Action Label & Icon */}
+                                <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white">
+                                        <Flower2 size={14} className="text-[#C5A059]" />
+                                    </div>
+                                    <span className="text-[#C5A059] text-xs font-bold font-serif tracking-widest uppercase mb-0.5">
+                                        헌화하기
                                     </span>
                                 </div>
 
-                                {/* Hover Reveal Text (Optional - preserved but styled for new layout) */}
-                                <div className="absolute inset-0 bg-[#0A192F]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                                    <span className="text-xs text-[#C5A059] font-bold tracking-tight">헌화하기</span>
+                                {/* Right: Active Count */}
+                                <div className="flex items-center gap-1.5 pl-4 border-l border-white/10">
+                                    <span className="text-white text-lg font-bold font-serif tabular-nums leading-none">
+                                        {obituary.flower_count?.toLocaleString() || 0}
+                                    </span>
                                 </div>
-                            </button>
-                        </div>
+                            </div>
+                        </button>
                     </div>
 
                     {/* Right: Information */}
