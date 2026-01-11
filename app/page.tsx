@@ -177,8 +177,8 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-12">
 
-        {/* Mobile Featured Deceased (Moved to Top) */}
-        <div className="lg:hidden mb-10 border-b border-[#C5A059]/30 pb-10">
+        {/* 1. Mobile Featured Deceased (Top - Today) */}
+        <div className="lg:hidden mb-12 border-b border-[#C5A059]/30 pb-12">
           {loading ? (
             <div className="w-full aspect-video bg-gray-100 animate-pulse rounded-sm" />
           ) : (
@@ -186,48 +186,54 @@ export default function Home() {
           )}
         </div>
 
-        {/* Mobile Top Story Rotation */}
-        {loading ? (
-          <div className="lg:hidden h-[300px] w-full bg-gray-100 animate-pulse mb-8 rounded-lg"></div>
-        ) : (
-          <CategoryNewsRotation categories={categories} />
-        )}
+        {/* 2 & 3. Newspaper Style Layout (Calendar & Editor) */}
+        {/* On Mobile: Grid items stack. Order: Today(hidden) -> Calendar -> Editor */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 mb-20 lg:border-t-[0.5px] lg:border-[#C5A059] lg:pt-12">
 
-        {/* Newspaper Style 3-Column Layout */}
-        {/* On Mobile, we hide the individual cards inside the grid columns to avoid duplication with the carousel above, 
-            OR we assume the user wanted to REPLACE the list view with the carousel. 
-            The grid-cols-1 on mobile makes it a vertical stack. 
-            We will keep the desktop layout as is (hidden lg:block inner divs) and hide the mobile list divs. 
-        */}
-        {/* Newspaper Style 3-Column Layout (Refactored) */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 border-t-[0.5px] border-[#C5A059] pt-12">
-
-          {/* 1. 오늘의 고인 (Desktop Only - Mobile Moved to Top) */}
+          {/* 1. 오늘의 고인 (Desktop Only) */}
           <div className="hidden lg:flex flex-col gap-4">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">오늘의 고인</h2>
             <FeaturedDeceased data={todayObituaries} />
           </div>
 
-          {/* 2. 추모 캘린더 (중앙 배치) */}
+          {/* 2. 추모 캘린더 (Mobile: Second after Featured) */}
           <div className="flex flex-col gap-4" id="memorial-calendar">
             <Link href="/memorial-calendar" className="group">
               <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#C5A059] pl-3 uppercase group-hover:text-[#C5A059] transition-colors">추모 캘린더</h2>
             </Link>
-            {/* Convert Summary to Obituary interface expected by Calendar if needed, 
-                or ensure types match. Calendar expects {id, deceased_name, death_date, main_image_url}. 
-                Summary has these fields. */}
             <div className="h-full min-h-[400px]">
               <MemorialCalendar />
             </div>
           </div>
 
-          {/* 3. 에디터 픽 */}
+          {/* 3. 에디터 픽 (Mobile: Third) */}
           <div className="flex flex-col gap-4">
             <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">에디터 픽</h2>
             <EditorPick data={editorPicks} />
           </div>
 
         </section>
+
+        {/* 4. 해외 추모기사 (Mobile: Fourth, New Section) */}
+        <section className="mb-20">
+          <div className="flex flex-col gap-4">
+            <Link href="/overseas" className="group">
+              <h2 className="text-sm font-bold tracking-tighter border-l-4 border-gray-400 pl-3 uppercase group-hover:text-[#0A192F] transition-colors">
+                해외 추모기사
+              </h2>
+            </Link>
+            <EditorPick data={overseasObituaries} />
+          </div>
+        </section>
+
+        {/* 5. Category Rotation (Moved to Bottom - before grid) */}
+        {loading ? (
+          <div className="lg:hidden h-[300px] w-full bg-gray-100 animate-pulse mb-8 rounded-lg"></div>
+        ) : (
+          <div className="mb-12">
+            <CategoryNewsRotation categories={categories} />
+          </div>
+        )}
 
         {/* Categories Grid (4 Columns) */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
