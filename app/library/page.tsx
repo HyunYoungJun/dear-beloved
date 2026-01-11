@@ -43,6 +43,7 @@ export default function LibraryPage() {
                 .from('obituaries')
                 .select('id, user_id, deceased_name, title, main_image_url, death_date')
                 .eq('is_public', true)
+                .neq('service_type', 'overseas') // Filter out overseas
                 .order('created_at', { ascending: false });
 
             // Basic Search (Name or Title)

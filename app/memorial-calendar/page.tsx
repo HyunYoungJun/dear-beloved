@@ -30,7 +30,8 @@ export default function MemorialCalendarPage() {
             const { data, error } = await supabase
                 .from('obituaries')
                 .select('id, deceased_name, death_date, main_image_url, birth_date')
-                .not('death_date', 'is', null);
+                .not('death_date', 'is', null)
+                .neq('service_type', 'overseas'); // Filter out overseas
 
             if (data) {
                 const today = new Date();
@@ -106,8 +107,8 @@ export default function MemorialCalendarPage() {
                 <button
                     onClick={() => setSortMode('closest')}
                     className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${sortMode === 'closest'
-                            ? 'bg-[#0A192F] text-white shadow-md'
-                            : 'bg-white border border-[#0A192F]/20 text-gray-600'
+                        ? 'bg-[#0A192F] text-white shadow-md'
+                        : 'bg-white border border-[#0A192F]/20 text-gray-600'
                         }`}
                 >
                     추모일 임박순 ({memorials.length})
@@ -115,8 +116,8 @@ export default function MemorialCalendarPage() {
                 <button
                     onClick={() => setSortMode('recent')}
                     className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${sortMode === 'recent'
-                            ? 'bg-[#0A192F] text-white shadow-md'
-                            : 'bg-white border border-[#0A192F]/20 text-gray-600'
+                        ? 'bg-[#0A192F] text-white shadow-md'
+                        : 'bg-white border border-[#0A192F]/20 text-gray-600'
                         }`}
                 >
                     최신순
@@ -124,8 +125,8 @@ export default function MemorialCalendarPage() {
                 <button
                     onClick={() => setSortMode('past')}
                     className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${sortMode === 'past'
-                            ? 'bg-[#0A192F] text-white shadow-md'
-                            : 'bg-white border border-[#0A192F]/20 text-gray-600'
+                        ? 'bg-[#0A192F] text-white shadow-md'
+                        : 'bg-white border border-[#0A192F]/20 text-gray-600'
                         }`}
                 >
                     과거순

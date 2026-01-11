@@ -22,7 +22,10 @@ export default function CreateAnchorContentPage() {
         death_date: '',
         title: '',
         content: '',
+        country: '', // New field for Overseas
     });
+
+    const [isOverseas, setIsOverseas] = useState(false); // Toggle state
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -44,6 +47,10 @@ export default function CreateAnchorContentPage() {
         if (!formData.title) return alert('제목을 입력해주세요.');
         if (!formData.content) return alert('내용을 입력해주세요.');
 
+        // Conditional validation
+        if (isOverseas && !formData.country) return alert('국가를 입력해주세요.');
+        if (!isOverseas && !formData.category) return alert('카테고리를 선택해주세요.');
+
         setLoading(true);
 
         try {
@@ -59,20 +66,20 @@ export default function CreateAnchorContentPage() {
                     deceased_name: formData.deceased_name,
                     birth_date: formData.birth_date || null,
                     death_date: formData.death_date || null,
-                    category: formData.category || null,
+                    category: isOverseas ? 'overseas' : (formData.category || null),
                     title: formData.title,
                     content: formData.content,
-                    service_type: 'anchor', // Special type for anchor content
+                    service_type: isOverseas ? 'overseas' : 'anchor', // Special type
                     is_public: true, // Always public
                     main_image_url,
-                    // Empty biography data
-                    biography_data: {},
+                    // Store country if overseas
+                    biography_data: isOverseas ? { country: formData.country } : {},
                 });
 
             if (error) throw error;
 
-            alert('앵커 콘텐츠가 등록되었습니다.');
-            router.push('/library');
+            alert(isOverseas ? '해외 추모기사가 등록되었습니다.' : '앵커 콘텐츠가 등록되었습니다.');
+            router.push(isOverseas ? '/overseas' : '/library');
             router.refresh();
 
         } catch (error: any) {
@@ -96,6 +103,19 @@ export default function CreateAnchorContentPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Checkbox for Overseas */}
+                    <div className="flex items-center gap-3 p-4 bg-[#0A192F]/5 rounded-lg border border-[#0A192F]/10 mb-6">
+                        <input
+                            type="checkbox"
+                            id="isOverseas"
+                            checked={isOverseas}
+                            onChange={(e) => setIsOverseas(e.target.checked)}
+                            className="w-5 h-5 text-[#0A192F] rounded focus:ring-[#0A192F]"
+                        />
+                        <label htmlFor="isOverseas" className="font-bold text-[#0A192F] cursor-pointer select-none">
+                            해외추모기사 작성 (Check for Overseas Obituary)
+                        </label>
+                    </div>
                     {/* 0. Basic Info */}
                     <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                         <h3 className="font-bold text-gray-900 mb-4">기본 정보</h3>
@@ -114,22 +134,40 @@ export default function CreateAnchorContentPage() {
                             />
                         </div>
 
-                        {/* Category */}
-                        <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">분류 선택</label>
-                            <select
-                                name="category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none bg-white"
-                            >
-                                <option value="">카테고리 선택</option>
-                                <option value="politics">정치·공무</option>
-                                <option value="economy">경제·경영</option>
-                                <option value="culture">문화·예술</option>
-                                <option value="society">가족·사회</option>
-                            </select>
-                        </div>
+                        {/* Conditional Fields */}
+                        {isOverseas ? (
+                            // Country Field for Overseas
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">국가 (Country)</label>
+                                <input
+                                    type="text"
+                                    name="country"
+                                    value={formData.country}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none bg-white"
+                                    placeholder="예: USA, France"
+                                    required={isOverseas}
+                                />
+                            </div>
+                        ) : (
+                            // Category Field for Normal Anchor
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">분류 선택</label>
+                                <select
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none bg-white"
+                                    required={!isOverseas}
+                                >
+                                    <option value="">카테고리 선택</option>
+                                    <option value="politics">정치·공무</option>
+                                    <option value="economy">경제·경영</option>
+                                    <option value="culture">문화·예술</option>
+                                    <option value="society">가족·사회</option>
+                                </select>
+                            </div>
+                        )}
 
                         {/* Dates */}
                         <div className="grid grid-cols-2 gap-4">
