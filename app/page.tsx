@@ -31,6 +31,7 @@ export default function Home() {
   const [todayObituaries, setTodayObituaries] = useState<ObituarySummary[]>([]);
   const [editorPicks, setEditorPicks] = useState<ObituarySummary[]>([]);
   const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
+  const [overseasObituaries, setOverseasObituaries] = useState<ObituarySummary[]>([]); // Added missing state
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
     economy: [],
@@ -96,6 +97,19 @@ export default function Home() {
         const picks = todayData.filter((item: any) => item.biography_data?.feature_tag === 'editor');
         // NO FALLBACK
         setEditorPicks(picks);
+      }
+
+      // 3. Strict Fetch for "Overseas"
+      const { data: overseasData } = await supabase
+        .from('obituaries')
+        .select('*')
+        .eq('is_public', true)
+        .eq('service_type', 'overseas')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (overseasData) {
+        setOverseasObituaries(overseasData);
       }
 
       const CATEGORIES = ['politics', 'economy', 'culture', 'society'];
