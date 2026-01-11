@@ -112,7 +112,7 @@ export default function Home() {
         setOverseasObituaries(overseasData);
       }
 
-      const CATEGORIES = ['politics', 'economy', 'culture', 'society'];
+      const CATEGORIES = ['politics', 'economy', 'academia', 'culture', 'society'];
       const newCategories: any = {};
 
       await Promise.all(CATEGORIES.map(async (cat) => {
@@ -143,6 +143,7 @@ export default function Home() {
   const categoryNames: { [key: string]: string } = {
     politics: 'Politics & Public Service',
     economy: 'Economy & Business',
+    academia: 'Academia & Research', // Added
     culture: 'Culture & Arts',
     society: 'Family & Society'
   };
@@ -249,9 +250,15 @@ export default function Home() {
           </div>
         )}
 
-        {/* Categories Grid (4 Columns) */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
-          {['politics', 'economy', 'culture', 'society'].map((cat) => (
+        {/* Categories Grid (4 Columns -> Now 5 logic but grid-cols-4 might need adjustment or allow wrap) */}
+        {/* User requested: "mobile margin adjustment", "desktop grid". 5 items in 4 columns will wrap. 
+            We should change lg:grid-cols-4 to lg:grid-cols-5 OR allow wrapping. 
+            Given the request for "Desktop: 5 items", let's try lg:grid-cols-5 if space permits, or stick to grid-cols-3/4.
+            User said "updated category system... same principle PC/Mobile". 
+            Let's update the map array first. 
+        */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
+          {['politics', 'economy', 'academia', 'culture', 'society'].map((cat) => (
             <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
               <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
                 {categoryNames[cat].split('&').map((line, i) => (

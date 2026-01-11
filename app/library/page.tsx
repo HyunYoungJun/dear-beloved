@@ -145,6 +145,7 @@ export default function LibraryPage() {
                                         <option value="">전체</option>
                                         <option value="politics">정치·공무</option>
                                         <option value="economy">경제·경영</option>
+                                        <option value="academia">학계·연구</option>
                                         <option value="culture">문화·예술</option>
                                         <option value="society">가족·사회</option>
                                     </select>
