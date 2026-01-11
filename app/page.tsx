@@ -145,7 +145,7 @@ export default function Home() {
                 </button>
               </div>
               <Link href="/library" className="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 uppercase tracking-wider">
-                Advanced Seach <ArrowRight size={10} />
+                Advanced Search <ArrowRight size={10} />
               </Link>
             </div>
 
