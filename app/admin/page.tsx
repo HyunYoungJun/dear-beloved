@@ -57,7 +57,15 @@ export default function AdminPage() {
 
     return (
         <div className="max-w-7xl mx-auto py-10 px-4">
-            <h1 className="text-3xl font-bold mb-8">관리자 페이지 - 기사 관리</h1>
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold">관리자 페이지 - 기사 관리</h1>
+                <Link
+                    href="/admin/overseas/create"
+                    className="bg-[#0A192F] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#112240] transition-colors flex items-center gap-2"
+                >
+                    + 해외기사 작성
+                </Link>
+            </div>
 
             <div className="bg-white rounded-lg shadow overflow-hidden">
                 <table className="w-full text-sm text-left">
