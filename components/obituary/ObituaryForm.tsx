@@ -8,6 +8,7 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { ArrowLeft, ArrowRight, Upload, Star, X, Check } from 'lucide-react';
 import WheelDatePicker from '../ui/WheelDatePicker';
 import FamilyConnectForm, { FamilyRelationDraft } from './FamilyConnectForm';
+import { CATEGORY_KEYS, CATEGORY_LABELS } from '@/lib/constants';
 
 const STEPS = [
     { id: 'basics', title: '기본 정보', description: '고인의 성함과 생몰일을 입력해주세요.' },
@@ -451,10 +452,11 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                         className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none bg-white"
                                     >
                                         <option value="">카테고리를 선택해주세요</option>
-                                        <option value="politics">정치·공무</option>
-                                        <option value="economy">경제·경영</option>
-                                        <option value="culture">문화·예술</option>
-                                        <option value="society">가족·사회</option>
+                                        {CATEGORY_KEYS.map((key) => (
+                                            <option key={key} value={key}>
+                                                {CATEGORY_LABELS[key]}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">

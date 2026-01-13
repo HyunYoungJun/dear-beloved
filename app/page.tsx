@@ -112,10 +112,10 @@ export default function Home() {
         setOverseasObituaries(overseasData);
       }
 
-      const CATEGORIES = ['politics', 'economy', 'academia', 'culture', 'society'];
+      // Use imported keys for loop
       const newCategories: any = {};
 
-      await Promise.all(CATEGORIES.map(async (cat) => {
+      await Promise.all(CATEGORY_KEYS.map(async (cat) => {
         const { data } = await supabase
           .from('obituaries')
           .select('*')
@@ -140,13 +140,7 @@ export default function Home() {
     );
   }
 
-  const categoryNames: { [key: string]: string } = {
-    politics: 'Politics & Public Service',
-    economy: 'Economy & Business',
-    academia: 'Academia & Research', // Added
-    culture: 'Culture & Arts',
-    society: 'Family & Society'
-  };
+
 
   return (
     <main className="min-h-screen bg-stone-50 text-gray-900 pb-20 relative">
@@ -258,10 +252,10 @@ export default function Home() {
             Let's update the map array first. 
         */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
-          {['politics', 'economy', 'academia', 'culture', 'society'].map((cat) => (
+          {CATEGORY_KEYS.map((cat) => (
             <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
               <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
-                {categoryNames[cat].split('&').map((line, i) => (
+                {CATEGORY_DISPLAY_NAMES_EN[cat].split('&').map((line, i) => (
                   <span key={i} className="block">{line}</span>
                 ))}
               </h3>

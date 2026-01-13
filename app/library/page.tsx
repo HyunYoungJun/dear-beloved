@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import ObituaryCard from '@/components/obituary/ObituaryCard';
 import Link from 'next/link';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { CATEGORY_KEYS, CATEGORY_LABELS } from '@/lib/constants';
 
 type ObituarySummary = {
     id: string;
@@ -143,11 +144,11 @@ export default function LibraryPage() {
                                         className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-sm focus:border-gray-900 outline-none"
                                     >
                                         <option value="">전체</option>
-                                        <option value="politics">정치·공무</option>
-                                        <option value="economy">경제·경영</option>
-                                        <option value="academia">학계·연구</option>
-                                        <option value="culture">문화·예술</option>
-                                        <option value="society">가족·사회</option>
+                                        {CATEGORY_KEYS.map((key) => (
+                                            <option key={key} value={key}>
+                                                {CATEGORY_LABELS[key]}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>

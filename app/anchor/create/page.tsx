@@ -7,6 +7,7 @@ import { uploadObituaryImage } from '@/lib/storageUtils';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Upload, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { CATEGORY_KEYS, CATEGORY_LABELS } from '@/lib/constants';
 
 export default function CreateAnchorContentPage() {
     const { user } = useAuth();
@@ -161,11 +162,11 @@ export default function CreateAnchorContentPage() {
                                     required={!isOverseas}
                                 >
                                     <option value="">카테고리 선택</option>
-                                    <option value="politics">정치·공무</option>
-                                    <option value="economy">경제·경영</option>
-                                    <option value="academia">학계·연구</option>
-                                    <option value="culture">문화·예술</option>
-                                    <option value="society">가족·사회</option>
+                                    {CATEGORY_KEYS.map((key) => (
+                                        <option key={key} value={key}>
+                                            {CATEGORY_LABELS[key]}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         )}
