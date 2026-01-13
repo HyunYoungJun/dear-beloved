@@ -45,6 +45,7 @@ export default function CreateAnchorContentPage() {
         e.preventDefault();
         if (!user) return alert('로그인이 필요합니다.');
         if (!formData.deceased_name) return alert('고인의 성함을 입력해주세요.');
+        if (!formData.death_date) return alert('임종일은 필수 입력 사항입니다.'); // Strict Death Date Check matches requirement
         if (!formData.title) return alert('제목을 입력해주세요.');
         if (!formData.content) return alert('내용을 입력해주세요.');
 
@@ -174,7 +175,7 @@ export default function CreateAnchorContentPage() {
                         {/* Dates */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">생년월일</label>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">생년월일 (선택)</label>
                                 <input
                                     type="date"
                                     name="birth_date"
@@ -184,13 +185,14 @@ export default function CreateAnchorContentPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">임종일</label>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">임종일 (필수)</label>
                                 <input
                                     type="date"
                                     name="death_date"
                                     value={formData.death_date}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none bg-white"
+                                    required
                                 />
                             </div>
                         </div>

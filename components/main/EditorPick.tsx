@@ -10,6 +10,7 @@ type ObituarySummary = {
     deceased_name: string;
     title: string;
     main_image_url: string | null;
+    birth_date?: string | null;
     death_date: string | null;
     content: string | null;
     created_at: string;
@@ -92,7 +93,8 @@ export default function EditorPick({ data }: { data: ObituarySummary[] }) {
                                         {currentItem.deceased_name}
                                     </h4>
                                     <span className="text-xs text-gray-400">
-                                        {new Date(currentItem.created_at).toLocaleDateString()}
+                                        {currentItem.birth_date ? `${new Date(currentItem.birth_date).getFullYear()} ~ ` : ''}
+                                        {currentItem.death_date ? new Date(currentItem.death_date).toLocaleDateString() : ''}
                                     </span>
                                 </div>
                             </div>

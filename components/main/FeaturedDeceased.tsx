@@ -11,6 +11,7 @@ type ObituarySummary = {
     title: string;
     main_image_url: string | null;
     death_date: string | null;
+    birth_date?: string | null;
     service_type?: string | null;
     category?: string | null;
     content: string | null;
@@ -95,14 +96,17 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
                                 </h2>
 
                                 <div className="hidden lg:block text-xs text-gray-400 mb-3 uppercase tracking-wide">
-                                    {new Date(currentItem.created_at).toLocaleDateString()} | {categoryNames[currentItem.category || 'society'] || currentItem.category}
+                                    {currentItem.birth_date ? new Date(currentItem.birth_date).getFullYear() : ''}
+                                    {currentItem.birth_date ? ' ~ ' : ''}
+                                    {currentItem.death_date ? new Date(currentItem.death_date).toLocaleDateString() : ''} | {categoryNames[currentItem.category || 'society'] || currentItem.category}
                                 </div>
 
                                 <p className="lg:hidden text-sm text-[#0A192F]/80 font-medium font-serif mt-1">
                                     故 {currentItem.deceased_name}
                                 </p>
                                 <p className="lg:hidden text-xs text-gray-400 mt-1">
-                                    {new Date(currentItem.death_date || currentItem.created_at).toLocaleDateString()} 별세
+                                    {currentItem.birth_date ? `${new Date(currentItem.birth_date).getFullYear()} ~ ` : ''}
+                                    {currentItem.death_date ? new Date(currentItem.death_date).toLocaleDateString() : ''} 별세
                                 </p>
 
                                 <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4 lg:line-clamp-4 mt-2 text-justify break-keep">

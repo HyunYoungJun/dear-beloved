@@ -137,6 +137,12 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     };
 
     const handleNext = () => {
+        // Validation for Basic Info Step
+        if (currentStep === 0) {
+            if (!formData.deceased_name) return alert('고인의 성함을 입력해주세요.');
+            if (!formData.death_date) return alert('임종일은 필수 입력 사항입니다.');
+        }
+
         if (currentStep < STEPS.length - 1) {
             setCurrentStep(prev => prev + 1);
         } else {
@@ -461,14 +467,14 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-1">생년월일</label>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1">생년월일 (선택)</label>
                                         <WheelDatePicker
                                             value={formData.birth_date}
                                             onChange={(date) => setFormData((prev: any) => ({ ...prev, birth_date: date }))}
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-1">임종일</label>
+                                        <label className="block text-sm font-bold text-gray-700 mb-1">임종일 (필수)</label>
                                         <WheelDatePicker
                                             value={formData.death_date}
                                             onChange={(date) => setFormData((prev: any) => ({ ...prev, death_date: date }))}
