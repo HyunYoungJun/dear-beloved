@@ -1,5 +1,7 @@
 'use client';
 
+import { CATEGORY_KEYS, CATEGORY_DISPLAY_NAMES_EN } from '@/lib/constants';
+
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
