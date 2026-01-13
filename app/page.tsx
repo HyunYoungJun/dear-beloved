@@ -136,7 +136,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50 font-serif text-gray-400">
+      <div className="min-h-screen flex items-center justify-center bg-stone-50  text-gray-400">
         Digital Memorial Archive...
       </div>
     );
@@ -158,8 +158,8 @@ export default function Home() {
 
             {/* Center: Title */}
             <div className="flex flex-col items-center text-center w-1/3">
-              <h1 className="text-3xl lg:text-4xl font-serif font-black tracking-tighter mb-1">Dear˚Beloved</h1>
-              <p className="text-gray-400 font-serif italic text-sm">The Daily Memorial Archive</p>
+              <h1 className="text-3xl lg:text-4xl  font-black tracking-tighter mb-1">Dear˚Beloved</h1>
+              <p className="text-gray-400  italic text-sm">The Daily Memorial Archive</p>
             </div>
 
             {/* Right: Search */}
@@ -256,7 +256,7 @@ export default function Home() {
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border-t-[0.5px] border-heritage-gold pt-12">
           {CATEGORY_KEYS.map((cat) => (
             <div key={cat} className="flex flex-col border-t-2 border-heritage-navy pt-4">
-              <h3 className="font-sans font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
+              <h3 className=" font-black text-lg text-gray-900 uppercase tracking-widest mb-6 min-h-[50px] flex items-center border-b border-gray-100 pb-2">
                 {CATEGORY_DISPLAY_NAMES_EN[cat].split('&').map((line, i) => (
                   <span key={i} className="block">{line}</span>
                 ))}
@@ -274,7 +274,7 @@ export default function Home() {
                             <img src={item.main_image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={item.deceased_name} />
                           ) : null}
                         </div>
-                        <h4 className="font-serif font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
+                        <h4 className=" font-bold text-lg leading-snug mb-2 group-hover:text-blue-800 transition-colors">
                           {item.deceased_name}
                         </h4>
                         <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
@@ -295,10 +295,10 @@ export default function Home() {
                           )}
                         </div>
                         <div className="flex flex-col flex-1 min-w-0 justify-center h-[72px]">
-                          <h4 className="text-[17px] font-serif font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
+                          <h4 className="text-[17px]  font-bold leading-tight mb-0.5 group-hover:underline cursor-pointer line-clamp-1 tracking-tight text-gray-900">
                             {item.deceased_name}
                           </h4>
-                          <p className="text-[13px] text-gray-500 font-sans leading-snug line-clamp-1 tracking-normal mb-1">
+                          <p className="text-[13px] text-gray-500  leading-snug line-clamp-1 tracking-normal mb-1">
                             {item.title}
                           </p>
                           <div className="text-[10px] text-gray-400 tracking-wide">

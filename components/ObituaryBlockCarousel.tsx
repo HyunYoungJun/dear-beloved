@@ -96,7 +96,7 @@ export default function ObituaryBlockCarousel({ obituaries, title = "최근 부�
                                     {/* Content */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-baseline justify-between mb-0.5">
-                                            <h4 className="text-sm font-serif font-bold text-gray-900 truncate group-hover/item:text-[var(--heritage-navy)] transition-colors">
+                                            <h4 className="text-sm  font-bold text-gray-900 truncate group-hover/item:text-[var(--heritage-navy)] transition-colors">
                                                 {item.deceased_name}
                                             </h4>
                                             <span className="text-[10px] text-gray-400 shrink-0">
@@ -127,8 +127,8 @@ export default function ObituaryBlockCarousel({ obituaries, title = "최근 부�
                         key={idx}
                         onClick={() => setCurrentIndex(idx)}
                         className={`w-1.5 h-1.5 rounded-full transition-all ${currentIndex === idx
-                                ? 'bg-[var(--heritage-navy)] w-3'
-                                : 'bg-gray-300 hover:bg-gray-400'
+                            ? 'bg-[var(--heritage-navy)] w-3'
+                            : 'bg-gray-300 hover:bg-gray-400'
                             }`}
                     />
                 ))}

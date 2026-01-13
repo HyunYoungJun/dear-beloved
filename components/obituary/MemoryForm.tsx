@@ -69,7 +69,7 @@ export default function MemoryForm({ obituaryId, onMemoryAdded, onFlowerGiven }:
 
     return (
         <form onSubmit={handleSubmit} className="bg-white/50 backdrop-blur-sm border border-[var(--heritage-gold)]/20 p-6 rounded-lg shadow-sm mb-12">
-            <h3 className="text-xl font-serif text-[var(--heritage-navy)] mb-6 flex items-center gap-2">
+            <h3 className="text-xl  text-[var(--heritage-navy)] mb-6 flex items-center gap-2">
                 <span className="w-1 h-6 bg-[var(--heritage-gold)] block rounded-full"></span>
                 추모 메시지 남기기
             </h3>

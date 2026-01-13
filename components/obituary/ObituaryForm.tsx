@@ -336,7 +336,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     if (!serviceType && !isEditMode) {
         return (
             <div className="max-w-4xl mx-auto my-10 px-4">
-                <h1 className="text-3xl font-serif font-bold text-center text-gray-900 mb-2">메모리얼 서비스 선택</h1>
+                <h1 className="text-3xl  font-bold text-center text-gray-900 mb-2">메모리얼 서비스 선택</h1>
                 <p className="text-center text-gray-500 mb-12">고인의 마지막 길을 기록할 방식을 선택해 주세요.</p>
 
                 <div className="grid md:grid-cols-3 gap-6">
@@ -386,7 +386,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     const stepInfo = STEPS[currentStep];
 
     return (
-        <div className="max-w-2xl mx-auto my-10 font-serif">
+        <div className="max-w-2xl mx-auto my-10 ">
             {/* Header with Service Type Badge */}
             <div className="text-center mb-8">
                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 
@@ -397,7 +397,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                         serviceType === 'expert' ? '전문 기자 의뢰' :
                             '프리미엄 전기문 작성'}
                 </span>
-                <h1 className="text-3xl font-serif font-bold text-gray-900">
+                <h1 className="text-3xl  font-bold text-gray-900">
                     {isEditMode ? '메모리얼 기사 수정' : (serviceType === 'premium' ? '고인의 위대한 삶을 기록합니다' : '메모리얼 기사 작성')}
                 </h1>
             </div>
@@ -431,7 +431,7 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
             <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 min-h-[400px] flex flex-col justify-between">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">{stepInfo.title}</h2>
-                    <p className="text-gray-500 mb-6 font-sans text-sm">{stepInfo.description}</p>
+                    <p className="text-gray-500 mb-6  text-sm">{stepInfo.description}</p>
 
                     <div className="space-y-4">
                         {/* Step 0: Basics */}

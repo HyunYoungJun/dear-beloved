@@ -101,13 +101,13 @@ export default function ObituaryDetailPage() {
         }
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center font-serif">불러오는 중...</div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center ">불러오는 중...</div>;
     if (!obituary) return null;
 
     const quote = obituary.biography_data?.quote;
 
     return (
-        <article className="min-h-screen bg-[#F9F9F9] font-serif pb-32">
+        <article className="min-h-screen bg-[#F9F9F9]  pb-32">
             {/* 1. Header Section: Deep Navy Background, Flex Layout */}
             <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
                 <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-8">
@@ -125,7 +125,7 @@ export default function ObituaryDetailPage() {
                                 />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
-                                    <span className="font-serif">No Photo</span>
+                                    <span className="">No Photo</span>
                                 </div>
                             )}
                         </div>
@@ -145,14 +145,14 @@ export default function ObituaryDetailPage() {
                                     <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white">
                                         <Flower2 size={14} className="text-[#C5A059]" />
                                     </div>
-                                    <span className="text-[#C5A059] text-xs font-bold font-serif tracking-widest uppercase mb-0.5">
+                                    <span className="text-[#C5A059] text-xs font-bold  tracking-widest uppercase mb-0.5">
                                         헌화하기
                                     </span>
                                 </div>
 
                                 {/* Right: Active Count */}
                                 <div className="flex items-center gap-1.5 pl-4 border-l border-white/10">
-                                    <span className="text-white text-lg font-bold font-serif tabular-nums leading-none">
+                                    <span className="text-white text-lg font-bold  tabular-nums leading-none">
                                         {obituary.flower_count?.toLocaleString() || 0}
                                     </span>
                                 </div>
@@ -180,10 +180,10 @@ export default function ObituaryDetailPage() {
                         </h1>
 
                         <div className="space-y-1.5">
-                            <p className="text-lg md:text-xl text-[#C5A059] font-medium font-serif">
+                            <p className="text-lg md:text-xl text-[#C5A059] font-medium ">
                                 故 {obituary.deceased_name}
                             </p>
-                            <div className="flex items-center justify-center md:justify-start gap-2 text-sm md:text-base text-gray-300 font-light tracking-wide opacity-80 font-serif">
+                            <div className="flex items-center justify-center md:justify-start gap-2 text-sm md:text-base text-gray-300 font-light tracking-wide opacity-80 ">
                                 <span>{obituary.birth_date}</span>
                                 <span className="text-[#C5A059]/50">•</span>
                                 <span>{obituary.death_date}</span>
@@ -232,7 +232,7 @@ export default function ObituaryDetailPage() {
                     <div className="mb-10">
                         <div className="flex items-center justify-center md:justify-start gap-3 mb-10">
                             <span className="w-8 h-[1px] bg-[#C5A059]"></span>
-                            <h3 className="text-xl font-serif font-bold text-[#0A192F] tracking-widest">FAMILY TREE</h3>
+                            <h3 className="text-xl  font-bold text-[#0A192F] tracking-widest">FAMILY TREE</h3>
                             <span className="w-8 h-[1px] bg-[#C5A059] md:hidden"></span>
                         </div>
                         <FamilyTree obituaryId={obituary.id} />
@@ -260,7 +260,7 @@ export default function ObituaryDetailPage() {
                             </button>
                             <button
                                 onClick={() => router.push(`/obituary/${obituary.id}/edit`)}
-                                className="w-full md:w-auto px-8 py-2.5 bg-[#C5A059]/10 text-[#C5A059] border border-[#C5A059]/30 hover:bg-[#C5A059]/20 hover:text-[#0A192F] transition-all duration-300 text-xs font-bold font-serif tracking-widest uppercase rounded-[4px]"
+                                className="w-full md:w-auto px-8 py-2.5 bg-[#C5A059]/10 text-[#C5A059] border border-[#C5A059]/30 hover:bg-[#C5A059]/20 hover:text-[#0A192F] transition-all duration-300 text-xs font-bold  tracking-widest uppercase rounded-[4px]"
                             >
                                 <span className="mr-2">EDIT</span> 수정하기
                             </button>

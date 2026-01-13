@@ -58,7 +58,7 @@ export default function MemorialCalendar() {
 
     return (
         <div className="bg-[#FDFBF7] border border-[#C5A059]/20 rounded-sm p-6 h-full flex flex-col justify-between relative overflow-hidden">
-            <div className="text-[10px] tracking-[0.3em] text-[#C5A059]/40 font-serif mb-4 uppercase text-right">
+            <div className="text-[10px] tracking-[0.3em] text-[#C5A059]/40  mb-4 uppercase text-right">
                 Memorial Calendar
             </div>
 

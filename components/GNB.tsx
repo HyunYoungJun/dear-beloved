@@ -59,7 +59,7 @@ export default function GNB() {
                         className="flex flex-col items-center justify-center z-50 w-full md:w-auto md:block pointer-events-none md:pointer-events-auto"
                         onClick={closeMenu}
                     >
-                        <span className="text-xl md:text-3xl font-black tracking-tighter font-serif text-[#C5A059] md:text-[#0A192F] pointer-events-auto">
+                        <span className="text-xl md:text-3xl font-black tracking-tighter  text-[#C5A059] md:text-[#0A192F] pointer-events-auto">
                             Dear˚Beloved
                         </span>
                     </Link>
@@ -70,7 +70,7 @@ export default function GNB() {
                             <div key={item.label} className="relative group h-full flex items-center">
                                 {item.children ? (
                                     <>
-                                        <button className={`flex items-center gap-1 text-[15px] font-bold font-sans tracking-wide transition-all h-full
+                                        <button className={`flex items-center gap-1 text-[15px] font-bold  tracking-wide transition-all h-full
                                             ${pathname.startsWith('/archive') ? 'text-[#0A192F]' : 'text-gray-500 hover:text-[#0A192F]'}`}>
                                             {item.label}
                                             <ChevronDown size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" />
@@ -94,7 +94,7 @@ export default function GNB() {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className={`relative text-[15px] font-bold font-sans tracking-wide transition-all py-2
+                                        className={`relative text-[15px] font-bold  tracking-wide transition-all py-2
                                             ${pathname === item.href ? 'text-[#0A192F]' : 'text-gray-500 hover:text-[#0A192F]'}
                                             after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#C5A059] after:transition-all after:duration-300 hover:after:w-full
                                         `}
@@ -171,13 +171,13 @@ export default function GNB() {
                     ></div>
                     <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[320px] bg-white shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
                         <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
-                            <span className="text-xl font-serif font-bold text-[#0A192F]">MENU</span>
+                            <span className="text-xl  font-bold text-[#0A192F]">MENU</span>
                             <button onClick={closeMenu} className="p-2 text-gray-400 hover:text-[#0A192F]">
                                 <X size={24} />
                             </button>
                         </div>
 
-                        <nav className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 font-serif">
+                        <nav className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 ">
                             {MENU_ITEMS.map((item) => (
                                 item.children ? (
                                     <div key={item.label} className="py-2 border-b border-gray-50">

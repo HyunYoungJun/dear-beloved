@@ -20,7 +20,7 @@ export default function MemoryWall({ obituaryId, onFlowerGiven }: MemoryWallProp
         <section className="py-16 bg-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-serif text-[var(--heritage-navy)] mb-4">추모의 벽</h2>
+                    <h2 className="text-3xl  text-[var(--heritage-navy)] mb-4">추모의 벽</h2>
                     <p className="text-gray-600 font-light">
                         사랑하는 분과의 소중한 추억을 함께 나누어주세요.<br />
                         따뜻한 마음이 유가족분들에게 큰 위로가 됩니다.

@@ -77,7 +77,7 @@ export default function ObituaryCard({ id, authorId, deceasedName, title, imageU
                     <div className="text-xs text-gray-500 mb-1">
                         {deathDate ? new Date(deathDate).toLocaleDateString() : '날짜 미상'}
                     </div>
-                    <h3 className="font-serif font-bold text-lg text-gray-900 mb-1 group-hover:text-gray-700">
+                    <h3 className=" font-bold text-lg text-gray-900 mb-1 group-hover:text-gray-700">
                         {deceasedName}
                     </h3>
                     <p className="text-sm text-gray-600 line-clamp-2">

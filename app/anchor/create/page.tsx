@@ -93,7 +93,7 @@ export default function CreateAnchorContentPage() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto my-10 px-4 font-serif">
+        <div className="max-w-2xl mx-auto my-10 px-4 ">
             <Link href="/" className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors">
                 <ArrowLeft size={16} className="mr-1" /> 홈으로 돌아가기
             </Link>

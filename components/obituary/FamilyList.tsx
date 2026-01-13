@@ -123,7 +123,7 @@ export default function FamilyList({ obituaryId }: FamilyListProps) {
 
     return (
         <div className="mt-12 pt-8 border-t border-[var(--heritage-gold)]/30">
-            <h3 className="text-xl font-serif font-bold text-[var(--heritage-navy)] mb-6 flex items-center gap-2">
+            <h3 className="text-xl  font-bold text-[var(--heritage-navy)] mb-6 flex items-center gap-2">
                 <Users size={20} className="text-[var(--heritage-gold)]" />
                 가족 아카이브
             </h3>
@@ -147,10 +147,10 @@ export default function FamilyList({ obituaryId }: FamilyListProps) {
 
                             {/* Info */}
                             <div className="flex flex-col min-w-0">
-                                <span className="inline-block bg-[var(--heritage-navy)] text-white text-[10px] px-2 py-0.5 rounded-full w-fit mb-1 font-sans">
+                                <span className="inline-block bg-[var(--heritage-navy)] text-white text-[10px] px-2 py-0.5 rounded-full w-fit mb-1 ">
                                     {member.relation_type}
                                 </span>
-                                <h4 className="text-lg font-serif font-bold text-gray-900 leading-none mb-1 group-hover:text-[var(--heritage-navy)] transition-colors truncate">
+                                <h4 className="text-lg  font-bold text-gray-900 leading-none mb-1 group-hover:text-[var(--heritage-navy)] transition-colors truncate">
                                     {member.obituary.deceased_name}
                                 </h4>
                                 <p className="text-xs text-gray-500 truncate font-light">

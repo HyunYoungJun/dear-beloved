@@ -38,7 +38,7 @@ export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadOpen, 
             {/* Header / Menu Bar */}
             <div className="flex flex-col md:flex-row items-center justify-between mb-8 pb-6 border-b border-[#C5A059]/10 gap-4 md:gap-0">
                 {/* Title */}
-                <h3 className="text-xl font-serif font-bold text-[#C5A059] tracking-widest flex items-center gap-2">
+                <h3 className="text-xl  font-bold text-[#C5A059] tracking-widest flex items-center gap-2">
                     <span className="w-1 h-6 bg-[#0A192F] block rounded-full"></span>
                     MEMORIAL ALBUM
                 </h3>
@@ -72,7 +72,7 @@ export default function MemorialAlbum({ obituaryId, isUploadOpen, onUploadOpen, 
             <div className="min-h-[200px]">
                 {photos.length === 0 ? (
                     <div className="h-48 flex flex-col items-center justify-center text-center bg-[#F9F9F9] rounded border border-dashed border-gray-200">
-                        <p className="text-[#0A192F]/60 font-serif text-sm mb-3">등록된 추억이 없습니다.</p>
+                        <p className="text-[#0A192F]/60  text-sm mb-3">등록된 추억이 없습니다.</p>
                         {onUploadOpen && (
                             <button onClick={onUploadOpen} className="text-[#C5A059] text-xs underline hover:text-[#0A192F]">
                                 첫 번째 사진을 올려주세요

@@ -85,7 +85,7 @@ export default function PhotoUploadModal({ isOpen, onClose, obituaryId, onUpload
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white w-full max-w-lg rounded-lg shadow-2xl overflow-hidden relative font-serif">
+            <div className="bg-white w-full max-w-lg rounded-lg shadow-2xl overflow-hidden relative ">
                 {/* Header */}
                 <div className="bg-[#0A192F] p-4 flex items-center justify-between border-b border-[#C5A059]/30">
                     <h3 className="text-[#C5A059] text-xl font-bold flex items-center gap-2">

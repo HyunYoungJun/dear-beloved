@@ -91,7 +91,7 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
 
                             {/* Content */}
                             <div className="flex flex-col gap-1 h-full">
-                                <h2 className="text-xl lg:text-2xl font-serif font-bold leading-tight mb-2 text-[#0A192F] group-hover:text-blue-900 transition-colors break-keep">
+                                <h2 className="text-xl lg:text-2xl  font-bold leading-tight mb-2 text-[#0A192F] group-hover:text-blue-900 transition-colors break-keep">
                                     {currentItem.title}
                                 </h2>
 
@@ -101,7 +101,7 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
                                     {currentItem.death_date ? new Date(currentItem.death_date).toLocaleDateString() : ''} | {categoryNames[currentItem.category || 'society'] || currentItem.category}
                                 </div>
 
-                                <p className="lg:hidden text-sm text-[#0A192F]/80 font-medium font-serif mt-1">
+                                <p className="lg:hidden text-sm text-[#0A192F]/80 font-medium  mt-1">
                                     故 {currentItem.deceased_name}
                                 </p>
                                 <p className="lg:hidden text-xs text-gray-400 mt-1">
@@ -109,7 +109,7 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
                                     {currentItem.death_date ? new Date(currentItem.death_date).toLocaleDateString() : ''} 별세
                                 </p>
 
-                                <p className="text-sm text-gray-600 font-serif leading-relaxed line-clamp-4 lg:line-clamp-4 mt-2 text-justify break-keep">
+                                <p className="text-sm text-gray-600  leading-relaxed line-clamp-4 lg:line-clamp-4 mt-2 text-justify break-keep">
                                     {currentItem.content?.substring(0, 150) || "고인의 평안한 안식을 빕니다."}...
                                 </p>
                             </div>

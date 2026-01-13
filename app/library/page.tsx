@@ -91,7 +91,7 @@ export default function LibraryPage() {
     };
 
     return (
-        <div className="bg-[#F9F9F9] min-h-[calc(100vh-64px)] py-12 px-4 md:px-8 font-serif">
+        <div className="bg-[#F9F9F9] min-h-[calc(100vh-64px)] py-12 px-4 md:px-8 ">
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
                     <div>

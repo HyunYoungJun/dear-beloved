@@ -69,11 +69,11 @@ export default function BannerCarousel({ mobile = false }: { mobile?: boolean })
     if (!mobile) {
         return (
             <Link href={slide.link} className={`flex items-center gap-4 group p-4 border rounded-lg transition-all duration-500 w-1/3 min-h-[90px] ${theme.desktop}`}>
-                <div key={slide.id + "_icon"} className={`w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-lg shrink-0 animate-in fade-in zoom-in duration-500 ${theme.icon}`}>
+                <div key={slide.id + "_icon"} className={`w-10 h-10 rounded-full flex items-center justify-center  font-bold text-lg shrink-0 animate-in fade-in zoom-in duration-500 ${theme.icon}`}>
                     {slide.icon}
                 </div>
                 <div className="flex flex-col">
-                    <span key={slide.id + "_title"} className="text-gray-900 font-serif font-bold text-sm leading-tight whitespace-pre-line animate-in slide-in-from-bottom-2 fade-in duration-500">
+                    <span key={slide.id + "_title"} className="text-gray-900  font-bold text-sm leading-tight whitespace-pre-line animate-in slide-in-from-bottom-2 fade-in duration-500">
                         {slide.title}
                     </span>
                     <span key={slide.id + "_sub"} className="text-gray-500 text-xs mt-1 animate-in slide-in-from-bottom-1 fade-in duration-700">
@@ -87,7 +87,7 @@ export default function BannerCarousel({ mobile = false }: { mobile?: boolean })
     // Mobile Style (Dense & Compact)
     return (
         <Link href={slide.link} key={slide.id + "_mobile"} className={`flex items-center justify-center gap-3 mb-4 py-3 px-6 rounded-full border w-[90%] mx-auto shadow-md active:scale-95 transition-all duration-500 overflow-hidden ${theme.mobile}`}>
-            <div key={slide.id + "_mb_icon"} className={`w-8 h-8 rounded-full flex items-center justify-center font-serif font-bold text-sm shrink-0 animate-in fade-in zoom-in duration-500 ${theme.mobileIcon}`}>
+            <div key={slide.id + "_mb_icon"} className={`w-8 h-8 rounded-full flex items-center justify-center  font-bold text-sm shrink-0 animate-in fade-in zoom-in duration-500 ${theme.mobileIcon}`}>
                 {slide.icon}
             </div>
             <span key={slide.id + "_mb_text"} className="text-sm font-bold text-stone-700 tracking-tight animate-in fade-in slide-in-from-right-10 duration-700 whitespace-nowrap">

@@ -98,7 +98,7 @@ export default function MemorialCalendarPage() {
                 <Link href="/" className="p-2 -ml-2 text-[#0A192F]">
                     <ArrowLeft size={24} />
                 </Link>
-                <h1 className="font-serif font-bold text-lg text-[#0A192F] tracking-tight">추모 캘린더</h1>
+                <h1 className=" font-bold text-lg text-[#0A192F] tracking-tight">추모 캘린더</h1>
                 <div className="w-8" />{/* Spacer for centering */}
             </header>
 
@@ -172,7 +172,7 @@ export default function MemorialCalendarPage() {
                                     )}
                                 </div>
 
-                                <h2 className="text-lg font-bold text-[#0A192F] font-serif mb-1 truncate">
+                                <h2 className="text-lg font-bold text-[#0A192F]  mb-1 truncate">
                                     故 {item.deceased_name}
                                 </h2>
 

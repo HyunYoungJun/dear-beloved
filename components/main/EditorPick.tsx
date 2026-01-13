@@ -82,10 +82,10 @@ export default function EditorPick({ data }: { data: ObituarySummary[] }) {
 
                             {/* Content */}
                             <div className="px-1">
-                                <h3 className="text-xl font-serif font-bold leading-snug mb-2 text-gray-900 group-hover:text-[#0A192F] transition-colors line-clamp-2 min-h-[3.5rem]">
+                                <h3 className="text-xl  font-bold leading-snug mb-2 text-gray-900 group-hover:text-[#0A192F] transition-colors line-clamp-2 min-h-[3.5rem]">
                                     {currentItem.title}
                                 </h3>
-                                <p className="text-sm text-gray-600 font-sans leading-relaxed mb-4 line-clamp-2 min-h-[2.5rem]">
+                                <p className="text-sm text-gray-600  leading-relaxed mb-4 line-clamp-2 min-h-[2.5rem]">
                                     {currentItem.content?.substring(0, 100)}...
                                 </p>
                                 <div className="flex items-center justify-between border-t border-gray-100 pt-3">
