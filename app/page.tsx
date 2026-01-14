@@ -34,8 +34,8 @@ export default function Home() {
   const [todayObituaries, setTodayObituaries] = useState<ObituarySummary[]>([]);
   const [editorPicks, setEditorPicks] = useState<ObituarySummary[]>([]);
   const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
-  const [overseasObituaries, setOverseasObituaries] = useState<ObituarySummary[]>([]); // Added missing state
-  const [quoteObituary, setQuoteObituary] = useState<ObituarySummary | null>(null); // New State
+  const [overseasObituaries, setOverseasObituaries] = useState<ObituarySummary[]>([]);
+  const [quoteObituaries, setQuoteObituaries] = useState<ObituarySummary[]>([]); // Quotes Array
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
     economy: [],
@@ -89,25 +89,6 @@ export default function Home() {
 
       if (recentData) {
         setRecentObituaries(recentData);
-
-        // Fetch Quote from recent data first
-        const quoteItem = recentData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
-        if (quoteItem) {
-          setQuoteObituary(quoteItem);
-        } else {
-          // Fallback: Try to fetch a specific one if not found in recent
-          const { data: quoteData } = await supabase
-            .from('obituaries')
-            .select('*')
-            .eq('is_public', true)
-            .not('biography_data', 'is', null) // Crude filter
-            .limit(20);
-
-          if (quoteData) {
-            const validQuote = quoteData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
-            if (validQuote) setQuoteObituary(validQuote);
-          }
-        }
       }
 
       if (todayData) {
@@ -122,6 +103,39 @@ export default function Home() {
         setEditorPicks(picks);
       }
 
+      // ... inside fetchData ...
+
+      // 4. Fetch Quotes Section (Featured or Fallback)
+      // Since JSONB filtering is tricky in some stored procedures or older PG via supabase-js simple queries if not setup, 
+      // we'll try client-side filter on a fetched batch of candidates if deep filtering fails.
+      // But let's try to fetch all recent items that MIGHT have quotes (e.g. from general 'recentData' or separate call).
+
+      // Try to get ALL featured quotes first. 
+      // Note: In real app, create an index on biography_data.
+      const { data: quoteAllData } = await supabase
+        .from('obituaries')
+        .select('*')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(100); // Fetch a batch to filter client-side for 'is_quote_featured'
+
+      let featuredQuotes: ObituarySummary[] = [];
+      if (quoteAllData) {
+        featuredQuotes = quoteAllData.filter((item: any) =>
+          item.biography_data?.quote &&
+          item.biography_data.quote.length > 0 &&
+          item.biography_data.is_quote_featured === true
+        );
+      }
+
+      // Fallback: If no featured, take the most recent ONE that has a quote
+      if (featuredQuotes.length === 0 && quoteAllData) {
+        const fallback = quoteAllData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
+        if (fallback) featuredQuotes = [fallback];
+      }
+
+      setQuoteObituaries(featuredQuotes);
+
       // 3. Strict Fetch for "Overseas"
       const { data: overseasData } = await supabase
         .from('obituaries')
@@ -129,7 +143,7 @@ export default function Home() {
         .eq('is_public', true)
         .eq('service_type', 'overseas')
         .order('created_at', { ascending: false })
-        .limit(5);
+        .limit(3);
 
       if (overseasData) {
         setOverseasObituaries(overseasData);
@@ -142,8 +156,8 @@ export default function Home() {
         const { data } = await supabase
           .from('obituaries')
           .select('*')
-          .eq('is_public', true)
           .eq('category', cat)
+          .eq('is_public', true)
           .order('created_at', { ascending: false })
           .limit(5);
         newCategories[cat] = data || [];
@@ -262,7 +276,7 @@ export default function Home() {
 
             {/* Right: Deceased's Quote (35-40%) */}
             <div className="w-full lg:w-[37%]">
-              <DeceasedQuote data={quoteObituary} />
+              <DeceasedQuote items={quoteObituaries} />
             </div>
 
           </div>
