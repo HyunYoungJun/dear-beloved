@@ -27,6 +27,7 @@ import CategoryNewsRotation from '@/components/CategoryNewsRotation';
 import FeaturedDeceased from '@/components/main/FeaturedDeceased';
 import MemorialCalendar from '@/components/obituary/MemorialCalendar';
 import EditorPick from '@/components/main/EditorPick';
+import DeceasedQuote from '@/components/main/DeceasedQuote'; // Import Component
 
 export default function Home() {
   const [headline, setHeadline] = useState<ObituarySummary | null>(null);
@@ -34,6 +35,7 @@ export default function Home() {
   const [editorPicks, setEditorPicks] = useState<ObituarySummary[]>([]);
   const [recentObituaries, setRecentObituaries] = useState<ObituarySummary[]>([]);
   const [overseasObituaries, setOverseasObituaries] = useState<ObituarySummary[]>([]); // Added missing state
+  const [quoteObituary, setQuoteObituary] = useState<ObituarySummary | null>(null); // New State
   const [categories, setCategories] = useState<{ [key: string]: ObituarySummary[] }>({
     politics: [],
     economy: [],
@@ -87,6 +89,25 @@ export default function Home() {
 
       if (recentData) {
         setRecentObituaries(recentData);
+
+        // Fetch Quote from recent data first
+        const quoteItem = recentData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
+        if (quoteItem) {
+          setQuoteObituary(quoteItem);
+        } else {
+          // Fallback: Try to fetch a specific one if not found in recent
+          const { data: quoteData } = await supabase
+            .from('obituaries')
+            .select('*')
+            .eq('is_public', true)
+            .not('biography_data', 'is', null) // Crude filter
+            .limit(20);
+
+          if (quoteData) {
+            const validQuote = quoteData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
+            if (validQuote) setQuoteObituary(validQuote);
+          }
+        }
       }
 
       if (todayData) {
@@ -225,15 +246,25 @@ export default function Home() {
 
         </section>
 
-        {/* 4. 해외 추모기사 (Mobile: Fourth, New Section) */}
+        {/* 4. 해외 추모기사 & 고인의 명언 (Split Layout) */}
         <section className="mb-20">
-          <div className="flex flex-col gap-4">
-            <Link href="/overseas" className="group">
-              <h2 className="text-sm font-bold tracking-tighter border-l-4 border-gray-400 pl-3 uppercase group-hover:text-[#0A192F] transition-colors">
-                해외 추모기사
-              </h2>
-            </Link>
-            <EditorPick data={overseasObituaries} />
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+
+            {/* Left: Overseas Obituaries (60-65%) */}
+            <div className="w-full lg:w-[63%] flex flex-col gap-4">
+              <Link href="/overseas" className="group">
+                <h2 className="text-sm font-bold tracking-tighter border-l-4 border-gray-400 pl-3 uppercase group-hover:text-[#0A192F] transition-colors">
+                  해외 추모기사
+                </h2>
+              </Link>
+              <EditorPick data={overseasObituaries} />
+            </div>
+
+            {/* Right: Deceased's Quote (35-40%) */}
+            <div className="w-full lg:w-[37%]">
+              <DeceasedQuote data={quoteObituary} />
+            </div>
+
           </div>
         </section>
 
