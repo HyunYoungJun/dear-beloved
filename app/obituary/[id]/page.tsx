@@ -7,6 +7,12 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import Link from 'next/link';
 import { ArrowLeft, Quote, Flower2 } from 'lucide-react';
 
+import CandleIcon from '@/components/obituary/CandleIcon';
+import TimelineViewer from '@/components/obituary/TimelineViewer';
+import MemoryWall from '@/components/obituary/MemoryWall';
+import FamilyTree from '@/components/obituary/FamilyTree';
+import MemorialAlbum from '@/components/obituary/MemorialAlbum';
+
 type ObituaryDetail = {
     id: string;
     user_id: string;
@@ -19,12 +25,9 @@ type ObituaryDetail = {
     biography_data?: any; // Added to access quote
     timeline_data?: any;
     flower_count: number;
+    candle_count?: number;
+    last_candle_lit_at?: string;
 };
-
-import TimelineViewer from '@/components/obituary/TimelineViewer';
-import MemoryWall from '@/components/obituary/MemoryWall';
-import FamilyTree from '@/components/obituary/FamilyTree';
-import MemorialAlbum from '@/components/obituary/MemorialAlbum';
 
 const WhiteChrysanthemum = ({ className }: { className?: string }) => (
     <div className={`${className} rounded-sm overflow-hidden`}>
@@ -101,6 +104,87 @@ export default function ObituaryDetailPage() {
         }
     };
 
+    // State for Candle
+    const [candleState, setCandleState] = useState<{ active: boolean; opacity: number }>({ active: false, opacity: 1 });
+    const [candleCount, setCandleCount] = useState(0);
+
+    // Initial Load Logic
+    useEffect(() => {
+        if (obituary) {
+            setCandleCount(obituary.candle_count || 0);
+            updateCandleState(obituary.last_candle_lit_at);
+        }
+    }, [obituary]);
+
+    // Timer Interval to fade/expire candle
+    useEffect(() => {
+        if (!candleState.active || !obituary?.last_candle_lit_at) return;
+
+        const interval = setInterval(() => {
+            updateCandleState(obituary.last_candle_lit_at!);
+        }, 60000); // Check every minute (sufficient for 24h scale)
+
+        return () => clearInterval(interval);
+    }, [candleState.active, obituary?.last_candle_lit_at]);
+
+
+    const updateCandleState = (lastLitAt: string | null | undefined) => {
+        if (!lastLitAt) {
+            setCandleState({ active: false, opacity: 1 });
+            return;
+        }
+
+        const litTime = new Date(lastLitAt).getTime();
+        const now = new Date().getTime();
+        const diff = now - litTime;
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        if (diff < twentyFourHours) {
+            // Active
+            // Calculate opacity: 1.0 (start) -> 0.2 (near end) -> 0 (expired)
+            const remaining = twentyFourHours - diff;
+            const ratio = remaining / twentyFourHours;
+            // Clamp opacity between 0.2 and 1.0 for visibility, but fade out at very end
+            const opacity = Math.max(0.1, ratio);
+
+            setCandleState({ active: true, opacity });
+        } else {
+            // Expired
+            setCandleState({ active: false, opacity: 1 });
+        }
+    };
+
+    const handleCandleClick = async () => {
+        const now = new Date().toISOString();
+
+        // Optimistic Update
+        setCandleState({ active: true, opacity: 1 });
+        setCandleCount(prev => prev + 1);
+
+        // Propagate state update to use in interval effect
+        if (obituary) {
+            setObituary({
+                ...obituary,
+                last_candle_lit_at: now,
+                candle_count: (obituary.candle_count || 0) + 1
+            });
+        }
+
+        // DB Update
+        const { error } = await supabase
+            .from('obituaries')
+            .update({
+                last_candle_lit_at: now,
+                candle_count: (obituary?.candle_count || 0) + 1
+            })
+            .eq('id', id);
+
+        if (error) {
+            console.error('Failed to light candle:', error);
+            // Revert on serious error if needed, but for tribute usually ok to fail silently or alert
+        }
+    };
+
     if (loading) return <div className="min-h-screen flex items-center justify-center ">불러오는 중...</div>;
     if (!obituary) return null;
 
@@ -130,34 +214,35 @@ export default function ObituaryDetailPage() {
                             )}
                         </div>
 
-                        {/* 2. Tribute Bar Section (Exact Width Match) */}
-                        <button
-                            onClick={handleFlowerGiven}
-                            className="w-full h-[50px] bg-[#0A192F] border-2 border-t-0 border-[#C5A059] rounded-b-sm flex items-center px-4 hover:bg-[#112240] transition-colors relative group overflow-hidden"
-                        >
-                            {/* Hover Effect Background */}
-                            <div className="absolute inset-0 bg-[#C5A059] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-
-                            {/* Content Flex Layout */}
-                            <div className="w-full flex items-center justify-between relative z-10">
-                                {/* Left: Action Label & Icon */}
-                                <div className="flex items-center gap-2">
-                                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white">
-                                        <Flower2 size={14} className="text-[#C5A059]" />
-                                    </div>
-                                    <span className="text-[#C5A059] text-xs font-bold  tracking-widest uppercase mb-0.5">
-                                        헌화하기
-                                    </span>
+                        {/* 2. Tribute Action Bar (Flower & Candle) */}
+                        <div className="w-full h-[50px] bg-[#0A192F] border-2 border-t-0 border-[#C5A059] rounded-b-sm flex items-center relative overflow-hidden">
+                            {/* Flower Button (Left) */}
+                            <button
+                                onClick={handleFlowerGiven}
+                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group border-r border-[#C5A059]/20"
+                            >
+                                <div className="flex flex-col items-center justify-center leading-none">
+                                    <Flower2 size={16} className="text-[#C5A059] mb-1 leading-none" />
+                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase">헌화하기</span>
                                 </div>
+                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
+                            </button>
 
-                                {/* Right: Active Count */}
-                                <div className="flex items-center gap-1.5 pl-4 border-l border-white/10">
-                                    <span className="text-white text-lg font-bold  tabular-nums leading-none">
-                                        {obituary.flower_count?.toLocaleString() || 0}
-                                    </span>
+                            {/* Candle Button (Right) */}
+                            <button
+                                onClick={handleCandleClick}
+                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group"
+                            >
+                                <div className="flex flex-col items-center justify-center leading-none">
+                                    <CandleIcon isOn={candleState.active} opacity={candleState.opacity} className="mb-0.5" />
+                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase mt-0.5">촛불 켜기</span>
                                 </div>
-                            </div>
-                        </button>
+                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{candleCount.toLocaleString()}</span>
+
+                                {/* Hover Glow */}
+                                <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-1 transition-opacity"></div>
+                            </button>
+                        </div>
                     </div>
 
                     {/* Right: Information */}
