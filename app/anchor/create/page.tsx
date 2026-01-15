@@ -260,5 +260,6 @@ export default function CreateAnchorContentPage() {
                     </form>
                 </div>
             </div>
-            );
+        </div>
+    );
 }
