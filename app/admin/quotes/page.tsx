@@ -86,7 +86,7 @@ export default function QuoteAdminPage() {
     );
 
     return (
-        <div className="min-h-screen bg-[#F9F9F9] p-6 lg:p-12">
+        <div className="min-h-screen bg-[#F9F9F9] p-6 lg:p-12 font-['Malgun_Gothic']">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -151,7 +151,7 @@ export default function QuoteAdminPage() {
 
                                         <div className="relative bg-[#FDFBF7] p-4 rounded border border-[#C5A059]/10">
                                             <Quote className="w-4 h-4 text-[#C5A059]/40 mb-2" />
-                                            <p className="text-gray-700 leading-relaxed font-['Malgun_Gothic'] break-keep line-clamp-4">
+                                            <p className="text-gray-700 leading-relaxed break-keep line-clamp-4">
                                                 {item.biography_data.quote}
                                             </p>
                                         </div>
