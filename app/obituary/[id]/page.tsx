@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ArrowLeft, Quote, Flower2 } from 'lucide-react';
 
 import CandleIcon from '@/components/obituary/CandleIcon';
+import IncenseIcon from '@/components/obituary/IncenseIcon';
 import TimelineViewer from '@/components/obituary/TimelineViewer';
 import MemoryWall from '@/components/obituary/MemoryWall';
 import FamilyTree from '@/components/obituary/FamilyTree';
@@ -27,6 +28,7 @@ type ObituaryDetail = {
     flower_count: number;
     candle_count?: number;
     last_candle_lit_at?: string;
+    incense_count?: number;
 };
 
 const WhiteChrysanthemum = ({ className }: { className?: string }) => (
@@ -101,6 +103,14 @@ export default function ObituaryDetailPage() {
 
             // In a real app, you would send this to the server here
             // await supabase.rpc('increment_flower_count', { obituary_id: id });
+            const { error } = await supabase.rpc('increment_flower_count', { obituary_id: id });
+            if (error) {
+                // Fallback if RPC doesn't exist yet, simply update the row
+                await supabase
+                    .from('obituaries')
+                    .update({ flower_count: (obituary.flower_count || 0) + 1 })
+                    .eq('id', id);
+            }
         }
     };
 
@@ -108,11 +118,16 @@ export default function ObituaryDetailPage() {
     const [candleState, setCandleState] = useState<{ active: boolean; opacity: number }>({ active: false, opacity: 1 });
     const [candleCount, setCandleCount] = useState(0);
 
+    // State for Incense
+    const [incenseCount, setIncenseCount] = useState(0);
+    const [isIncenseBurning, setIsIncenseBurning] = useState(false);
+
     // Initial Load Logic
     useEffect(() => {
         if (obituary) {
             setCandleCount(obituary.candle_count || 0);
             updateCandleState(obituary.last_candle_lit_at);
+            setIncenseCount(obituary.incense_count || 0);
         }
     }, [obituary]);
 
@@ -181,7 +196,30 @@ export default function ObituaryDetailPage() {
 
         if (error) {
             console.error('Failed to light candle:', error);
-            // Revert on serious error if needed, but for tribute usually ok to fail silently or alert
+        }
+    };
+
+    const handleIncenseClick = async () => {
+        if (isIncenseBurning) return; // Prevent spamming while burning
+
+        setIsIncenseBurning(true);
+        setIncenseCount(prev => prev + 1);
+
+        // Reset burning state after 15 seconds
+        setTimeout(() => {
+            setIsIncenseBurning(false);
+        }, 15000);
+
+        // DB Update
+        const { error } = await supabase
+            .from('obituaries')
+            .update({
+                incense_count: (incenseCount || 0) + 1
+            })
+            .eq('id', id);
+
+        if (error) {
+            console.error('Failed to burn incense:', error);
         }
     };
 
@@ -214,7 +252,7 @@ export default function ObituaryDetailPage() {
                             )}
                         </div>
 
-                        {/* 2. Tribute Action Bar (Flower & Candle) */}
+                        {/* 2. Tribute Action Bar (Flower - Incense - Candle) */}
                         <div className="w-full h-[50px] bg-[#0A192F] border-2 border-t-0 border-[#C5A059] rounded-b-sm flex items-center relative overflow-hidden">
                             {/* Flower Button (Left) */}
                             <button
@@ -226,6 +264,18 @@ export default function ObituaryDetailPage() {
                                     <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase">헌화하기</span>
                                 </div>
                                 <span className="text-white text-sm font-bold ml-1 tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
+                            </button>
+
+                            {/* Incense Button (Center) */}
+                            <button
+                                onClick={handleIncenseClick}
+                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group border-r border-[#C5A059]/20"
+                            >
+                                <div className="flex flex-col items-center justify-center leading-none">
+                                    <IncenseIcon isBurning={isIncenseBurning} className="mb-0.5" />
+                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase mt-0.5">분향하기</span>
+                                </div>
+                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{incenseCount.toLocaleString()}</span>
                             </button>
 
                             {/* Candle Button (Right) */}
