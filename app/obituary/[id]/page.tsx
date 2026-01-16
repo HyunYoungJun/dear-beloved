@@ -232,14 +232,14 @@ export default function ObituaryDetailPage() {
         <article className="min-h-screen bg-[#F9F9F9]  pb-32">
             {/* 1. Header Section: Deep Navy Background, Flex Layout */}
             <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
-                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-8">
+                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-8">
 
-                    {/* Left: Passport Style Photo & Tribute Bar (Aligned) */}
                     {/* Left & Center Wrapper: Photo + Tribute Actions */}
-                    <div className="shrink-0 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+                    {/* Mobile: Order 2 (Below Info) */}
+                    <div className="order-2 md:order-1 shrink-0 flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start w-full md:w-auto">
 
                         {/* 1. Photo Section */}
-                        <div className="relative w-full md:w-[360px] h-[480px] bg-[#112240] border-[3px] border-[#C5A059] shadow-[0_10px_40px_rgba(0,0,0,0.4)] rounded-sm overflow-hidden group">
+                        <div className="relative w-[85%] md:w-[360px] aspect-[3/4] md:h-[480px] md:aspect-auto bg-[#112240] border-[3px] border-[#C5A059] shadow-[0_10px_40px_rgba(0,0,0,0.4)] rounded-sm overflow-hidden group">
                             {featuredImage ? (
                                 <img
                                     key={featuredImage}
@@ -258,7 +258,7 @@ export default function ObituaryDetailPage() {
 
                         {/* 2. Tribute Action Bar (Responsive: Horizontal Mobile / Vertical Desktop) */}
                         <div className="
-                            w-full md:w-[130px] md:h-[480px] 
+                            w-[90%] md:w-[130px] md:h-[480px] 
                             bg-[#0A192F]/95 backdrop-blur-sm 
                             border border-[#C5A059]/30 
                             md:rounded-sm rounded-xl
@@ -320,8 +320,9 @@ export default function ObituaryDetailPage() {
                     </div>
 
                     {/* Right: Information */}
-                    <div className="flex flex-col items-center md:items-start text-center md:text-left flex-1 min-w-0 pt-2">
-                        <div className="flex items-center gap-3 mb-4">
+                    {/* Mobile: Order 1 (Top) */}
+                    <div className="order-1 md:order-2 flex flex-col items-center md:items-start text-center md:text-left flex-1 min-w-0 pt-0 md:pt-2 w-full">
+                        <div className="flex items-center gap-3 mb-6 md:mb-4 justify-center md:justify-start">
                             <span className="px-2 py-0.5 border border-[#C5A059]/60 text-[#C5A059] text-[10px] font-bold tracking-[0.2em] rounded-sm uppercase">
                                 In Loving Memory
                             </span>
@@ -332,14 +333,14 @@ export default function ObituaryDetailPage() {
                         </div>
 
                         <h1
-                            className="text-2xl md:text-4xl font-bold font-['Nanum_Myeongjo'] mb-3 leading-snug break-keep animate-fade-loop"
+                            className="text-3xl md:text-4xl font-bold font-['Nanum_Myeongjo'] mb-4 md:mb-3 leading-snug break-keep animate-fade-loop"
                             style={{ color: '#C5A059' }}
                         >
                             {obituary.title}
                         </h1>
 
-                        <div className="space-y-1.5">
-                            <p className="text-lg md:text-xl text-[#C5A059] font-medium ">
+                        <div className="space-y-2 md:space-y-1.5 flex flex-col items-center md:items-start">
+                            <p className="text-xl md:text-xl text-[#C5A059] font-medium ">
                                 故 {obituary.deceased_name}
                             </p>
                             <div className="flex items-center justify-center md:justify-start gap-2 text-sm md:text-base text-gray-300 font-light tracking-wide opacity-80 ">
