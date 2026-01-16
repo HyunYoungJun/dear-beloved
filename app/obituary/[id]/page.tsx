@@ -273,7 +273,13 @@ export default function ObituaryDetailPage() {
                                 className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2"
                             >
                                 <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                                    <Flower2 size={28} className="text-[#C5A059] opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300" />
+                                    <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] flex items-center justify-center">
+                                        <img
+                                            src="/chrysanthemum-tribute.png"
+                                            alt="Flower Tribute"
+                                            className="w-full h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                                        />
+                                    </div>
                                 </div>
                                 <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">헌화하기</span>
                                 <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
