@@ -235,9 +235,11 @@ export default function ObituaryDetailPage() {
                 <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-8">
 
                     {/* Left: Passport Style Photo & Tribute Bar (Aligned) */}
-                    <div className="shrink-0 flex flex-col gap-0 w-[240px] shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+                    {/* Left & Center Wrapper: Photo + Tribute Actions */}
+                    <div className="shrink-0 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+
                         {/* 1. Photo Section */}
-                        <div className="relative w-full h-[320px] bg-[#112240] border-2 border-[#C5A059] border-b-0 rounded-t-sm overflow-hidden group">
+                        <div className="relative w-full md:w-[360px] h-[480px] bg-[#112240] border-[3px] border-[#C5A059] shadow-[0_10px_40px_rgba(0,0,0,0.4)] rounded-sm overflow-hidden group">
                             {featuredImage ? (
                                 <img
                                     key={featuredImage}
@@ -246,51 +248,73 @@ export default function ObituaryDetailPage() {
                                     className="w-full h-full object-cover filter brightness-105 animate-in fade-in duration-1000 group-hover:scale-105 transition-transform duration-700"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg">
-                                    <span className="">No Photo</span>
+                                <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-base shadow-lg font-serif">
+                                    <span className="">No Photo Available</span>
                                 </div>
                             )}
+                            {/* Inner Border Line */}
+                            <div className="absolute inset-2 border border-[#C5A059]/20 pointer-events-none"></div>
                         </div>
 
-                        {/* 2. Tribute Action Bar (Flower - Incense - Candle) */}
-                        <div className="w-full h-[50px] bg-[#0A192F] border-2 border-t-0 border-[#C5A059] rounded-b-sm flex items-center relative overflow-hidden">
-                            {/* Flower Button (Left) */}
+                        {/* 2. Tribute Action Bar (Responsive: Horizontal Mobile / Vertical Desktop) */}
+                        <div className="
+                            w-full md:w-[130px] md:h-[480px] 
+                            bg-[#0A192F]/95 backdrop-blur-sm 
+                            border border-[#C5A059]/30 
+                            md:rounded-sm rounded-xl
+                            flex flex-row md:flex-col items-center justify-between 
+                            p-2 md:py-6 md:px-2
+                            shadow-2xl z-20
+                        ">
+
+                            {/* Flower Button */}
                             <button
                                 onClick={handleFlowerGiven}
-                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group border-r border-[#C5A059]/20"
+                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2"
                             >
-                                <div className="flex flex-col items-center justify-center leading-none">
-                                    <Flower2 size={16} className="text-[#C5A059] mb-1 leading-none" />
-                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase">헌화하기</span>
+                                <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                                    <Flower2 size={28} className="text-[#C5A059] opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300" />
                                 </div>
-                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
+                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">헌화하기</span>
+                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
                             </button>
 
-                            {/* Incense Button (Center) */}
+                            {/* Divider (Mobile Only) */}
+                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
+
+                            {/* Incense Button */}
                             <button
                                 onClick={handleIncenseClick}
-                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group border-r border-[#C5A059]/20"
+                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2"
                             >
-                                <div className="flex flex-col items-center justify-center leading-none">
-                                    <IncenseIcon isBurning={isIncenseBurning} className="mb-0.5" />
-                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase mt-0.5">분향하기</span>
+                                <div className="relative p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                                    {/* Scaled Incense Icon is handled inside the component prop or style */}
+                                    <div className="scale-125 origin-center">
+                                        <IncenseIcon isBurning={isIncenseBurning} />
+                                    </div>
                                 </div>
-                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{incenseCount.toLocaleString()}</span>
+                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">분향하기</span>
+                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{incenseCount.toLocaleString()}</span>
                             </button>
 
-                            {/* Candle Button (Right) */}
+                            {/* Divider (Mobile Only) */}
+                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
+
+                            {/* Candle Button */}
                             <button
                                 onClick={handleCandleClick}
-                                className="flex-1 h-full flex items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group"
+                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none py-2"
                             >
-                                <div className="flex flex-col items-center justify-center leading-none">
-                                    <CandleIcon isOn={candleState.active} opacity={candleState.opacity} className="mb-0.5" />
-                                    <span className="text-[#C5A059] text-[9px] font-bold tracking-widest uppercase mt-0.5">촛불 켜기</span>
+                                <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                                    <div className="scale-125 origin-center">
+                                        <CandleIcon isOn={candleState.active} opacity={candleState.opacity} />
+                                    </div>
                                 </div>
-                                <span className="text-white text-sm font-bold ml-1 tabular-nums">{candleCount.toLocaleString()}</span>
+                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">촛불 켜기</span>
+                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{candleCount.toLocaleString()}</span>
 
                                 {/* Hover Glow */}
-                                <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-1 transition-opacity"></div>
+                                <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-1 transition-opacity rounded-lg"></div>
                             </button>
                         </div>
                     </div>
