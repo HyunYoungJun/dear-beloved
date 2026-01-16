@@ -50,11 +50,41 @@ export default function ObituaryDetailPage() {
     const [featuredImage, setFeaturedImage] = useState<string | null>(null); // State for rotated header image
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
+    const [flowerCount, setFlowerCount] = useState(0);
+    const [hasGivenFlower, setHasGivenFlower] = useState(false);
+
     useEffect(() => {
         if (id) {
             fetchObituary();
+            fetchFlowerData();
         }
-    }, [id]);
+    }, [id, user?.id]);
+
+    async function fetchFlowerData() {
+        // 1. Fetch Total Count
+        const { count, error } = await supabase
+            .from('flower_offerings')
+            .select('*', { count: 'exact', head: true })
+            .eq('memorial_id', id);
+
+        if (!error && count !== null) {
+            setFlowerCount(count);
+        }
+
+        // 2. Check if current user has already given
+        if (user) {
+            const { data } = await supabase
+                .from('flower_offerings')
+                .select('id')
+                .eq('memorial_id', id)
+                .eq('user_id', user.id)
+                .single();
+
+            if (data) {
+                setHasGivenFlower(true);
+            }
+        }
+    }
 
     async function fetchObituary() {
         const { data, error } = await supabase
@@ -68,7 +98,7 @@ export default function ObituaryDetailPage() {
             alert('기사를 찾을 수 없거나 접근 권한이 없습니다.');
             router.push('/library');
         } else {
-            console.log('Fetched obituary:', data); // Debugging
+            // console.log('Fetched obituary:', data); 
             setObituary(data);
 
             // Feature Photo Rotation Logic
@@ -85,7 +115,6 @@ export default function ObituaryDetailPage() {
                 const hour = new Date().getHours();
                 const index = hour % featuredData.length;
                 displayImage = featuredData[index].image_url;
-                console.log(`[Rotation] Hour: ${hour}, Count: ${featuredData.length}, Index: ${index}`);
             }
 
             setFeaturedImage(displayImage);
@@ -94,23 +123,39 @@ export default function ObituaryDetailPage() {
     }
 
     const handleFlowerGiven = async () => {
-        if (obituary) {
-            // Optimistic UI update
-            setObituary({
-                ...obituary,
-                flower_count: (obituary.flower_count || 0) + 1
-            });
+        if (!user) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
 
-            // In a real app, you would send this to the server here
-            // await supabase.rpc('increment_flower_count', { obituary_id: id });
-            const { error } = await supabase.rpc('increment_flower_count', { obituary_id: id });
-            if (error) {
-                // Fallback if RPC doesn't exist yet, simply update the row
-                await supabase
-                    .from('obituaries')
-                    .update({ flower_count: (obituary.flower_count || 0) + 1 })
-                    .eq('id', id);
+        if (hasGivenFlower) {
+            alert('이미 마음을 전하셨습니다.');
+            return;
+        }
+
+        // Optimistic UI update
+        setFlowerCount(prev => prev + 1);
+        setHasGivenFlower(true);
+
+        const { error } = await supabase
+            .from('flower_offerings')
+            .insert({ memorial_id: id, user_id: user.id });
+
+        if (error) {
+            console.error('Flower Error:', error);
+            // Revert on error
+            setFlowerCount(prev => prev - 1);
+            setHasGivenFlower(false);
+
+            if (error.code === '23505') { // Unique violation
+                alert('이미 마음을 전하셨습니다.');
+                setHasGivenFlower(true); // Ensure it's set to true if it exists
+            } else {
+                alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
+        } else {
+            // Optional: Sync with obituaries table count if needed for other lists
+            await supabase.rpc('increment_flower_count', { obituary_id: id });
         }
     };
 
@@ -270,19 +315,24 @@ export default function ObituaryDetailPage() {
                             {/* Flower Button */}
                             <button
                                 onClick={handleFlowerGiven}
-                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2"
+                                disabled={hasGivenFlower}
+                                className={`flex-1 w-full flex flex-col items-center justify-center gap-2 transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2 
+                                    ${hasGivenFlower ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:bg-[#112240] cursor-pointer'}`}
                             >
                                 <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
                                     <div className="w-[56px] h-[56px] md:w-[64px] md:h-[64px] flex items-center justify-center">
                                         <img
                                             src="/chrysanthemum-tribute.png"
                                             alt="Flower Tribute"
-                                            className="w-full h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+                                            className={`w-full h-full object-contain transition-transform duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]
+                                                ${hasGivenFlower ? '' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110'}`}
                                         />
                                     </div>
                                 </div>
-                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">헌화하기</span>
-                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{obituary.flower_count?.toLocaleString() || 0}</span>
+                                <span className={`text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1 ${hasGivenFlower ? 'text-gray-500' : 'text-[#C5A059]'}`}>
+                                    {hasGivenFlower ? '헌화 완료' : '헌화하기'}
+                                </span>
+                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{flowerCount.toLocaleString()}</span>
                             </button>
 
                             {/* Divider (Mobile Only) */}
