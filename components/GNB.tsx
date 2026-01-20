@@ -146,9 +146,14 @@ export default function GNB() {
                                 </div>
                             </div>
                         ) : (
-                            <Link href="/login" className="text-sm font-bold text-white bg-[#0A192F] px-5 py-2 rounded-full hover:bg-[#112240] transition-colors shadow-md hover:shadow-lg transform active:scale-95 duration-200">
-                                로그인
-                            </Link>
+                            <div className="flex items-center gap-2">
+                                <Link href="/signup" className="text-sm font-bold text-[#0A192F] px-5 py-2 hover:bg-gray-100 rounded-full transition-colors">
+                                    회원가입
+                                </Link>
+                                <Link href="/login" className="text-sm font-bold text-white bg-[#0A192F] px-5 py-2 rounded-full hover:bg-[#112240] transition-colors shadow-md hover:shadow-lg transform active:scale-95 duration-200">
+                                    로그인
+                                </Link>
+                            </div>
                         )}
                     </div>
 
@@ -240,13 +245,22 @@ export default function GNB() {
                                     </button>
                                 </div>
                             ) : (
-                                <Link
-                                    href="/login"
-                                    onClick={closeMenu}
-                                    className="block w-full py-3 text-center bg-[#0A192F] text-white rounded-lg shadow-md hover:bg-[#112240] transition-all font-bold"
-                                >
-                                    로그인
-                                </Link>
+                                <div className="flex flex-col gap-3">
+                                    <Link
+                                        href="/login"
+                                        onClick={closeMenu}
+                                        className="block w-full py-3 text-center bg-[#0A192F] text-white rounded-lg shadow-md hover:bg-[#112240] transition-all font-bold"
+                                    >
+                                        로그인
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        onClick={closeMenu}
+                                        className="block w-full py-3 text-center bg-white border border-gray-300 text-[#0A192F] rounded-lg hover:bg-gray-50 transition-all font-bold"
+                                    >
+                                        회원가입
+                                    </Link>
+                                </div>
                             )}
                         </div>
                     </div>
