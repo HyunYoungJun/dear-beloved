@@ -26,36 +26,36 @@ export default function IncenseIcon({ isBurning, className = "" }: IncenseIconPr
                 />
             )}
 
-            {/* White Winding Smoke Animation */}
+            {/* Continuous Thin Winding Smoke Animation */}
             {isBurning && (
-                <div className="absolute top-[-60px] left-1/2 -translate-x-1/2 pointer-events-none w-[100px] h-[200px] overflow-visible flex justify-center items-end">
-                    {/* Multiple smoke particles for winding effect */}
-                    {[...Array(12)].map((_, i) => (
+                <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 pointer-events-none w-[60px] h-[140px] overflow-visible flex justify-center items-end">
+                    {/* Continuous stream of thin smoke particles */}
+                    {[...Array(20)].map((_, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 0, x: 0, scale: 0.2, filter: 'blur(2px)' }}
+                            initial={{ opacity: 0, y: 0, x: 0, scale: 0.5, filter: 'blur(1px)' }}
                             animate={{
-                                opacity: [0, 0.6, 0.4, 0], // Smooth fade in/out
-                                y: -160, // Rise high
+                                opacity: [0, 0.8, 0.6, 0], // Stay visible longer
+                                y: -120, // Rise steadily
                                 x: [
                                     0,
-                                    (i % 2 === 0 ? 15 : -15) + (Math.random() * 10 - 5), // Winding movement
-                                    (i % 2 === 0 ? -10 : 10),
-                                    (i % 2 === 0 ? 5 : -5)
+                                    Math.sin(i) * 5 + (Math.random() * 4 - 2), // Winding motion
+                                    Math.cos(i) * 8 + (Math.random() * 4 - 2),
+                                    Math.sin(i) * 12 + (Math.random() * 4 - 2)
                                 ],
-                                scale: [0.3, 1.5, 3], // Start small, expand
-                                filter: ['blur(2px)', 'blur(5px)', 'blur(8px)'] // Soften as it rises
+                                scale: [1, 1.5, 2.5], // Stay relatively thin, expand slowly
+                                filter: ['blur(1px)', 'blur(3px)', 'blur(6px)']
                             }}
                             transition={{
-                                duration: 4 + Math.random() * 2, // Varied duration
+                                duration: 3.5, // Standard duration
                                 repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: i * 0.5, // Continuous stream
+                                ease: "linear",
+                                delay: i * 0.175, // Very tight spacing for continuous line effect
                             }}
-                            className="absolute bottom-[35px] w-2 h-8 rounded-full bg-white/60" // Elongated initial shape for stream look
+                            className="absolute bottom-[35px] w-[1.5px] h-6 bg-white/80 rounded-full" // Very thin width (1.5px)
                             style={{
                                 mixBlendMode: 'screen',
-                                background: 'linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)'
+                                background: 'linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%)'
                             }}
                         />
                     ))}
