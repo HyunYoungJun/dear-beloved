@@ -15,6 +15,7 @@ export default function MyPage() {
     // Data States
     const [totalFlowerCount, setTotalFlowerCount] = useState(0);
     const [myTributes, setMyTributes] = useState<any[]>([]);
+    const [userFavorites, setUserFavorites] = useState<any[]>([]);
     const [readArticles, setReadArticles] = useState<any[]>([]);
     const [isLoadingData, setIsLoadingData] = useState(true);
 
@@ -24,7 +25,7 @@ export default function MyPage() {
         } else if (user) {
             fetchUserData();
         }
-    }, [user, loading, activeTab]); // Re-fetch on tab change if needed, mostly init
+    }, [user, loading, activeTab]);
 
     async function fetchUserData() {
         if (!user) return;
@@ -32,7 +33,7 @@ export default function MyPage() {
 
         try {
             // 1. Fetch Total Flower Count & Tributes
-            const { data: floralData, error: floralError } = await supabase
+            const { data: floralData } = await supabase
                 .from('flower_offerings')
                 .select('*, obituaries(id, title, deceased_name, main_image_url)')
                 .eq('user_id', user.id)
@@ -43,7 +44,18 @@ export default function MyPage() {
                 setMyTributes(floralData);
             }
 
-            // 2. Fetch Read Articles (from LocalStorage IDs)
+            // 2. Fetch User Favorites
+            if (activeTab === 'favorites') {
+                const { data: favData } = await supabase
+                    .from('user_favorites')
+                    .select('*, obituaries!inner(id, title, deceased_name, birth_date, death_date, main_image_url)')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (favData) setUserFavorites(favData);
+            }
+
+            // 3. Fetch Read Articles (from LocalStorage IDs)
             if (activeTab === 'history') {
                 const viewedIds = JSON.parse(localStorage.getItem('viewed_obituaries') || '[]');
                 if (viewedIds.length > 0) {
@@ -53,7 +65,6 @@ export default function MyPage() {
                         .in('id', viewedIds);
 
                     if (historyData) {
-                        // Sort by order in viewedIds (recent first)
                         const sortedHistory = viewedIds
                             .map((id: string) => historyData.find(item => item.id === id))
                             .filter(Boolean);
@@ -102,30 +113,39 @@ export default function MyPage() {
                 </div>
 
                 {/* 2. Tabs Navigation */}
-                <div className="flex border-b border-gray-200 mb-8">
+                <div className="flex border-b border-gray-200 mb-8 w-full overflow-x-auto">
                     <button
                         onClick={() => setActiveTab('tributes')}
-                        className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'tributes'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'tributes'
+                                ? 'border-[#0A192F] text-[#0A192F]'
+                                : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         나의 헌화
                     </button>
                     <button
+                        onClick={() => setActiveTab('favorites')}
+                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'favorites'
+                                ? 'border-[#0A192F] text-[#0A192F]'
+                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            }`}
+                    >
+                        자주 찾는 분들
+                    </button>
+                    <button
                         onClick={() => setActiveTab('history')}
-                        className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'history'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'history'
+                                ? 'border-[#0A192F] text-[#0A192F]'
+                                : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         내가 읽은 기사
                     </button>
                     <button
                         onClick={() => setActiveTab('settings')}
-                        className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'settings'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'settings'
+                                ? 'border-[#0A192F] text-[#0A192F]'
+                                : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         설정
@@ -227,7 +247,7 @@ export default function MyPage() {
                         </div>
                     )}
 
-                    {/* (2) History Tab */}
+                    {/* (3) History Tab */}
                     {activeTab === 'history' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {readArticles.length === 0 ? (
@@ -273,7 +293,7 @@ export default function MyPage() {
                         </div>
                     )}
 
-                    {/* (3) Settings Tab */}
+                    {/* (4) Settings Tab */}
                     {activeTab === 'settings' && (
                         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden divide-y divide-gray-100">
                             <div className="p-6 flex items-center justify-between">
