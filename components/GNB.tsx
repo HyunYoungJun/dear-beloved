@@ -136,6 +136,9 @@ export default function GNB() {
                                                 관리자
                                             </Link>
                                         )}
+                                        <Link href="/mypage" className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">
+                                            마이페이지
+                                        </Link>
                                         <button
                                             onClick={handleLogout}
                                             className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-red-500 text-left font-medium"

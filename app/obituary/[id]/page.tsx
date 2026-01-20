@@ -57,6 +57,14 @@ export default function ObituaryDetailPage() {
         if (id) {
             fetchObituary();
             fetchFlowerData();
+
+            // Save to LocalStorage for "History"
+            const viewed = JSON.parse(localStorage.getItem('viewed_obituaries') || '[]');
+            if (!viewed.includes(id)) {
+                // Prepend new ID, keep max 20
+                const newViewed = [id, ...viewed].slice(0, 20);
+                localStorage.setItem('viewed_obituaries', JSON.stringify(newViewed));
+            }
         }
     }, [id, user?.id]);
 
