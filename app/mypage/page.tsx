@@ -10,7 +10,7 @@ import { Flower2, BookOpen, Settings, LogOut, ChevronRight } from 'lucide-react'
 export default function MyPage() {
     const { user, loading } = useAuth();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<'tributes' | 'history' | 'settings'>('tributes');
+    const [activeTab, setActiveTab] = useState<'tributes' | 'favorites' | 'history' | 'settings'>('tributes');
 
     // Data States
     const [totalFlowerCount, setTotalFlowerCount] = useState(0);
@@ -106,8 +106,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('tributes')}
                         className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'tributes'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         나의 헌화
@@ -115,8 +115,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('history')}
                         className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'history'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         내가 읽은 기사
@@ -124,8 +124,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('settings')}
                         className={`flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors ${activeTab === 'settings'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         설정
@@ -168,6 +168,58 @@ export default function MyPage() {
                                                 <p className="text-sm text-gray-500 truncate">{item.obituaries.title}</p>
                                             </div>
                                             <ChevronRight className="text-gray-300 group-hover:text-[#C5A059]" />
+                                        </div>
+                                    </Link>
+                                ))
+                            )}
+                        </div>
+                    )}
+
+                    {/* (2) Favorites Tab (NEW) */}
+                    {activeTab === 'favorites' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {userFavorites.length === 0 ? (
+                                <div className="col-span-full text-center py-20 text-gray-400">
+                                    <div className="w-12 h-12 mx-auto mb-3 opacity-20 bg-gray-200 rounded-full flex items-center justify-center">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5L5 21z" /></svg>
+                                    </div>
+                                    <p>등록된 '자주 찾는 분'이 없습니다.</p>
+                                </div>
+                            ) : (
+                                userFavorites.map((fav) => (
+                                    <Link
+                                        href={`/obituary/${fav.obituaries.id}`}
+                                        key={fav.id}
+                                        className="relative block bg-white border border-gray-100 rounded-lg overflow-hidden hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
+                                    >
+                                        <div className="h-40 bg-gray-100 relative overflow-hidden">
+                                            {fav.obituaries.main_image_url ? (
+                                                <img
+                                                    src={fav.obituaries.main_image_url}
+                                                    alt={fav.obituaries.deceased_name}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                                    No Image
+                                                </div>
+                                            )}
+                                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                                            {/* Ribbon Overlay */}
+                                            <div className="absolute top-3 right-3 bg-white/90 p-1.5 rounded-full shadow-sm text-[#0A192F]">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5L5 21z" /></svg>
+                                            </div>
+                                        </div>
+                                        <div className="p-5">
+                                            <h3 className="text-lg font-bold text-gray-900 mb-1 font-['Nanum_Myeongjo'] group-hover:text-[#C5A059] transition-colors">
+                                                故 {fav.obituaries.deceased_name}
+                                            </h3>
+                                            <p className="text-sm text-gray-600 line-clamp-1 mb-2">
+                                                {fav.obituaries.title}
+                                            </p>
+                                            <p className="text-xs text-gray-400">
+                                                {fav.obituaries.birth_date} ~ {fav.obituaries.death_date}
+                                            </p>
                                         </div>
                                     </Link>
                                 ))

@@ -175,6 +175,11 @@ export default function ObituaryDetailPage() {
     const [incenseCount, setIncenseCount] = useState(0);
     const [isIncenseBurning, setIsIncenseBurning] = useState(false);
 
+    // State for Favorites toogle
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+
     // Initial Load Logic
     useEffect(() => {
         if (obituary) {
@@ -182,7 +187,56 @@ export default function ObituaryDetailPage() {
             updateCandleState(obituary.last_candle_lit_at);
             setIncenseCount(obituary.incense_count || 0);
         }
-    }, [obituary]);
+        checkFavoriteStatus();
+    }, [obituary, user?.id]);
+
+    async function checkFavoriteStatus() {
+        if (!user || !id) return;
+        const { data } = await supabase
+            .from('user_favorites')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('article_id', id)
+            .single();
+        if (data) setIsFavorite(true);
+    }
+
+    const toggleFavorite = async () => {
+        if (!user) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        if (isFavorite) {
+            // Remove
+            const { error } = await supabase
+                .from('user_favorites')
+                .delete()
+                .eq('user_id', user.id)
+                .eq('article_id', id);
+
+            if (!error) {
+                setIsFavorite(false);
+                showToastMessage("등록이 해제되었습니다.");
+            }
+        } else {
+            // Add
+            const { error } = await supabase
+                .from('user_favorites')
+                .insert({ user_id: user.id, article_id: id });
+
+            if (!error) {
+                setIsFavorite(true);
+                showToastMessage("자주 찾는 분으로 등록되었습니다.");
+            }
+        }
+    };
+
+    const showToastMessage = (msg: string) => {
+        setToastMessage(msg);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    };
 
     // Timer Interval to fade/expire candle
     useEffect(() => {
@@ -364,6 +418,39 @@ export default function ObituaryDetailPage() {
                             {/* Divider (Mobile Only) */}
                             <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
 
+                            {/* 3. Favorite Button (Ribbon) - Mobile/Desktop Integrated in Bar */}
+                            <button
+                                onClick={toggleFavorite}
+                                className={`flex-1 w-full flex flex-col items-center justify-center gap-2 transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2
+                                     ${isFavorite ? 'bg-[#C5A059]/10' : 'hover:bg-[#112240]'}`}
+                            >
+                                <div className={`p-3 rounded-full transition-colors ${isFavorite ? 'bg-[#C5A059] text-[#0A192F]' : 'bg-white/5 text-[#C5A059] group-hover:bg-white/10'}`}>
+                                    <div className="w-6 h-6 flex items-center justify-center">
+                                        {/* Ribbon Icon SVG */}
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill={isFavorite ? "#0A192F" : "none"}
+                                            stroke={isFavorite ? "#0A192F" : "currentColor"}
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M4.5 3h15a.5.5 0 0 1 .5.5v18a.5.5 0 0 1-.8.4l-7.2-5.4-7.2 5.4A.5.5 0 0 1 4.5 21.5v-18a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <span className={`text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1 ${isFavorite ? 'text-[#C5A059]' : 'text-[#C5A059]'}`}>
+                                    {isFavorite ? '등록됨' : '자주찾기'}
+                                </span>
+                                {/* Placeholder for height balance */}
+                                <span className="text-transparent text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">-</span>
+                            </button>
+
+                            {/* Divider (Mobile Only) */}
+                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
+
                             {/* Candle Button */}
                             <button
                                 onClick={handleCandleClick}
@@ -416,6 +503,12 @@ export default function ObituaryDetailPage() {
                     </div>
                 </div>
             </header>
+
+            {/* Toast Notification */}
+            <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#0A192F]/95 text-white px-6 py-3 rounded-full shadow-xl transition-all duration-300 flex items-center gap-3 border border-[#C5A059]/30 backdrop-blur-md ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+                <div className="w-2 h-2 rounded-full bg-[#C5A059] shadow-[0_0_8px_#C5A059]"></div>
+                <span className="font-medium text-sm tracking-wide">{toastMessage}</span>
+            </div>
 
             {/* Life Timeline (Universal - Positioned at Header Area) */}
             {obituary.timeline_data && Array.isArray(obituary.timeline_data) && obituary.timeline_data.length > 0 && (
