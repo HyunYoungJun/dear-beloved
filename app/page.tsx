@@ -260,12 +260,13 @@ export default function Home() {
 
         </section>
 
-        {/* 4. 해외 추모기사 & 고인의 명언 (Split Layout) */}
+        {/* 4. Combined Section: Overseas, Quotes, Category Articles (1:1:1) */}
         <section className="mb-20">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          {/* Mobile: Stack items vertically. Desktop: 3 Columns Equal Width */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
-            {/* Left: Overseas Obituaries (60-65%) */}
-            <div className="w-full lg:w-[63%] flex flex-col gap-4">
+            {/* Col 1: Overseas Obituaries */}
+            <div className="flex flex-col gap-4">
               <Link href="/overseas" className="group">
                 <h2 className="text-sm font-bold tracking-tighter border-l-4 border-gray-400 pl-3 uppercase group-hover:text-[#0A192F] transition-colors">
                   해외 추모기사
@@ -274,22 +275,29 @@ export default function Home() {
               <EditorPick data={overseasObituaries} />
             </div>
 
-            {/* Right: Deceased's Quote (35-40%) */}
-            <div className="w-full lg:w-[37%]">
+            {/* Col 2: Deceased's Quote */}
+            <div className="h-full">
               <DeceasedQuote items={quoteObituaries} />
+            </div>
+
+            {/* Col 3: Category News Rotation */}
+            <div className="flex flex-col gap-4">
+              <h2 className="text-sm font-bold tracking-tighter border-l-4 border-[#0A192F] pl-3 uppercase">
+                카테고리별 기사
+              </h2>
+              {loading ? (
+                <div className="w-full aspect-square bg-gray-100 animate-pulse rounded-lg"></div>
+              ) : (
+                <div className="h-full">
+                  <CategoryNewsRotation categories={categories} />
+                </div>
+              )}
             </div>
 
           </div>
         </section>
 
-        {/* 5. Category Rotation (Moved to Bottom - before grid) */}
-        {loading ? (
-          <div className="lg:hidden h-[300px] w-full bg-gray-100 animate-pulse mb-8 rounded-lg"></div>
-        ) : (
-          <div className="mb-12">
-            <CategoryNewsRotation categories={categories} />
-          </div>
-        )}
+        {/* 5. Removed independent Category Rotation section */}
 
         {/* Categories Grid (4 Columns -> Now 5 logic but grid-cols-4 might need adjustment or allow wrap) */}
         {/* User requested: "mobile margin adjustment", "desktop grid". 5 items in 4 columns will wrap. 

@@ -47,7 +47,7 @@ export default function CategoryNewsRotation({ categories }: CategoryNewsRotatio
     const items = categories[currentCategory].slice(0, 4); // Show up to 4 items
 
     return (
-        <div className="lg:hidden w-full mb-8 px-4">
+        <div className="w-full h-full bg-white border border-gray-100 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow">
             {/* Header / Indicator */}
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
                 <h3 className="text-sm font-bold text-[var(--heritage-navy)] tracking-wider uppercase border-l-2 border-[var(--heritage-gold)] pl-2">
@@ -64,7 +64,7 @@ export default function CategoryNewsRotation({ categories }: CategoryNewsRotatio
             </div>
 
             {/* Content Area */}
-            <div className="relative min-h-[320px]">
+            <div className="relative min-h-[300px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentCategory}
@@ -75,9 +75,9 @@ export default function CategoryNewsRotation({ categories }: CategoryNewsRotatio
                         className="space-y-4"
                     >
                         {items.map((item) => (
-                            <Link href={`/obituary/${item.id}`} key={item.id} className="flex gap-3 group">
+                            <Link href={`/obituary/${item.id}`} key={item.id} className="flex gap-3 group items-start">
                                 {/* Thumbnail */}
-                                <div className="w-[100px] h-[75px] rounded-lg overflow-hidden shrink-0 relative bg-gray-100 shadow-sm border border-gray-100">
+                                <div className="w-[80px] h-[60px] rounded bg-gray-100 overflow-hidden shrink-0 relative border border-gray-100">
                                     {item.main_image_url ? (
                                         <img
                                             src={item.main_image_url}
@@ -85,19 +85,18 @@ export default function CategoryNewsRotation({ categories }: CategoryNewsRotatio
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
+                                        <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">No Image</div>
                                     )}
                                 </div>
 
                                 {/* Text Content */}
                                 <div className="flex flex-col flex-1 min-w-0 justify-between py-0.5">
                                     <div>
-                                        <h4 className="text-[15px] font-bold text-gray-900 leading-tight mb-1 line-clamp-2 break-keep group-hover:underline decoration-[var(--heritage-gold)] underline-offset-4">
+                                        <h4 className="text-[14px] font-bold text-gray-900 leading-snug mb-0.5 line-clamp-2 break-keep group-hover:underline decoration-[var(--heritage-gold)] underline-offset-4">
                                             {item.title}
                                         </h4>
-                                        <p className="text-xs text-gray-500 line-clamp-1">
+                                        <p className="text-[11px] text-gray-400">
                                             {item.deceased_name && `故 ${item.deceased_name}`}
-                                            {item.death_date && ` · ${new Date(item.death_date).getFullYear()}`}
                                         </p>
                                     </div>
                                 </div>
