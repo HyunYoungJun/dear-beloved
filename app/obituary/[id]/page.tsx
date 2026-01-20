@@ -408,7 +408,7 @@ export default function ObituaryDetailPage() {
                                     ${hasGivenFlower ? 'opacity-50 cursor-not-allowed grayscale' : 'cursor-pointer'}`}
                             >
                                 <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
-                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <div className="absolute inset-0 bg-white/5 rounded-full border border-gray-400/60 group-hover:bg-white/10 transition-colors"></div>
                                     <img
                                         src="/chrysanthemum-tribute.png"
                                         alt="Flower Tribute"
@@ -430,7 +430,7 @@ export default function ObituaryDetailPage() {
                                 className="flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10"
                             >
                                 <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
-                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <div className="absolute inset-0 bg-white/5 rounded-full border border-gray-400/60 group-hover:bg-white/10 transition-colors"></div>
                                     <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center overflow-visible">
                                         <div className="scale-[0.8] origin-center -translate-y-1">
                                             <IncenseIcon isBurning={isIncenseBurning} />
@@ -449,7 +449,7 @@ export default function ObituaryDetailPage() {
                                 className="flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10"
                             >
                                 <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
-                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <div className="absolute inset-0 bg-white/5 rounded-full border border-gray-400/60 group-hover:bg-white/10 transition-colors"></div>
                                     <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center">
                                         <div className="scale-100 origin-center">
                                             <CandleIcon isOn={candleState.active} opacity={candleState.opacity} />
