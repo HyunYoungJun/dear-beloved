@@ -339,14 +339,12 @@ export default function ObituaryDetailPage() {
         <article className="min-h-screen bg-[#F9F9F9]  pb-32">
             {/* 1. Header Section: Deep Navy Background, Flex Layout */}
             <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
-                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-8">
+                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-stretch gap-6 md:gap-10">
 
-                    {/* Left & Center Wrapper: Photo + Tribute Actions */}
-                    {/* Mobile: Order 2 (Below Info) */}
-                    <div className="order-2 md:order-1 shrink-0 flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start w-full md:w-auto">
-
-                        {/* 1. Photo Section */}
-                        <div className="relative w-[85%] md:w-[360px] aspect-[3/4] md:h-[480px] md:aspect-auto bg-[#112240] border-[3px] border-[#C5A059] shadow-[0_10px_40px_rgba(0,0,0,0.4)] rounded-sm overflow-hidden group">
+                    {/* Left: Photo Section (20%) */}
+                    {/* Centered, 85% of previous size approximately */}
+                    <div className="md:w-[20%] shrink-0 flex items-center justify-center">
+                        <div className="relative w-[140px] md:w-full aspect-[3/4] bg-[#112240] border-[3px] border-[#C5A059] shadow-[0_10px_40px_rgba(0,0,0,0.4)] rounded-sm overflow-hidden group">
                             {featuredImage ? (
                                 <img
                                     key={featuredImage}
@@ -355,151 +353,148 @@ export default function ObituaryDetailPage() {
                                     className="w-full h-full object-cover filter brightness-105 animate-in fade-in duration-1000 group-hover:scale-105 transition-transform duration-700"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-base shadow-lg font-serif">
-                                    <span className="">No Photo Available</span>
+                                <div className="w-full h-full flex items-center justify-center text-[#C5A059]/50 text-xs shadow-lg font-serif">
+                                    <span className="">No Photo</span>
                                 </div>
                             )}
                             {/* Inner Border Line */}
                             <div className="absolute inset-2 border border-[#C5A059]/20 pointer-events-none"></div>
                         </div>
+                    </div>
 
-                        {/* 2. Tribute Action Bar (Responsive: Horizontal Mobile / Vertical Desktop) */}
-                        <div className="
-                            w-[90%] md:w-[130px] md:h-[480px] 
-                            bg-[#0A192F]/95 backdrop-blur-sm 
-                            border border-[#C5A059]/30 
-                            md:rounded-sm rounded-xl
-                            flex flex-row md:flex-col items-center justify-between 
-                            p-2 md:py-6 md:px-2
-                            shadow-2xl z-20
-                        ">
+                    {/* Right: Info & Actions (80%) - Vertical Split */}
+                    <div className="md:w-[80%] flex flex-col justify-between min-h-full gap-6 md:gap-0">
 
-                            {/* Flower Button */}
+                        {/* Right Top: Info (Title, Name) */}
+                        <div className="flex flex-col items-center md:items-start text-center md:text-left pt-2">
+                            <div className="flex items-center gap-3 mb-4 justify-center md:justify-start w-full">
+                                <span className="px-2 py-0.5 border border-[#C5A059]/60 text-[#C5A059] text-[10px] font-bold tracking-[0.2em] rounded-sm uppercase">
+                                    In Loving Memory
+                                </span>
+                                <Link href="/library" className="inline-flex items-center text-gray-400 hover:text-[#C5A059] transition-colors text-xs font-medium group ml-auto md:ml-0">
+                                    <ArrowLeft size={12} className="mr-1 group-hover:-translate-x-0.5 transition-transform" />
+                                    목록으로 돌아가기
+                                </Link>
+                            </div>
+
+                            <h1
+                                className="text-2xl md:text-3xl font-bold font-['Nanum_Myeongjo'] mb-3 leading-snug break-keep animate-fade-loop"
+                                style={{ color: '#C5A059' }}
+                            >
+                                {obituary.title}
+                            </h1>
+
+                            <div className="flex flex-col md:flex-row md:items-end gap-2 md:gap-4 pb-4 border-b border-[#C5A059]/10 w-full">
+                                <span className="text-xl md:text-2xl text-white font-medium">
+                                    故 {obituary.deceased_name}
+                                </span>
+                                <div className="flex items-center gap-2 text-sm text-gray-400 font-light tracking-wide opacity-80 pb-1">
+                                    <span>{obituary.birth_date}</span>
+                                    <span className="text-[#C5A059]/50">•</span>
+                                    <span>{obituary.death_date}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Bottom: Actions Row (Flower, Incense, Candle, Favorite) */}
+                        {/* Aligned to bottom of Left Photo */}
+                        <div className="w-full grid grid-cols-4 gap-2 md:gap-4 mt-auto">
+
+                            {/* 1. Flower */}
                             <button
                                 onClick={handleFlowerGiven}
                                 disabled={hasGivenFlower}
-                                className={`flex-1 w-full flex flex-col items-center justify-center gap-2 transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2 
-                                    ${hasGivenFlower ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:bg-[#112240] cursor-pointer'}`}
+                                className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10
+                                    ${hasGivenFlower ? 'opacity-50 cursor-not-allowed grayscale' : 'cursor-pointer'}`}
                             >
-                                <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                                    <div className="w-[56px] h-[56px] md:w-[64px] md:h-[64px] flex items-center justify-center">
-                                        <img
-                                            src="/chrysanthemum-tribute.png"
-                                            alt="Flower Tribute"
-                                            className={`w-full h-full object-contain transition-transform duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]
-                                                ${hasGivenFlower ? '' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110'}`}
-                                        />
-                                    </div>
+                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
+                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <img
+                                        src="/chrysanthemum-tribute.png"
+                                        alt="Flower Tribute"
+                                        className={`w-8 h-8 md:w-9 md:h-9 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]
+                                            ${hasGivenFlower ? '' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform'}`}
+                                    />
                                 </div>
-                                <span className={`text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1 ${hasGivenFlower ? 'text-gray-500' : 'text-[#C5A059]'}`}>
-                                    {hasGivenFlower ? '헌화 완료' : '헌화하기'}
-                                </span>
-                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{flowerCount.toLocaleString()}</span>
+                                <div className="text-center">
+                                    <div className={`text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 ${hasGivenFlower ? 'text-gray-500' : 'text-[#C5A059]'}`}>
+                                        {hasGivenFlower ? '헌화함' : '헌화하기'}
+                                    </div>
+                                    <div className="text-white text-sm md:text-base font-mono font-bold">{flowerCount.toLocaleString()}</div>
+                                </div>
                             </button>
 
-                            {/* Divider (Mobile Only) */}
-                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
-
-                            {/* Incense Button */}
+                            {/* 2. Incense */}
                             <button
                                 onClick={handleIncenseClick}
-                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2"
+                                className="flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10"
                             >
-                                <div className="relative p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                                    {/* Scaled Incense Icon is handled inside the component prop or style */}
-                                    <div className="scale-125 origin-center">
-                                        <IncenseIcon isBurning={isIncenseBurning} />
+                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
+                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center overflow-visible">
+                                        <div className="scale-[0.8] origin-center -translate-y-1">
+                                            <IncenseIcon isBurning={isIncenseBurning} />
+                                        </div>
                                     </div>
                                 </div>
-                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">분향하기</span>
-                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{incenseCount.toLocaleString()}</span>
+                                <div className="text-center">
+                                    <div className="text-[#C5A059] text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5">분향하기</div>
+                                    <div className="text-white text-sm md:text-base font-mono font-bold">{incenseCount.toLocaleString()}</div>
+                                </div>
                             </button>
 
-                            {/* Divider (Mobile Only) */}
-                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
+                            {/* 3. Candle */}
+                            <button
+                                onClick={handleCandleClick}
+                                className="flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10"
+                            >
+                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
+                                    <div className="absolute inset-0 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
+                                    <div className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center">
+                                        <div className="scale-100 origin-center">
+                                            <CandleIcon isOn={candleState.active} opacity={candleState.opacity} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-[#C5A059] text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5">촛불켜기</div>
+                                    <div className="text-white text-sm md:text-base font-mono font-bold">{candleCount.toLocaleString()}</div>
+                                </div>
+                            </button>
 
-                            {/* 3. Favorite Button (Ribbon) - Mobile/Desktop Integrated in Bar */}
+                            {/* 4. Favorites */}
                             <button
                                 onClick={toggleFavorite}
-                                className={`flex-1 w-full flex flex-col items-center justify-center gap-2 transition-colors relative group rounded-lg md:rounded-none md:border-b border-[#C5A059]/20 md:last:border-b-0 py-2
-                                     ${isFavorite ? 'bg-[#C5A059]/10' : 'hover:bg-[#112240]'}`}
+                                className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10
+                                    ${isFavorite ? 'bg-[#C5A059]/5' : ''}`}
                             >
-                                <div className={`p-3 rounded-full transition-colors ${isFavorite ? 'bg-[#C5A059] text-[#0A192F]' : 'bg-white/5 text-[#C5A059] group-hover:bg-white/10'}`}>
-                                    <div className="w-6 h-6 flex items-center justify-center">
-                                        {/* Ribbon Icon SVG */}
+                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
+                                    {/* White Circle Background */}
+                                    <div className={`absolute inset-0 rounded-full transition-colors ${isFavorite ? 'bg-[#C5A059]' : 'bg-white group-hover:bg-gray-200'}`}></div>
+
+                                    {/* Ribbon Icon */}
+                                    <div className="relative z-10 w-5 h-5 md:w-6 md:h-6 flex items-center justify-center">
                                         <svg
-                                            width="20"
-                                            height="20"
+                                            width="24"
+                                            height="24"
                                             viewBox="0 0 24 24"
-                                            fill={isFavorite ? "#0A192F" : "none"}
-                                            stroke={isFavorite ? "#0A192F" : "currentColor"}
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
+                                            fill={isFavorite ? "#0A192F" : "#000000"} /* Black when inactive, Dark Navy when active(gold bg) */
+                                            stroke="none"
                                         >
                                             <path d="M4.5 3h15a.5.5 0 0 1 .5.5v18a.5.5 0 0 1-.8.4l-7.2-5.4-7.2 5.4A.5.5 0 0 1 4.5 21.5v-18a.5.5 0 0 1 .5-.5Z" />
                                         </svg>
                                     </div>
                                 </div>
-                                <span className={`text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1 ${isFavorite ? 'text-[#C5A059]' : 'text-[#C5A059]'}`}>
-                                    {isFavorite ? '등록됨' : '자주찾기'}
-                                </span>
-                                {/* Placeholder for height balance */}
-                                <span className="text-transparent text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">-</span>
-                            </button>
-
-                            {/* Divider (Mobile Only) */}
-                            <div className="w-px h-10 bg-[#C5A059]/20 md:hidden"></div>
-
-                            {/* Candle Button */}
-                            <button
-                                onClick={handleCandleClick}
-                                className="flex-1 w-full flex flex-col items-center justify-center gap-2 hover:bg-[#112240] transition-colors relative group rounded-lg md:rounded-none py-2"
-                            >
-                                <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                                    <div className="scale-125 origin-center">
-                                        <CandleIcon isOn={candleState.active} opacity={candleState.opacity} />
+                                <div className="text-center">
+                                    <div className={`text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 ${isFavorite ? 'text-[#C5A059]' : 'text-gray-400 group-hover:text-[#C5A059]'}`}>
+                                        {isFavorite ? '등록됨' : '자주찾기'}
                                     </div>
+                                    <div className="text-transparent text-sm md:text-base font-mono font-bold">-</div>
                                 </div>
-                                <span className="text-[#C5A059] text-[11px] md:text-sm font-bold tracking-widest uppercase mt-1">촛불 켜기</span>
-                                <span className="text-white text-lg md:text-xl font-bold font-mono tracking-tighter tabular-nums">{candleCount.toLocaleString()}</span>
-
-                                {/* Hover Glow */}
-                                <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-1 transition-opacity rounded-lg"></div>
                             </button>
-                        </div>
-                    </div>
 
-                    {/* Right: Information */}
-                    {/* Mobile: Order 1 (Top) */}
-                    <div className="order-1 md:order-2 flex flex-col items-center md:items-start text-center md:text-left flex-1 min-w-0 pt-0 md:pt-2 w-full">
-                        <div className="flex items-center gap-3 mb-6 md:mb-4 justify-center md:justify-start">
-                            <span className="px-2 py-0.5 border border-[#C5A059]/60 text-[#C5A059] text-[10px] font-bold tracking-[0.2em] rounded-sm uppercase">
-                                In Loving Memory
-                            </span>
-                            <Link href="/library" className="inline-flex items-center text-gray-400 hover:text-[#C5A059] transition-colors text-xs font-medium group">
-                                <ArrowLeft size={12} className="mr-1 group-hover:-translate-x-0.5 transition-transform" />
-                                목록으로 돌아가기
-                            </Link>
                         </div>
 
-                        <h1
-                            className="text-3xl md:text-4xl font-bold font-['Nanum_Myeongjo'] mb-4 md:mb-3 leading-snug break-keep animate-fade-loop"
-                            style={{ color: '#C5A059' }}
-                        >
-                            {obituary.title}
-                        </h1>
-
-                        <div className="space-y-2 md:space-y-1.5 flex flex-col items-center md:items-start">
-                            <p className="text-xl md:text-xl text-[#C5A059] font-medium ">
-                                故 {obituary.deceased_name}
-                            </p>
-                            <div className="flex items-center justify-center md:justify-start gap-2 text-sm md:text-base text-gray-300 font-light tracking-wide opacity-80 ">
-                                <span>{obituary.birth_date}</span>
-                                <span className="text-[#C5A059]/50">•</span>
-                                <span>{obituary.death_date}</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </header>
