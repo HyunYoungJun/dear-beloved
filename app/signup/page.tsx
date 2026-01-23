@@ -60,7 +60,7 @@ export default function SignupPage() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'kakao',
             options: {
-                redirectTo: `${window.location.origin}/welcome`,
+                redirectTo: `${window.location.origin}/welcome-mobile`,
             },
         });
 
