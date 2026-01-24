@@ -22,6 +22,7 @@ type ObituarySummary = {
 };
 
 import BannerCarousel from '@/components/BannerCarousel';
+import BrandPromoBanner from '@/components/BrandPromoBanner';
 import ObituaryBlockCarousel from '@/components/ObituaryBlockCarousel';
 import CategoryNewsRotation from '@/components/CategoryNewsRotation';
 import FeaturedDeceased from '@/components/main/FeaturedDeceased';
@@ -197,21 +198,9 @@ export default function Home() {
               <p className="text-gray-400  italic text-sm">The Daily Memorial Archive</p>
             </div>
 
-            {/* Right: Search */}
-            <div className="flex flex-col items-end w-1/3 gap-3">
-              <div className="relative w-full max-w-[280px]">
-                <input
-                  type="text"
-                  placeholder="기사 검색"
-                  className="w-full text-sm border-b border-gray-300 pb-2 focus:border-black outline-none bg-transparent text-right pr-6"
-                />
-                <button className="absolute right-0 bottom-2 text-gray-400 hover:text-gray-900">
-                  <ArrowRight size={14} />
-                </button>
-              </div>
-              <Link href="/library" className="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 uppercase tracking-wider">
-                Advanced Search <ArrowRight size={10} />
-              </Link>
+            {/* Right: Brand Signature Banner */}
+            <div className="flex flex-col items-end w-1/3 h-full">
+              <BrandPromoBanner className="w-full max-w-[280px] h-[90px]" />
             </div>
 
           </div>
