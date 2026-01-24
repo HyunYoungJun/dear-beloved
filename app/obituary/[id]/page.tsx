@@ -339,7 +339,7 @@ export default function ObituaryDetailPage() {
         <article className="min-h-screen bg-[#F9F9F9]  pb-32">
             {/* 1. Header Section: Deep Navy Background, Flex Layout */}
             <header className="w-full bg-[#0A192F] py-12 px-6 shadow-md border-b border-[#C5A059]/20">
-                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-stretch gap-6 md:gap-10">
+                <div className="max-w-[850px] mx-auto flex flex-col md:flex-row items-stretch gap-8 md:gap-10">
 
                     {/* Left: Photo Section (20%) */}
                     {/* Centered, 85% of previous size approximately */}
@@ -366,8 +366,8 @@ export default function ObituaryDetailPage() {
                     <div className="md:w-[80%] flex flex-col justify-between min-h-full gap-6 md:gap-0">
 
                         {/* Right Top: Info (Title, Name) */}
-                        <div className="flex flex-col items-center md:items-start text-center md:text-left pt-2">
-                            <div className="flex items-center gap-3 mb-4 justify-center md:justify-start w-full">
+                        <div className="flex flex-col items-start text-left pt-2">
+                            <div className="flex items-center gap-3 mb-4 justify-start w-full">
                                 <span className="px-2 py-0.5 border border-[#C5A059]/60 text-[#C5A059] text-[10px] font-bold tracking-[0.2em] rounded-sm uppercase">
                                     In Loving Memory
                                 </span>
