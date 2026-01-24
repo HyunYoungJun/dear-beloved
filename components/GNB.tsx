@@ -132,7 +132,7 @@ export default function GNB() {
                                             앵커 콘텐츠
                                         </Link>
                                         {role === 'admin' && (
-                                            <Link href="/admin/users" className="px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-medium">
+                                            <Link href="/admin" className="px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-medium">
                                                 관리자
                                             </Link>
                                         )}
@@ -220,7 +220,7 @@ export default function GNB() {
                                     앵커 콘텐츠
                                 </Link>
                                 {role === 'admin' && (
-                                    <Link href="/admin/users" onClick={closeMenu} className="block py-2 text-red-600 font-bold text-sm">
+                                    <Link href="/admin" onClick={closeMenu} className="block py-2 text-red-600 font-bold text-sm">
                                         관리자
                                     </Link>
                                 )}
