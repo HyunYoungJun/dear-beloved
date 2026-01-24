@@ -52,7 +52,7 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                 고인의 명언
             </h2>
 
-            <div className="flex-1 relative overflow-hidden rounded-lg bg-[#FDFBF7] border border-[#C5A059]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="flex-1 relative overflow-hidden rounded-lg bg-[#FDFBF7] border border-[#C5A059]/20 shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[400px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentItem.id} // Key change triggers animation
