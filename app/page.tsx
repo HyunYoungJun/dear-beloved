@@ -183,7 +183,7 @@ export default function Home() {
     <main className="min-h-screen bg-stone-50 text-gray-900 pb-20 relative">
       {/* Header (Desktop Only) */}
       <div className="border-b border-gray-200 bg-white hidden lg:block">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col items-center">
 
           {/* Top Row: Memorial Banner - Title - Search (Desktop) */}
           <div className="w-full hidden lg:flex justify-between items-center mb-0 relative">
