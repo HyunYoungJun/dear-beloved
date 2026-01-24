@@ -60,7 +60,7 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="absolute inset-0"
+                        className="w-full h-full"
                     >
                         <Link href={`/obituary/${currentItem.id}`} className="block h-full w-full group">
                             <div className="p-4 md:p-8 h-full flex flex-col md:items-center md:justify-center relative z-10">
