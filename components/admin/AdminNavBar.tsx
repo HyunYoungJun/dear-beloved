@@ -10,6 +10,7 @@ export default function AdminNavBar() {
         { name: '기사 작성 (앵커/해외)', href: '/admin/create', activePatterns: ['/admin/create', '/anchor/create', '/admin/overseas/create'] },
         { name: '오늘의 고인 / 에디터 픽', href: '/admin', activePatterns: ['/admin'], exact: true },
         { name: '고인의 명언 관리', href: '/admin/quotes', activePatterns: ['/admin/quotes'] },
+        { name: '모든 콘텐츠', href: '/admin/contents', activePatterns: ['/admin/contents'] },
     ];
 
     const isActiveTab = (tab: { href: string, activePatterns: string[], exact?: boolean }) => {
