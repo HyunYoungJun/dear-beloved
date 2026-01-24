@@ -1,9 +1,20 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import IncenseIcon from '@/components/obituary/IncenseIcon';
 
 export default function WelcomePage() {
+    const router = useRouter();
+
+    useEffect(() => {
+        // Simple mobile detection by width
+        if (window.innerWidth < 768) {
+            router.replace('/welcome-mobile');
+        }
+    }, [router]);
+
     return (
         <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-6 text-center">
 

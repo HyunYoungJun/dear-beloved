@@ -7,7 +7,21 @@ interface IncenseIconProps {
     className?: string;
 }
 
-export default function IncenseIcon({ isBurning, className = "" }: IncenseIconProps) {
+export default function IncenseIcon({ isBurning, className = "", smokeColor = "white" }: IncenseIconProps & { smokeColor?: "white" | "gray" | "black" }) {
+
+    // Determine smoke gradient based on color prop
+    const getSmokeGradient = () => {
+        if (smokeColor === 'black') return 'linear-gradient(to top, rgba(20,20,20,0.8) 0%, rgba(20,20,20,0) 100%)';
+        if (smokeColor === 'gray') return 'linear-gradient(to top, rgba(100,100,100,0.8) 0%, rgba(100,100,100,0) 100%)';
+        return 'linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%)';
+    };
+
+    const getSmokeBaseColor = () => {
+        if (smokeColor === 'black') return 'bg-black/60';
+        if (smokeColor === 'gray') return 'bg-gray-500/60';
+        return 'bg-white/80';
+    };
+
     return (
         <div className={`relative ${className} flex items-center justify-center`} style={{ width: '54px', height: '54px' }}>
             {/* Incense Burner Photo - Adjusted Size (85% of 64px ≈ 54.4px) */}
@@ -52,10 +66,10 @@ export default function IncenseIcon({ isBurning, className = "" }: IncenseIconPr
                                 ease: "linear",
                                 delay: i * 0.175, // Very tight spacing for continuous line effect
                             }}
-                            className="absolute bottom-[35px] w-[1.5px] h-6 bg-white/80 rounded-full" // Very thin width (1.5px)
+                            className={`absolute bottom-[35px] w-[1.5px] h-6 rounded-full ${getSmokeBaseColor()}`} // Very thin width (1.5px)
                             style={{
-                                mixBlendMode: 'screen',
-                                background: 'linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%)'
+                                mixBlendMode: smokeColor === 'white' ? 'screen' : 'multiply', // Multiply for dark smoke
+                                background: getSmokeGradient()
                             }}
                         />
                     ))}
