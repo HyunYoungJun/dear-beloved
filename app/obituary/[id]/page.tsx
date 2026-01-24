@@ -132,12 +132,14 @@ export default function ObituaryDetailPage() {
 
     const handleFlowerGiven = async () => {
         if (!user) {
-            alert('로그인이 필요합니다.');
+            if (confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')) {
+                router.push('/login');
+            }
             return;
         }
 
         if (hasGivenFlower) {
-            alert('이미 마음을 전하셨습니다.');
+            showToastMessage('이미 마음을 전하셨습니다.');
             return;
         }
 
@@ -156,12 +158,14 @@ export default function ObituaryDetailPage() {
             setHasGivenFlower(false);
 
             if (error.code === '23505') { // Unique violation
-                alert('이미 마음을 전하셨습니다.');
-                setHasGivenFlower(true); // Ensure it's set to true if it exists
+                showToastMessage('이미 마음을 전하셨습니다.');
+                setHasGivenFlower(true);
             } else {
-                alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                showToastMessage('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         } else {
+            // Success
+            showToastMessage('소중한 마음이 기록되었습니다.');
             // Optional: Sync with obituaries table count if needed for other lists
             await supabase.rpc('increment_flower_count', { obituary_id: id });
         }
