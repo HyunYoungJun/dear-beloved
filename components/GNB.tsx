@@ -8,7 +8,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Menu, X, Search, ChevronDown } from 'lucide-react';
 
 export default function GNB() {
-    const { user, loading } = useAuth();
+    const { user, loading, role } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -131,8 +131,8 @@ export default function GNB() {
                                         <Link href="/anchor/create" className="px-4 py-2 text-sm text-purple-600 hover:bg-gray-50 font-medium">
                                             앵커 콘텐츠
                                         </Link>
-                                        {user.email === 'youngjun88@gmail.com' && (
-                                            <Link href="/admin" className="px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-medium">
+                                        {role === 'admin' && (
+                                            <Link href="/admin/users" className="px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-medium">
                                                 관리자
                                             </Link>
                                         )}
@@ -219,8 +219,8 @@ export default function GNB() {
                                 <Link href="/anchor/create" onClick={closeMenu} className="block py-2 text-purple-700 font-bold text-sm">
                                     앵커 콘텐츠
                                 </Link>
-                                {user?.email === 'youngjun88@gmail.com' && (
-                                    <Link href="/admin" onClick={closeMenu} className="block py-2 text-red-600 font-bold text-sm">
+                                {role === 'admin' && (
+                                    <Link href="/admin/users" onClick={closeMenu} className="block py-2 text-red-600 font-bold text-sm">
                                         관리자
                                     </Link>
                                 )}
