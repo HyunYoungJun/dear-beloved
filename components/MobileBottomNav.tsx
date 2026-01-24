@@ -18,7 +18,7 @@ export default function MobileBottomNav() {
         { name: '추모 캘린더', path: '/memorial-calendar', icon: Calendar },
         { name: '기사 의뢰', path: '/write', icon: PenTool, isMain: true },
         { name: 'About Us', path: '/about', icon: Info },
-        { name: '마이', path: '/my', icon: User },
+        { name: '마이', path: '/mypage', icon: User },
     ];
 
     return (
