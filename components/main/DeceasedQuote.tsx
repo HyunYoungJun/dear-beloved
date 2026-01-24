@@ -63,11 +63,39 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                         className="absolute inset-0"
                     >
                         <Link href={`/obituary/${currentItem.id}`} className="block h-full w-full group">
-                            <div className="p-8 h-full flex flex-col items-center justify-center text-center relative z-10">
-                                <Quote className="absolute top-6 left-6 w-8 h-8 text-[#C5A059]/20" />
+                            <div className="p-5 md:p-8 h-full flex flex-col md:items-center md:justify-center relative z-10">
+                                {/* Desktop Quote Icons (Hidden on Mobile) */}
+                                <Quote className="hidden md:block absolute top-6 left-6 w-8 h-8 text-[#C5A059]/20" />
 
-                                {/* Photo */}
-                                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-2 border-[#C5A059]/30 p-1 mb-6 group-hover:border-[#C5A059] transition-colors">
+                                {/* MOBILE HEADER: Photo + Info Row */}
+                                <div className="flex items-center gap-3 mb-4 md:hidden border-b border-[#C5A059]/10 pb-3">
+                                    {/* Mobile Photo */}
+                                    <div className="w-12 h-12 rounded-full border border-[#C5A059]/40 p-0.5 shrink-0">
+                                        <div className="w-full h-full rounded-full overflow-hidden bg-gray-200">
+                                            {currentItem.main_image_url ? (
+                                                <img
+                                                    src={currentItem.main_image_url}
+                                                    alt={currentItem.deceased_name}
+                                                    className="w-full h-full object-cover grayscale"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">👤</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* Mobile Info */}
+                                    <div className="flex flex-col">
+                                        <div className="flex items-baseline gap-2">
+                                            <span className="text-sm font-bold text-[#0A192F]">故 {currentItem.deceased_name}</span>
+                                        </div>
+                                        <span className="text-xs text-gray-400 font-serif">
+                                            {currentItem.death_date ? new Date(currentItem.death_date).getFullYear() : ''} 별세
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* DESKTOP PHOTO (Center Large) */}
+                                <div className="hidden md:block w-24 h-24 md:w-28 md:h-28 rounded-full border-2 border-[#C5A059]/30 p-1 mb-6 group-hover:border-[#C5A059] transition-colors">
                                     <div className="w-full h-full rounded-full overflow-hidden bg-gray-200">
                                         {currentItem.main_image_url ? (
                                             <img
@@ -81,15 +109,22 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                                     </div>
                                 </div>
 
-                                {/* Quote */}
-                                <div className="mb-6 relative w-full">
-                                    <p className="text-lg md:text-xl text-[#0A192F] font-medium leading-relaxed break-keep relative z-10 font-['Malgun_Gothic'] line-clamp-3">
-                                        "{currentItem.biography_data.quote}"
-                                    </p>
+                                {/* QUOTE CONTENT */}
+                                <div className="w-full mb-0 md:mb-6 relative">
+                                    {/* Mobile: Sacred Box Style */}
+                                    <div className="md:contents block relative p-5 md:p-0 rounded-[4px] border border-[#C5A059]/60 md:border-none bg-gradient-to-b from-[#FFFDF9] to-[#F7F3EA] md:bg-none">
+
+                                        {/* Quote Mark for Mobile Box */}
+                                        <Quote className="md:hidden absolute top-3 left-3 w-4 h-4 text-[#C5A059]/40" />
+
+                                        <p className="text-base md:text-xl text-[#0A192F] font-medium leading-relaxed break-keep relative z-10 font-['Nanum_Myeongjo'] md:font-['Malgun_Gothic'] text-center md:text-center pt-2 md:pt-0 line-clamp-4 md:line-clamp-3">
+                                            "{currentItem.biography_data.quote}"
+                                        </p>
+                                    </div>
                                 </div>
 
-                                {/* Name */}
-                                <div className="mt-auto">
+                                {/* DESKTOP INFO (Bottom Center) */}
+                                <div className="hidden md:block mt-auto text-center">
                                     <p className="text-sm text-[#C5A059] font-bold tracking-widest uppercase">
                                         故 {currentItem.deceased_name}
                                     </p>
@@ -98,7 +133,7 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                                     </p>
                                 </div>
 
-                                <Quote className="absolute bottom-6 right-6 w-8 h-8 text-[#C5A059]/20 rotate-180" />
+                                <Quote className="hidden md:block absolute bottom-6 right-6 w-8 h-8 text-[#C5A059]/20 rotate-180" />
                             </div>
 
                             {/* Hover Overlay */}
