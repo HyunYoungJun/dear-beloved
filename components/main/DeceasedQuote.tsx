@@ -52,7 +52,7 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                 고인의 명언
             </h2>
 
-            <div className="flex-1 relative overflow-hidden rounded-lg bg-[#FDFBF7] border border-[#C5A059]/20 shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[400px]">
+            <div className="flex-1 relative overflow-hidden rounded-lg bg-[#FDFBF7] border border-[#C5A059]/20 shadow-sm hover:shadow-md transition-shadow duration-300 min-h-0 md:min-h-[400px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentItem.id} // Key change triggers animation
@@ -63,7 +63,7 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
                         className="absolute inset-0"
                     >
                         <Link href={`/obituary/${currentItem.id}`} className="block h-full w-full group">
-                            <div className="p-5 md:p-8 h-full flex flex-col md:items-center md:justify-center relative z-10">
+                            <div className="p-4 md:p-8 h-full flex flex-col md:items-center md:justify-center relative z-10">
                                 {/* Desktop Quote Icons (Hidden on Mobile) */}
                                 <Quote className="hidden md:block absolute top-6 left-6 w-8 h-8 text-[#C5A059]/20" />
 
