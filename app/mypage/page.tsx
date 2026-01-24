@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { supabase } from '@/lib/supabaseClient';
 import { Flower2, BookOpen, Settings, LogOut, ChevronRight } from 'lucide-react';
+import WithdrawalModal from '@/components/mypage/WithdrawalModal';
 
 export default function MyPage() {
     const { user, loading } = useAuth();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<'tributes' | 'favorites' | 'history' | 'settings'>('tributes');
+    const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);
 
     // Data States
     const [totalFlowerCount, setTotalFlowerCount] = useState(0);
@@ -117,8 +119,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('tributes')}
                         className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'tributes'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         나의 헌화
@@ -126,8 +128,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('favorites')}
                         className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'favorites'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         자주 찾는 분들
@@ -135,8 +137,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('history')}
                         className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'history'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         내가 읽은 기사
@@ -144,8 +146,8 @@ export default function MyPage() {
                     <button
                         onClick={() => setActiveTab('settings')}
                         className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'settings'
-                                ? 'border-[#0A192F] text-[#0A192F]'
-                                : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-[#0A192F] text-[#0A192F]'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                             }`}
                     >
                         설정
@@ -324,8 +326,25 @@ export default function MyPage() {
                                     <p className="text-xs text-gray-500 group-hover:text-red-300">현재 기기에서 로그아웃합니다</p>
                                 </div>
                             </button>
+
+                            {/* Withdrawal Trigger - Subtle */}
+                            <div className="p-6 text-center">
+                                <button
+                                    onClick={() => setIsWithdrawalOpen(true)}
+                                    className="text-xs text-gray-400 hover:text-gray-600 underline"
+                                >
+                                    회원 탈퇴 (계정 삭제)
+                                </button>
+                            </div>
                         </div>
                     )}
+
+                    {/* Withdrawal Modal */}
+                    <WithdrawalModal
+                        isOpen={isWithdrawalOpen}
+                        onClose={() => setIsWithdrawalOpen(false)}
+                        userId={user?.id || ''}
+                    />
 
                 </div>
 
