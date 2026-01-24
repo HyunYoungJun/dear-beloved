@@ -19,7 +19,7 @@ const MESSAGES = [
         id: 2,
         content: (
             <div className="flex flex-col items-end">
-                <span className="text-xs text-gray-400 font-light mb-1">대한민국 대표 추모 플랫폼</span>
+                <span className="text-sm text-gray-300 font-medium mb-1">대한민국 대표 추모 플랫폼</span>
                 <span className="text-xl font-black text-[#C5A059] tracking-tight">Dear˚Beloved</span>
             </div>
         ),
