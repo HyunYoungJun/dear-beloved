@@ -23,7 +23,7 @@ export default function CandleIcon({ isOn, opacity = 1, className = "" }: Candle
 
             {/* Flame Animation (Only visible if isOn) */}
             {isOn && (
-                <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-full h-[60%] pointer-events-none flex justify-center items-end pb-[50%]">
+                <div className="absolute top-[-15%] left-1/2 -translate-x-1/2 w-full h-[80%] pointer-events-none flex justify-center items-end pb-[40%] z-20">
                     {/* 1. Outer Glow (Large Blur) */}
                     <motion.div
                         animate={{ opacity: [0.3, 0.4, 0.3], scale: [1, 1.1, 1] }}
