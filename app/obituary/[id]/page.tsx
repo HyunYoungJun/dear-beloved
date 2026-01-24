@@ -408,23 +408,27 @@ export default function ObituaryDetailPage() {
                             <button
                                 onClick={handleFlowerGiven}
                                 disabled={hasGivenFlower}
-                                className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg hover:bg-[#112240] transition-all group border border-[#C5A059]/10
-                                    ${hasGivenFlower ? 'opacity-50 cursor-not-allowed grayscale' : 'cursor-pointer'}`}
+                                className={`flex flex-col items-center justify-center gap-2 p-2 rounded-lg transition-all group duration-500
+                                    ${hasGivenFlower
+                                        ? 'border-2 border-[#FFD700] bg-[#0A192F]/40 shadow-[0_0_15px_rgba(255,215,0,0.3)] cursor-default'
+                                        : 'border border-[#C5A059]/10 hover:bg-[#112240] cursor-pointer'}`}
                             >
                                 <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
-                                    <div className="absolute inset-0 bg-white/5 rounded-full border border-gray-400/60 group-hover:bg-white/10 transition-colors"></div>
+                                    <div className={`absolute inset-0 rounded-full transition-colors ${hasGivenFlower ? 'bg-[#FFD700]/10 border border-[#FFD700]/30' : 'bg-white/5 border border-gray-400/60 group-hover:bg-white/10'}`}></div>
                                     <img
                                         src="/chrysanthemum-tribute.png"
                                         alt="Flower Tribute"
-                                        className={`w-8 h-8 md:w-9 md:h-9 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]
-                                            ${hasGivenFlower ? '' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-transform'}`}
+                                        className={`w-8 h-8 md:w-9 md:h-9 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-700
+                                            ${hasGivenFlower ? 'brightness-[1.2] sepia-[1] saturate-[3] hue-rotate-[5deg]' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110'}`}
                                     />
                                 </div>
                                 <div className="text-center">
-                                    <div className={`text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 ${hasGivenFlower ? 'text-gray-500' : 'text-[#C5A059]'}`}>
-                                        {hasGivenFlower ? '헌화함' : '헌화하기'}
+                                    <div className={`text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 transition-colors duration-500 ${hasGivenFlower ? 'text-[#FFD700]' : 'text-[#C5A059]'}`}>
+                                        {hasGivenFlower ? '헌화 완료' : '헌화하기'}
                                     </div>
-                                    <div className="text-white text-sm md:text-base font-mono font-bold">{flowerCount.toLocaleString()}</div>
+                                    <div className={`text-sm md:text-base font-mono font-bold transition-colors ${hasGivenFlower ? 'text-[#FFD700]' : 'text-white'}`}>
+                                        {flowerCount.toLocaleString()}
+                                    </div>
                                 </div>
                             </button>
 
