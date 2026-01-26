@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
 import Link from 'next/link';
-import { Users, PenTool, Star, FileText, ArrowRight, Globe } from 'lucide-react';
+import { Users, PenTool, Star, FileText, Globe, ChevronRight } from 'lucide-react';
 
 export default function AdminDashboard() {
     const { user, role, loading } = useAuth();
@@ -19,88 +19,67 @@ export default function AdminDashboard() {
         }
     }, [user, role, loading, router]);
 
-    if (loading || role !== 'admin') return <div className="min-h-screen bg-[#0A192F] flex items-center justify-center text-[#C5A059]">Loading...</div>;
+    if (loading || role !== 'admin') return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-gray-400">Loading...</div>;
 
-    const MENU_CARDS = [
+    const MENU_ITEMS = [
         {
-            title: "기사/콘텐츠 작성",
-            description: "앵커 브리핑 및 해외 추모 기사 등 새로운 콘텐츠를 작성합니다.",
-            icon: PenTool,
-            links: [
-                { label: "앵커 기사 작성", href: "/anchor/create" },
-                { label: "해외 추모 기사", href: "/admin/overseas/create", icon: Globe }
+            category: "콘텐츠 작성",
+            items: [
+                { label: "앵커 브리핑 / 국내 기사 작성", href: "/anchor/create", icon: PenTool },
+                { label: "해외 추모 기사 작성", href: "/admin/overseas/create", icon: Globe }
             ]
         },
         {
-            title: "추천 콘텐츠 관리",
-            description: "메인 화면의 '오늘의 고인' 및 '에디터 픽'을 선정하고 관리합니다.",
-            icon: Star,
-            links: [
-                { label: "오늘의 고인 / Pick 설정", href: "/admin/create" }
+            category: "콘텐츠 관리",
+            items: [
+                { label: "오늘의 고인 / Editor Pick 선정", href: "/admin/create", icon: Star },
+                { label: "전체 기사 목록 및 수정", href: "/admin/contents", icon: FileText }
             ]
         },
         {
-            title: "전체 기사 관리",
-            description: "등록된 모든 추모 기사를 조회하고 수정하거나 삭제합니다.",
-            icon: FileText,
-            links: [
-                { label: "전체 기사 목록", href: "/admin/contents" }
-            ]
-        },
-        {
-            title: "회원 관리 및 권한",
-            description: "전체 회원 목록을 조회하고 관리자 권한을 부여하거나 활동을 제어합니다.",
-            icon: Users,
-            links: [
-                { label: "회원 리스트 이동", href: "/admin/users" }
+            category: "사이트 관리",
+            items: [
+                { label: "회원 관리 및 권한 설정", href: "/admin/users", icon: Users }
             ]
         }
     ];
 
     return (
-        <div className="min-h-screen bg-[#0A192F] text-white p-6 md:p-12 font-['Pretendard']">
-            <div className="max-w-6xl mx-auto">
-                <header className="mb-12 border-b border-[#C5A059]/30 pb-6">
-                    <h1 className="text-3xl md:text-4xl font-bold text-[#C5A059] font-['Nanum_Myeongjo'] mb-2">
-                        Admin Dashboard
+        <div className="min-h-screen bg-[#F9F9F9] text-[#0A192F] p-4 md:p-12 font-['Pretendard']">
+            <div className="max-w-3xl mx-auto">
+                <header className="mb-10 text-center md:text-left">
+                    <h1 className="text-2xl md:text-3xl font-bold font-['Nanum_Myeongjo'] mb-2 text-[#0A192F]">
+                        관리자 대시보드
                     </h1>
-                    <p className="text-gray-400 font-light">
-                        Dear˚Beloved 서비스 통합 관리 센터
+                    <p className="text-gray-500 text-sm md:text-base">
+                        사이트의 주요 기능을 관리합니다.
                     </p>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {MENU_CARDS.map((card, index) => (
-                        <div
-                            key={index}
-                            className="bg-[#112240] border border-[#C5A059]/20 p-8 rounded-lg hover:border-[#C5A059]/50 transition-all duration-300 flex flex-col shadow-lg"
-                        >
-                            <div className="flex items-start gap-4 mb-6">
-                                <div className="w-12 h-12 shrink-0 bg-[#C5A059]/10 rounded-full flex items-center justify-center text-[#C5A059]">
-                                    <card.icon size={24} />
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-bold text-white mb-2">
-                                        {card.title}
-                                    </h2>
-                                    <p className="text-sm text-gray-400 leading-relaxed">
-                                        {card.description}
-                                    </p>
-                                </div>
+                <div className="space-y-8">
+                    {MENU_ITEMS.map((section, idx) => (
+                        <div key={idx} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="bg-gray-50 px-6 py-3 border-b border-gray-100">
+                                <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                    {section.category}
+                                </h2>
                             </div>
-
-                            <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-gray-700/50">
-                                {card.links.map((link, i) => (
+                            <div className="divide-y divide-gray-100">
+                                {section.items.map((item, i) => (
                                     <Link
                                         key={i}
-                                        href={link.href}
-                                        className="group flex items-center justify-between p-3 rounded bg-[#0A192F]/50 hover:bg-[#C5A059] hover:text-[#0A192F] text-gray-300 transition-all font-medium text-sm"
+                                        href={item.href}
+                                        className="flex items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors group"
                                     >
-                                        <div className="flex items-center gap-2">
-                                            {link.icon && <link.icon size={14} />}
-                                            {link.label}
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-[#0A192F]/5 flex items-center justify-center text-[#0A192F] group-hover:bg-[#0A192F] group-hover:text-[#C5A059] transition-all">
+                                                <item.icon size={20} />
+                                            </div>
+                                            <span className="font-medium text-lg text-gray-800 group-hover:text-[#0A192F]">
+                                                {item.label}
+                                            </span>
                                         </div>
-                                        <ArrowRight size={16} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                                        <ChevronRight size={20} className="text-gray-300 group-hover:text-[#C5A059] group-hover:translate-x-1 transition-all" />
                                     </Link>
                                 ))}
                             </div>
