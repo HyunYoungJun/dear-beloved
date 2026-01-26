@@ -93,14 +93,16 @@ export default function Home() {
       }
 
       if (todayData) {
-        // Strict Filter: Today
-        const todays = todayData.filter((item: any) => item.biography_data?.feature_tag === 'today');
-        // NO FALLBACK
+        // Strict Filter: Today (Supports new boolean flag OR legacy string tag)
+        const todays = todayData.filter((item: any) =>
+          item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today'
+        );
         setTodayObituaries(todays);
 
-        // Strict Filter: Editor's Pick
-        const picks = todayData.filter((item: any) => item.biography_data?.feature_tag === 'editor');
-        // NO FALLBACK
+        // Strict Filter: Editor's Pick (Supports new boolean flag OR legacy string tag)
+        const picks = todayData.filter((item: any) =>
+          item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor'
+        );
         setEditorPicks(picks);
       }
 
