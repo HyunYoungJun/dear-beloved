@@ -68,8 +68,34 @@ export default function ObituaryDetailPage() {
         }
     }, [id, user?.id]);
 
+    // Realtime Subscription for Flowers
+    useEffect(() => {
+        if (!id) return;
+
+        const channel = supabase
+            .channel(`flower_offerings_${id}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'flower_offerings',
+                    filter: `memorial_id=eq.${id}`
+                },
+                (payload) => {
+                    // console.log('Realtime flower added:', payload);
+                    setFlowerCount((prev) => prev + 1);
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [id]);
+
     async function fetchFlowerData() {
-        // 1. Fetch Total Count
+        // 1. Fetch Total Count from flower_offerings table
         const { count, error } = await supabase
             .from('flower_offerings')
             .select('*', { count: 'exact', head: true })
@@ -143,8 +169,42 @@ export default function ObituaryDetailPage() {
             return;
         }
 
-        // Optimistic UI update
-        setFlowerCount(prev => prev + 1);
+        // Optimistic UI update (Note: Realtime might also trigger, but we prevent double count via "hasGiven" check or just accept it syncs)
+        // Actually, if we rely on Realtime, we might not need to increment manually, OR distinct user ID check prevents double add.
+        // However, specifically for the acting user, instant feedback is better.
+        // But since we have Realtime running, it will increment count "again" if we are not careful?
+        // No, Realtime triggers for everyone. If I insert, I get an event.
+        // So I should EITHER increment manually AND ignore my own realtime event, OR just wait for realtime.
+        // Waiting for realtime might feel slow.
+        // Best practice: Optimistic update, but if Realtime comes, ensure we don't double count?
+        // Simple approach: The Realtime event comes from DB. 
+        // If I update optimistically (+1), then Realtime comes (+1), it becomes (+2).
+        // FIX: The simplest way for "Count" is relying on Realtime solely for the number, but updating button state immediately.
+        // OR: Increment optimistically, but when Realtime comes, check if it's ME.
+        // Payload has 'user_id'. match with `user.id`.
+        // Let's rely on Realtime for the count increment to avoid complexity, 
+        // UNLESS latency is high. 
+        // Given the requirement "Show Realtime", let's update button immediately but leave count to Realtime? 
+        // User requested "Click -> Persistent". 
+        // Let's do: Optimistic "Button State" (Gold), but Count waits for Realtime?
+        // Actually, most users prefer instant number change.
+        // Let's keep optimistic count, but I need to filter out MY own event in subscription?
+        // Or deeper: Realtime event is "INSERT". 
+        // Let's just handle it in UI: setHasGivenFlower(true) immediately.
+        // For count: let's increment optimistically.
+        // In the subscription, we can check `if (payload.new.user_id !== user.id) setFlowerCount...` 
+        // BUT Subscription is defined inside useEffect, accessing `user` might be stale or complex dep.
+        // SIMPLER: Just depend on Realtime for the COUNT. It's fast enough usually.
+        // But for "Review", keeping optimistic is safer for UX.
+        // Let's stick to: Optimistic local update. And ignore the Realtime event IF it matches me?
+        // Actually, dealing with "stale closure" of `user` in useEffect is tricky.
+        // Let's just increment in Realtime subscription, and NOT increment in handleFlowerGiven.
+        // Wait, if Realtime fails?
+        // Let's do: handleFlowerGiven -> Insert DB.
+        // Realtime -> hears Insert -> increments count.
+        // So I will remove `setFlowerCount(prev => prev + 1)` from handleFlowerGiven.
+        // I will only set `setHasGivenFlower(true)` there.
+
         setHasGivenFlower(true);
 
         const { error } = await supabase
@@ -154,20 +214,20 @@ export default function ObituaryDetailPage() {
         if (error) {
             console.error('Flower Error:', error);
             // Revert on error
-            setFlowerCount(prev => prev - 1);
             setHasGivenFlower(false);
 
             if (error.code === '23505') { // Unique violation
                 showToastMessage('이미 마음을 전하셨습니다.');
                 setHasGivenFlower(true);
+                // If it was unique violation, it means it was already counted previously or logic conflict. 
+                // We leave it as given.
             } else {
                 showToastMessage('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         } else {
             // Success
             showToastMessage('소중한 마음이 기록되었습니다.');
-            // Optional: Sync with obituaries table count if needed for other lists
-            await supabase.rpc('increment_flower_count', { obituary_id: id });
+            // Note: Realtime subscription will handle the count increment.
         }
     };
 

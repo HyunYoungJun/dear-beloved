@@ -169,6 +169,40 @@ export interface Database {
                         referencedColumns: ["id"]
                     }
                 ]
+            },
+            flower_offerings: {
+                Row: {
+                    id: string
+                    created_at: string
+                    user_id: string
+                    memorial_id: string
+                }
+                Insert: {
+                    id?: string
+                    created_at?: string
+                    user_id: string
+                    memorial_id: string
+                }
+                Update: {
+                    id?: string
+                    created_at?: string
+                    user_id?: string
+                    memorial_id?: string
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "flower_offerings_user_id_fkey"
+                        columns: ["user_id"]
+                        referencedRelation: "users"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "flower_offerings_memorial_id_fkey"
+                        columns: ["memorial_id"]
+                        referencedRelation: "obituaries"
+                        referencedColumns: ["id"]
+                    }
+                ]
             }
         }
         Views: {
