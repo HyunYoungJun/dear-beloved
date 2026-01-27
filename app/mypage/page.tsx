@@ -35,14 +35,18 @@ export default function MyPage() {
 
         try {
             // 1. Fetch Total Flower Count & Tributes from flower_offerings
-            const { data: floralData } = await supabase
+            // Use !inner to enforce relationship and filter out any orphaned records if any
+            // Also Request exact count from DB
+            const { data: floralData, count } = await supabase
                 .from('flower_offerings')
-                .select('*, obituaries(id, title, deceased_name, main_image_url)')
+                .select('*, obituaries!inner(id, title, deceased_name, main_image_url)', { count: 'exact' })
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
 
+            if (count !== null) setTotalFlowerCount(count);
+
             if (floralData) {
-                setTotalFlowerCount(floralData.length);
+                // Determine photo_url: use main_image_url
                 setMyTributes(floralData);
             }
 

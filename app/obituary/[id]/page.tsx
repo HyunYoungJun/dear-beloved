@@ -207,24 +207,27 @@ export default function ObituaryDetailPage() {
 
         setHasGivenFlower(true);
 
-        const { error } = await supabase
+        // Debug: Log the payload
+        console.log('Attempting to give flower:', { memorial_id: id, user_id: user.id });
+
+        const { data, error } = await supabase
             .from('flower_offerings')
-            .insert({ memorial_id: id, user_id: user.id });
+            .insert({ memorial_id: id, user_id: user.id })
+            .select(); // Select to see returned data
 
         if (error) {
-            console.error('Flower Error:', error);
+            console.error('Flower Insert Error details:', error);
             // Revert on error
             setHasGivenFlower(false);
 
             if (error.code === '23505') { // Unique violation
                 showToastMessage('이미 마음을 전하셨습니다.');
                 setHasGivenFlower(true);
-                // If it was unique violation, it means it was already counted previously or logic conflict. 
-                // We leave it as given.
             } else {
                 showToastMessage('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         } else {
+            console.log('Flower Insert Success:', data);
             // Success
             showToastMessage('소중한 마음이 기록되었습니다.');
             // Note: Realtime subscription will handle the count increment.
