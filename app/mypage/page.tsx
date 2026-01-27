@@ -70,13 +70,12 @@ export default function MyPage() {
             }
 
             // 2. Fetch User Favorites
-            // [DEBUG ROUND 2] Use LEFT JOIN for Favorites too.
             if (activeTab === 'favorites') {
                 console.log("Fetching favorites for user:", user.id);
 
                 const { data: favData, error: favError } = await supabase
                     .from('user_favorites')
-                    .select('*, obituaries(*)') // Left Join
+                    .select('*, obituaries(*)')
                     .eq('user_id', user.id)
                     .order('created_at', { ascending: false });
 
