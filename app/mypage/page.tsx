@@ -56,7 +56,7 @@ export default function MyPage() {
             if (floralData) {
                 console.log("Checking first item structure:", floralData[0]);
                 // Filter out items where obituary might be null (if orphaned) but log them first
-                validData = floralData.filter(item => {
+                const validData = floralData.filter(item => {
                     if (!item.obituaries) {
                         console.warn("Found orphaned flower offering (no obituary linked):", item);
                         return false;
