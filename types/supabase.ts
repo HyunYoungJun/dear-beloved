@@ -204,18 +204,40 @@ export interface Database {
                     }
                 ]
             }
-        }
-        Views: {
-            [_ in never]: never
-        }
-        Functions: {
-            [_ in never]: never
-        }
-        Enums: {
-            [_ in never]: never
-        }
-        CompositeTypes: {
-            [_ in never]: never
+        },
+        user_favorites: {
+            Row: {
+                id: string
+                created_at: string
+                user_id: string
+                article_id: string
+            }
+            Insert: {
+                id?: string
+                created_at?: string
+                user_id: string
+                article_id: string
+            }
+            Update: {
+                id?: string
+                created_at?: string
+                user_id?: string
+                article_id?: string
+            }
+            Relationships: [
+                {
+                    foreignKeyName: "user_favorites_user_id_fkey"
+                    columns: ["user_id"]
+                    referencedRelation: "users"
+                    referencedColumns: ["id"]
+                },
+                {
+                    foreignKeyName: "user_favorites_article_id_fkey"
+                    columns: ["article_id"]
+                    referencedRelation: "obituaries"
+                    referencedColumns: ["id"]
+                }
+            ]
         }
     }
 }

@@ -70,14 +70,29 @@ export default function MyPage() {
             }
 
             // 2. Fetch User Favorites
+            // [DEBUG ROUND 2] Use LEFT JOIN for Favorites too.
             if (activeTab === 'favorites') {
-                const { data: favData } = await supabase
+                console.log("Fetching favorites for user:", user.id);
+
+                const { data: favData, error: favError } = await supabase
                     .from('user_favorites')
-                    .select('*, obituaries!inner(id, title, deceased_name, birth_date, death_date, main_image_url)')
+                    .select('*, obituaries(*)') // Left Join
                     .eq('user_id', user.id)
                     .order('created_at', { ascending: false });
 
-                if (favData) setUserFavorites(favData);
+                console.log("Raw Favorites Data Response:", { favData, favError });
+
+                if (favData) {
+                    console.log("Checking first favorite item:", favData[0]);
+                    const validFavs = favData.filter(item => {
+                        if (!item.obituaries) {
+                            console.warn("Found orphaned favorite (no obituary linked):", item);
+                            return false;
+                        }
+                        return true;
+                    });
+                    setUserFavorites(validFavs);
+                }
             }
 
             // 3. Fetch Read Articles (from LocalStorage IDs)
