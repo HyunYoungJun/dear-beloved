@@ -35,19 +35,38 @@ export default function MyPage() {
 
         try {
             // 1. Fetch Total Flower Count & Tributes from flower_offerings
-            // Use !inner to enforce relationship and filter out any orphaned records if any
-            // Also Request exact count from DB
-            const { data: floralData, count } = await supabase
+            // [DEBUG ROUND 2] Use LEFT JOIN (remove !inner) to see if records exist but relation fails.
+            // Also Request exact count from DB.
+            console.log("Fetching flower offerings for user:", user.id);
+
+            const { data: floralData, count, error } = await supabase
                 .from('flower_offerings')
-                .select('*, obituaries!inner(id, title, deceased_name, main_image_url)', { count: 'exact' })
+                .select('*, obituaries(*)', { count: 'exact' }) // Left Join by default in Supabase if not inner
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
+
+            console.log("Raw Floral Data Response:", { floralData, count, error });
+
+            if (error) {
+                console.error("Flower fetch error:", error);
+            }
 
             if (count !== null) setTotalFlowerCount(count);
 
             if (floralData) {
-                // Determine photo_url: use main_image_url
-                setMyTributes(floralData);
+                console.log("Checking first item structure:", floralData[0]);
+                // Filter out items where obituary might be null (if orphaned) but log them first
+                validData = floralData.filter(item => {
+                    if (!item.obituaries) {
+                        console.warn("Found orphaned flower offering (no obituary linked):", item);
+                        return false;
+                    }
+                    return true;
+                });
+
+                // If we want to show them even if orphaned (with placeholder), we can map them.
+                // But for now, let's just stick to valid ones for UI, but having LOGGED the orphans is key.
+                setMyTributes(validData);
             }
 
             // 2. Fetch User Favorites
