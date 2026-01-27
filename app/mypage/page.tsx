@@ -34,7 +34,7 @@ export default function MyPage() {
         setIsLoadingData(true);
 
         try {
-            // 1. Fetch Total Flower Count & Tributes
+            // 1. Fetch Total Flower Count & Tributes from flower_offerings
             const { data: floralData } = await supabase
                 .from('flower_offerings')
                 .select('*, obituaries(id, title, deceased_name, main_image_url)')
@@ -157,13 +157,19 @@ export default function MyPage() {
                 {/* 3. Tab Content */}
                 <div className="min-h-[400px]">
 
-                    {/* (1) My Tributes Tab */}
+                    {/* (1) My Tributes Tab: Updated with Real Data from flower_offerings */}
                     {activeTab === 'tributes' && (
                         <div className="space-y-4">
                             {myTributes.length === 0 ? (
-                                <div className="text-center py-20 text-gray-400">
-                                    <Flower2 className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                                    <p>아직 헌화한 기록이 없습니다.</p>
+                                <div className="text-center py-20 text-gray-400 flex flex-col items-center">
+                                    <Flower2 className="w-12 h-12 mb-4 opacity-20 text-[#0A192F]" />
+                                    <p className="mb-4">아직 헌화한 내역이 없습니다.</p>
+                                    <Link
+                                        href="/library"
+                                        className="px-6 py-2 bg-[#0A192F] text-white text-sm rounded-lg hover:bg-[#112240] transition-colors"
+                                    >
+                                        추모 기사 보러가기
+                                    </Link>
                                 </div>
                             ) : (
                                 myTributes.map((item) => (
@@ -172,24 +178,31 @@ export default function MyPage() {
                                         key={item.id}
                                         className="block bg-white border border-gray-100 rounded-lg p-5 hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+                                        <div className="flex items-center gap-5">
+                                            {/* Thumbnail: Rounded Shape as requested */}
+                                            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-gray-100">
                                                 {item.obituaries.main_image_url ? (
                                                     <img src={item.obituaries.main_image_url} alt="" className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <Flower2 size={20} className="text-gray-300" />
+                                                    <Flower2 size={24} className="text-gray-300" />
                                                 )}
                                             </div>
-                                            <div className="flex-1">
-                                                <p className="text-xs text-[#C5A059] font-bold mb-1">
-                                                    {new Date(item.created_at).toLocaleDateString()} 헌화함
-                                                </p>
-                                                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#C5A059] transition-colors">
+
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] px-2 py-0.5 bg-[#C5A059]/10 text-[#C5A059] rounded-full font-bold">
+                                                        헌화함
+                                                    </span>
+                                                    <span className="text-xs text-gray-400">
+                                                        {new Date(item.created_at).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#C5A059] transition-colors truncate">
                                                     故 {item.obituaries.deceased_name}
                                                 </h3>
                                                 <p className="text-sm text-gray-500 truncate">{item.obituaries.title}</p>
                                             </div>
-                                            <ChevronRight className="text-gray-300 group-hover:text-[#C5A059]" />
+                                            <ChevronRight className="text-gray-300 group-hover:text-[#C5A059] shrink-0" />
                                         </div>
                                     </Link>
                                 ))
