@@ -238,6 +238,43 @@ export interface Database {
                     referencedColumns: ["id"]
                 }
             ]
+        },
+        reading_history: {
+            Row: {
+                id: string
+                created_at: string
+                user_id: string
+                obituary_id: string
+                updated_at: string
+            }
+            Insert: {
+                id?: string
+                created_at?: string
+                user_id: string
+                obituary_id: string
+                updated_at?: string
+            }
+            Update: {
+                id?: string
+                created_at?: string
+                user_id?: string
+                obituary_id?: string
+                updated_at?: string
+            }
+            Relationships: [
+                {
+                    foreignKeyName: "reading_history_user_id_fkey"
+                    columns: ["user_id"]
+                    referencedRelation: "users"
+                    referencedColumns: ["id"]
+                },
+                {
+                    foreignKeyName: "reading_history_obituary_id_fkey"
+                    columns: ["obituary_id"]
+                    referencedRelation: "obituaries"
+                    referencedColumns: ["id"]
+                }
+            ]
         }
     }
 }

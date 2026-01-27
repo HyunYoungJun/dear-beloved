@@ -105,18 +105,30 @@ export default function ObituaryDetailPage() {
             setFlowerCount(count);
         }
 
-        // 2. Check if current user has already given
+        // 2. Check if current user has already given (and log history)
         if (user) {
-            const { data } = await supabase
+            const { data: myData, error: myError } = await supabase
                 .from('flower_offerings')
                 .select('id')
                 .eq('memorial_id', id)
                 .eq('user_id', user.id)
-                .single();
+                .maybeSingle();
 
-            if (data) {
+            if (!myError && myData) {
                 setHasGivenFlower(true);
+            } else {
+                setHasGivenFlower(false);
             }
+
+            // 3. Log Reading History
+            await supabase
+                .from('reading_history')
+                .upsert(
+                    { user_id: user.id, obituary_id: id },
+                    { onConflict: 'user_id, obituary_id' }
+                );
+        } else {
+            setHasGivenFlower(false);
         }
     }
 

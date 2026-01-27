@@ -94,21 +94,23 @@ export default function MyPage() {
                 }
             }
 
-            // 3. Fetch Read Articles (from LocalStorage IDs)
+            // 3. Fetch Read Articles (from reading_history table)
             if (activeTab === 'history') {
-                const viewedIds = JSON.parse(localStorage.getItem('viewed_obituaries') || '[]');
-                if (viewedIds.length > 0) {
-                    const { data: historyData } = await supabase
-                        .from('obituaries')
-                        .select('id, title, deceased_name, main_image_url, death_date')
-                        .in('id', viewedIds);
+                console.log("Fetching reading history for user:", user.id);
 
-                    if (historyData) {
-                        const sortedHistory = viewedIds
-                            .map((id: string) => historyData.find(item => item.id === id))
-                            .filter(Boolean);
-                        setReadArticles(sortedHistory);
-                    }
+                const { data: historyData, error: historyError } = await supabase
+                    .from('reading_history')
+                    .select('obituary_id, obituaries(*)') // Join to get details
+                    .eq('user_id', user.id)
+                    .order('updated_at', { ascending: false });
+
+                if (historyData) {
+                    // Transform to match UI expectation (array of obituary objects)
+                    const validHistory = historyData
+                        .filter(item => item.obituaries) // Ensure linked obituary exists
+                        .map(item => item.obituaries);
+
+                    setReadArticles(validHistory);
                 }
             }
 
