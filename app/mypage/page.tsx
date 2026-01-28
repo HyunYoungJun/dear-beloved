@@ -72,7 +72,7 @@ export default function MyPage() {
             if (activeTab === 'favorites') {
                 const { data: favData, error: favError } = await supabase
                     .from('user_favorites')
-                    .select('*, obituaries(*)')
+                    .select('*, obituaries!user_favorites_article_id_fkey(*)')
                     .eq('user_id', userId)
                     .order('created_at', { ascending: false });
 
