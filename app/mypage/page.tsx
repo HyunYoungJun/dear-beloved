@@ -21,101 +21,89 @@ export default function MyPage() {
     const [readArticles, setReadArticles] = useState<any[]>([]);
     const [isLoadingData, setIsLoadingData] = useState(true);
 
+    // Explicit Session Management & Data Fetching
     useEffect(() => {
-        if (!loading && !user) {
-            router.push('/login');
-        } else if (user) {
-            fetchUserData();
+        // 1. Initial Fetch if user exists
+        if (user) {
+            fetchUserData(user.id);
         }
-    }, [user, loading, activeTab]);
 
-    async function fetchUserData() {
-        if (!user) return;
+        // 2. Listen for Auth Changes (Strict Session Enforcement)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                if (session?.user) {
+                    fetchUserData(session.user.id);
+                }
+            } else if (event === 'SIGNED_OUT') {
+                router.push('/login');
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [user, activeTab]); // Re-run if user object changes (useAuth) or tab switches
+
+    async function fetchUserData(userId: string) {
+        if (!userId) return;
         setIsLoadingData(true);
 
         try {
-            // 1. Fetch Total Flower Count & Tributes from flower_offerings
-            // [DEBUG ROUND 2] Use LEFT JOIN (remove !inner) to see if records exist but relation fails.
-            // Also Request exact count from DB.
-            console.log("Fetching flower offerings for user:", user.id);
+            console.log(`[MyPage] Fetching data for User ID: ${userId} (Tab: ${activeTab})`);
 
-            const { data: floralData, count, error } = await supabase
+            // 1. Fetch Total Flower Count & Tributes
+            // Strict user_id filter + Explicit LEFT JOIN (obituaries(*))
+            const { data: floralData, count, error: floralError } = await supabase
                 .from('flower_offerings')
-                .select('*, obituaries(*)', { count: 'exact' }) // Left Join by default in Supabase if not inner
-                .eq('user_id', user.id)
+                .select('*, obituaries(*)', { count: 'exact' })
+                .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
-            console.log("Raw Floral Data Response:", { floralData, count, error });
-
-            if (error) {
-                console.error("Flower fetch error:", error);
-            }
-
+            if (floralError) console.error("[MyPage] Floral Fetch Error:", floralError);
             if (count !== null) setTotalFlowerCount(count);
 
             if (floralData) {
-                console.log("Checking first item structure:", floralData[0]);
-                // Filter out items where obituary might be null (if orphaned) but log them first
-                const validData = floralData.filter(item => {
-                    if (!item.obituaries) {
-                        console.warn("Found orphaned flower offering (no obituary linked):", item);
-                        return false;
-                    }
-                    return true;
-                });
-
-                // If we want to show them even if orphaned (with placeholder), we can map them.
-                // But for now, let's just stick to valid ones for UI, but having LOGGED the orphans is key.
-                setMyTributes(validData);
+                // Filter valid tributes (where obituary exists)
+                const validTributes = floralData.filter(item => item.obituaries !== null);
+                setMyTributes(validTributes);
             }
 
             // 2. Fetch User Favorites
             if (activeTab === 'favorites') {
-                console.log("Fetching favorites for user:", user.id);
-
                 const { data: favData, error: favError } = await supabase
                     .from('user_favorites')
                     .select('*, obituaries(*)')
-                    .eq('user_id', user.id)
+                    .eq('user_id', userId)
                     .order('created_at', { ascending: false });
 
-                console.log("Raw Favorites Data Response:", { favData, favError });
+                if (favError) console.error("[MyPage] Favorites Fetch Error:", favError);
 
                 if (favData) {
-                    console.log("Checking first favorite item:", favData[0]);
-                    const validFavs = favData.filter(item => {
-                        if (!item.obituaries) {
-                            console.warn("Found orphaned favorite (no obituary linked):", item);
-                            return false;
-                        }
-                        return true;
-                    });
+                    const validFavs = favData.filter(item => item.obituaries !== null);
                     setUserFavorites(validFavs);
                 }
             }
 
-            // 3. Fetch Read Articles (from reading_history table)
+            // 3. Fetch Read Articles (History)
             if (activeTab === 'history') {
-                console.log("Fetching reading history for user:", user.id);
-
                 const { data: historyData, error: historyError } = await supabase
                     .from('reading_history')
-                    .select('obituary_id, obituaries(*)') // Join to get details
-                    .eq('user_id', user.id)
+                    .select('obituary_id, obituaries(*)')
+                    .eq('user_id', userId)
                     .order('updated_at', { ascending: false });
 
-                if (historyData) {
-                    // Transform to match UI expectation (array of obituary objects)
-                    const validHistory = historyData
-                        .filter(item => item.obituaries) // Ensure linked obituary exists
-                        .map(item => item.obituaries);
+                if (historyError) console.error("[MyPage] History Fetch Error:", historyError);
 
+                if (historyData) {
+                    const validHistory = historyData
+                        .filter(item => item.obituaries !== null)
+                        .map(item => item.obituaries);
                     setReadArticles(validHistory);
                 }
             }
 
         } catch (error) {
-            console.error('Error fetching my page data:', error);
+            console.error('[MyPage] Critical Error fetching data:', error);
         } finally {
             setIsLoadingData(false);
         }
