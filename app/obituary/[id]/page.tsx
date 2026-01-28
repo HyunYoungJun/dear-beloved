@@ -173,10 +173,7 @@ export default function ObituaryDetailPage() {
             return;
         }
 
-        // Optimistic UI update: Set to true immediately for better UX
-        // If DB insert fails, we will revert it.
-        setHasGivenFlower(true);
-
+        // Strict Stateful UI: Only update on DB success
         console.log('Attempting to give flower:', { memorial_id: id, user_id: user.id });
 
         const { data, error } = await supabase
@@ -186,18 +183,16 @@ export default function ObituaryDetailPage() {
 
         if (error) {
             console.error('Flower Insert Error details:', error);
-            // Revert state on error if it's not a duplicate error
             if (error.code === '23505') { // Unique violation means we already gave it
                 showToastMessage('이미 마음을 전하셨습니다.');
                 setHasGivenFlower(true); // Ensure it stays true
             } else {
-                setHasGivenFlower(false); // Revert
                 showToastMessage('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         } else {
             console.log('Flower Insert Success:', data);
+            setHasGivenFlower(true); // Update state ONLY after success
             showToastMessage('소중한 마음이 기록되었습니다.');
-            // Note: Count will be updated via Realtime subscription strictly
         }
     };
 
@@ -250,7 +245,7 @@ export default function ObituaryDetailPage() {
                 .eq('article_id', id);
 
             if (!error) {
-                setIsFavorite(false);
+                setIsFavorite(false); // Strict update
                 showToastMessage("등록이 해제되었습니다.");
             }
         } else {
@@ -260,7 +255,7 @@ export default function ObituaryDetailPage() {
                 .insert({ user_id: user.id, article_id: id });
 
             if (!error) {
-                setIsFavorite(true);
+                setIsFavorite(true); // Strict update
                 showToastMessage("자주 찾는 분으로 등록되었습니다.");
             }
         }
