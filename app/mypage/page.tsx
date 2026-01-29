@@ -237,12 +237,12 @@ export default function MyPage() {
                         </div>
                     )}
 
-                    {/* (2) Favorites Tab (NEW) */}
+                    {/* (2) Favorites Tab (Updated to List Style) */}
                     {activeTab === 'favorites' && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
                             {userFavorites.length === 0 ? (
-                                <div className="col-span-full text-center py-20 text-gray-400">
-                                    <div className="w-12 h-12 mx-auto mb-3 opacity-20 bg-gray-200 rounded-full flex items-center justify-center">
+                                <div className="text-center py-20 text-gray-400 flex flex-col items-center">
+                                    <div className="w-12 h-12 mb-4 opacity-20 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5L5 21z" /></svg>
                                     </div>
                                     <p>등록된 '자주 찾는 분'이 없습니다.</p>
@@ -252,36 +252,35 @@ export default function MyPage() {
                                     <Link
                                         href={`/obituary/${fav.obituaries.id}`}
                                         key={fav.id}
-                                        className="relative block bg-white border border-gray-100 rounded-lg overflow-hidden hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
+                                        className="block bg-white border border-gray-100 rounded-lg p-5 hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
                                     >
-                                        <div className="h-40 bg-gray-100 relative overflow-hidden">
-                                            {fav.obituaries.main_image_url ? (
-                                                <img
-                                                    src={fav.obituaries.main_image_url}
-                                                    alt={fav.obituaries.deceased_name}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-300">
-                                                    No Image
-                                                </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-                                            {/* Ribbon Overlay */}
-                                            <div className="absolute top-3 right-3 bg-white/90 p-1.5 rounded-full shadow-sm text-[#0A192F]">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5L5 21z" /></svg>
+                                        <div className="flex items-center gap-5">
+                                            {/* Thumbnail */}
+                                            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-gray-100">
+                                                {fav.obituaries.main_image_url ? (
+                                                    <img src={fav.obituaries.main_image_url} alt="" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-300">
+                                                        <span className="text-xs">No Img</span>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                        <div className="p-5">
-                                            <h3 className="text-lg font-bold text-gray-900 mb-1 font-['Nanum_Myeongjo'] group-hover:text-[#C5A059] transition-colors">
-                                                故 {fav.obituaries.deceased_name}
-                                            </h3>
-                                            <p className="text-sm text-gray-600 line-clamp-1 mb-2">
-                                                {fav.obituaries.title}
-                                            </p>
-                                            <p className="text-xs text-gray-400">
-                                                {fav.obituaries.birth_date} ~ {fav.obituaries.death_date}
-                                            </p>
+
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] px-2 py-0.5 bg-[#C5A059]/10 text-[#C5A059] rounded-full font-bold">
+                                                        자주찾는분
+                                                    </span>
+                                                    <span className="text-xs text-gray-400">
+                                                        {new Date(fav.created_at).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#C5A059] transition-colors truncate">
+                                                    故 {fav.obituaries.deceased_name}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 truncate">{fav.obituaries.title}</p>
+                                            </div>
+                                            <ChevronRight className="text-gray-300 group-hover:text-[#C5A059] shrink-0" />
                                         </div>
                                     </Link>
                                 ))
@@ -289,12 +288,12 @@ export default function MyPage() {
                         </div>
                     )}
 
-                    {/* (3) History Tab */}
+                    {/* (3) History Tab (Updated to List Style) */}
                     {activeTab === 'history' && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
                             {readArticles.length === 0 ? (
-                                <div className="col-span-full text-center py-20 text-gray-400">
-                                    <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-20" />
+                                <div className="text-center py-20 text-gray-400 flex flex-col items-center">
+                                    <BookOpen className="w-12 h-12 mb-4 opacity-20 text-gray-500" />
                                     <p>최근 읽은 기사가 없습니다.</p>
                                 </div>
                             ) : (
@@ -302,32 +301,41 @@ export default function MyPage() {
                                     <Link
                                         href={`/obituary/${obituary.id}`}
                                         key={obituary.id}
-                                        className="block bg-white border border-gray-100 rounded-lg overflow-hidden hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
+                                        className="block bg-white border border-gray-100 rounded-lg p-5 hover:border-[#C5A059]/50 hover:shadow-md transition-all group"
                                     >
-                                        <div className="h-40 bg-gray-100 relative overflow-hidden">
-                                            {obituary.main_image_url ? (
-                                                <img
-                                                    src={obituary.main_image_url}
-                                                    alt={obituary.deceased_name}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-300">
-                                                    No Image
+                                        <div className="flex items-center gap-5">
+                                            {/* Thumbnail */}
+                                            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm border border-gray-100">
+                                                {obituary.main_image_url ? (
+                                                    <img src={obituary.main_image_url} alt="" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-300">
+                                                        <span className="text-xs">No Img</span>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full font-bold">
+                                                        읽은기사
+                                                    </span>
+                                                    {/* History table doesn't have created_at joined easily or mapped, usually. 
+                                                        Actually readArticles is mapped from item.obituaries directly.
+                                                        So we don't have the 'viewed_at' easily unless we kept the wrapper object in step 3 of fetch.
+                                                        Let's use death_date or omit date for now to keep it clean, OR update fetch to keep metadata.
+                                                        The user just asked for "List Format like Tributes". 
+                                                        For now, I'll show basic info. */}
+                                                    <span className="text-xs text-gray-400">
+                                                        {obituary.death_date} 별세
+                                                    </span>
                                                 </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-                                        </div>
-                                        <div className="p-5">
-                                            <h3 className="text-lg font-bold text-gray-900 mb-1 font-['Nanum_Myeongjo'] group-hover:text-[#C5A059] transition-colors">
-                                                故 {obituary.deceased_name}
-                                            </h3>
-                                            <p className="text-sm text-gray-600 line-clamp-2 h-10 leading-relaxed mb-3">
-                                                {obituary.title}
-                                            </p>
-                                            <p className="text-xs text-gray-400">
-                                                {obituary.death_date} 별세
-                                            </p>
+                                                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#C5A059] transition-colors truncate">
+                                                    故 {obituary.deceased_name}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 truncate">{obituary.title}</p>
+                                            </div>
+                                            <ChevronRight className="text-gray-300 group-hover:text-[#C5A059] shrink-0" />
                                         </div>
                                     </Link>
                                 ))
