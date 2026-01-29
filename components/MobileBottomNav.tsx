@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Calendar, PenTool, Info, User } from 'lucide-react';
+import { Home, Calendar, PenTool, Info, User, Book } from 'lucide-react';
 
 export default function MobileBottomNav() {
     const pathname = usePathname();
@@ -15,9 +15,9 @@ export default function MobileBottomNav() {
 
     const navItems = [
         { name: '홈', path: '/', icon: Home },
+        { name: '인물도서관', path: '/library', icon: Book }, // Replaces About Us
+        { name: '기사 의뢰', path: '/write', icon: PenTool, isMain: true }, // Center & Emphasized
         { name: '추모 캘린더', path: '/memorial-calendar', icon: Calendar },
-        { name: '기사 의뢰', path: '/write', icon: PenTool, isMain: true },
-        { name: 'About Us', path: '/about', icon: Info },
         { name: '마이', path: '/mypage', icon: User },
     ];
 

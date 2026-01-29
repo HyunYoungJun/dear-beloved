@@ -170,102 +170,159 @@ export default function GNB() {
                 </div>
             </header>
 
-            {/* Mobile Full Screen Menu Overlay */}
+            {/* Mobile Full Screen Menu Overlay (Redesigned: Left Side Drawer) */}
             {isMenuOpen && (
                 <div className="fixed inset-0 z-[100] md:hidden">
+                    {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
                         onClick={closeMenu}
                     ></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[320px] bg-white shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
-                        <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
-                            <span className="text-xl  font-bold text-[#0A192F]">MENU</span>
-                            <button onClick={closeMenu} className="p-2 text-gray-400 hover:text-[#0A192F]">
-                                <X size={24} />
-                            </button>
+
+                    {/* Drawer Content - Sliding from LEFT */}
+                    <div className="absolute left-0 top-0 bottom-0 w-[85%] max-w-[320px] bg-white shadow-2xl animate-in slide-in-from-left duration-300 flex flex-col font-sans">
+
+                        {/* 1. Header: Search & Close */}
+                        <div className="p-5 border-b border-gray-100 bg-white">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-lg font-bold text-[#0A192F]">MENU</span>
+                                <button onClick={closeMenu} className="p-2 -mr-2 text-gray-400 hover:text-[#0A192F]">
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            {/* Search Bar - Prominent */}
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="찾으시는 분의 성함을 입력하세요"
+                                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-base focus:outline-none focus:border-[#C5A059] transition-colors"
+                                />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            </div>
                         </div>
 
-                        <nav className="flex-1 overflow-y-auto p-6 flex flex-col gap-2 ">
-                            {MENU_ITEMS.map((item) => (
-                                item.children ? (
-                                    <div key={item.label} className="py-2 border-b border-gray-50">
-                                        <div className="font-bold text-gray-900 mb-2 px-2">{item.label}</div>
-                                        <div className="flex flex-col gap-1 pl-4 border-l-2 border-gray-100">
-                                            {item.children.map((child) => (
-                                                <Link
-                                                    key={child.label}
-                                                    href={child.href}
-                                                    onClick={closeMenu}
-                                                    className="py-2 text-gray-600 hover:text-[#C5A059] text-sm font-medium"
-                                                >
-                                                    {child.label}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <Link
-                                        key={item.label}
-                                        href={item.href}
-                                        onClick={closeMenu}
-                                        className="flex items-center justify-between py-3 border-b border-gray-50 text-gray-800 hover:text-[#C5A059] font-medium"
-                                    >
-                                        {item.label}
-                                    </Link>
-                                )
-                            ))}
-
-                            <div className="mt-4 pt-4">
-                                <Link href="/anchor/create" onClick={closeMenu} className="block py-2 text-purple-700 font-bold text-sm">
-                                    앵커 콘텐츠
-                                </Link>
-                                {role === 'admin' && (
-                                    <Link href="/admin" onClick={closeMenu} className="block py-2 text-red-600 font-bold text-sm">
-                                        관리자
-                                    </Link>
-                                )}
-                            </div>
-                        </nav>
-
-                        {/* Mobile User Section */}
-                        <div className="p-6 border-t border-gray-100 bg-gray-50/30">
+                        {/* 2. User Info (Top of Menu) */}
+                        <div className="px-5 py-4 bg-[#FDFBF7] border-b border-[#C5A059]/10">
                             {user ? (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-[#0A192F] text-[#C5A059] flex items-center justify-center font-bold shadow-md">
-                                            {user.email?.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <span className="text-sm font-bold text-[#0A192F]">{user.email?.split('@')[0]}님</span>
-                                            <span className="text-[10px] text-gray-400">{user.email}</span>
-                                        </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-full bg-[#0A192F] text-[#C5A059] flex items-center justify-center font-bold text-lg shadow-sm border border-[#C5A059]/30">
+                                        {user.email?.charAt(0).toUpperCase()}
                                     </div>
-                                    <button
-                                        onClick={handleLogout}
-                                        className="w-full py-2.5 text-center text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-white hover:text-red-500 transition-all font-bold shadow-sm"
-                                    >
-                                        로그아웃
-                                    </button>
+                                    <div>
+                                        <p className="text-base font-bold text-[#0A192F] leading-tight">
+                                            {user.user_metadata?.name || user.email?.split('@')[0]}님
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1">오늘도 소중한 분을 기억합니다.</p>
+                                    </div>
                                 </div>
                             ) : (
-                                <div className="flex flex-col gap-3">
-                                    <Link
-                                        href="/login"
-                                        onClick={closeMenu}
-                                        className="block w-full py-3 text-center bg-[#0A192F] text-white rounded-lg shadow-md hover:bg-[#112240] transition-all font-bold"
-                                    >
-                                        로그인
-                                    </Link>
-                                    <Link
-                                        href="/signup"
-                                        onClick={closeMenu}
-                                        className="block w-full py-3 text-center bg-white border border-gray-300 text-[#0A192F] rounded-lg hover:bg-gray-50 transition-all font-bold"
-                                    >
-                                        회원가입
-                                    </Link>
-                                </div>
+                                <Link href="/login" onClick={closeMenu} className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                        <Search size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="text-base font-bold text-gray-900">로그인이 필요합니다</p>
+                                        <p className="text-xs text-[#C5A059] mt-1 font-medium">서비스 이용을 위해 로그인해주세요</p>
+                                    </div>
+                                </Link>
                             )}
                         </div>
+
+                        {/* 3. Categorized Menu (Scrollable) */}
+                        <nav className="flex-1 overflow-y-auto px-5 py-2 space-y-6">
+
+                            {/* Category 1: 기록 아카이브 */}
+                            <section>
+                                <h3 className="text-xs font-extra-bold text-gray-400 uppercase tracking-wider mb-3 mt-4">기록 아카이브</h3>
+                                <ul className="space-y-1">
+                                    <li>
+                                        <Link href="/family" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="p-1.5 bg-gray-100 rounded-md text-gray-500 group-hover:bg-[#C5A059]/10 group-hover:text-[#C5A059] transition-colors">
+                                                <Menu size={18} />
+                                            </span>
+                                            <span className="text-base font-medium">가족 아카이브</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/library" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="p-1.5 bg-gray-100 rounded-md text-gray-500 group-hover:bg-[#C5A059]/10 group-hover:text-[#C5A059] transition-colors">
+                                                <Search size={18} />
+                                            </span>
+                                            <span className="text-base font-medium">인물도서관</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/overseas" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="p-1.5 bg-gray-100 rounded-md text-gray-500 group-hover:bg-[#C5A059]/10 group-hover:text-[#C5A059] transition-colors">
+                                                <Search size={18} />
+                                            </span>
+                                            <span className="text-base font-medium">해외 추모기사</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </section>
+
+                            {/* Category 2: 서비스 안내 */}
+                            <section>
+                                <h3 className="text-xs font-extra-bold text-gray-400 uppercase tracking-wider mb-3">서비스 안내</h3>
+                                <ul className="space-y-1">
+                                    <li>
+                                        <Link href="/about" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="text-base font-medium pl-2">Dear˚Beloved 소개</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="#" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="text-base font-medium pl-2">이용 가이드</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="#" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="text-base font-medium pl-2">공지사항</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </section>
+
+                            {/* Category 3: 고객 지원 */}
+                            <section className="pb-8">
+                                <h3 className="text-xs font-extra-bold text-gray-400 uppercase tracking-wider mb-3">고객 지원</h3>
+                                <ul className="space-y-1">
+                                    <li>
+                                        <Link href="#" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="text-base font-medium pl-2">1:1 문의</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/mypage" onClick={closeMenu} className="flex items-center gap-3 py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg group transition-colors">
+                                            <span className="text-base font-medium pl-2">추모기사 의뢰 현황</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </section>
+                        </nav>
+
+                        {/* 4. Footer: Logout & Settings */}
+                        <div className="p-5 border-t border-gray-100 bg-gray-50 flex items-center justify-between text-sm text-gray-500">
+                            {user ? (
+                                <button onClick={handleLogout} className="flex items-center gap-2 hover:text-[#C5A059] transition-colors font-medium">
+                                    로그아웃
+                                </button>
+                            ) : (
+                                <Link href="/login" onClick={closeMenu} className="flex items-center gap-2 hover:text-[#C5A059] transition-colors font-medium">로그인</Link>
+                            )}
+
+                            <div className="flex items-center gap-4">
+                                <Link href="/mypage" onClick={closeMenu} className="hover:text-[#0A192F]">설정</Link>
+                                {/* SNS Placeholders */}
+                                <div className="flex gap-2 opacity-50">
+                                    <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
+                                    <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             )}
