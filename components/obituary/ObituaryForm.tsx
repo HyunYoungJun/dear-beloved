@@ -116,21 +116,39 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
     const handleGenerateAI = async () => {
         setIsGenerating(true);
         try {
-            const response = await fetch('/api/generate-bio', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+            const { data, error } = await supabase.functions.invoke('generate-obituary', {
+                body: {
+                    deceased_name: formData.deceased_name,
+                    birth_date: formData.birth_date,
+                    death_date: formData.death_date,
+                    biography_data: {
+                        birth_background: formData.birth_background,
+                        childhood: formData.childhood,
+                        adolescence: formData.adolescence,
+                        youth: formData.youth,
+                        career: formData.career,
+                        achievements: formData.achievements,
+                        midlife: formData.midlife,
+                        family: formData.family,
+                        tribute: formData.tribute,
+                        quote: formData.quote,
+                    }
+                }
             });
 
-            const result = await response.json();
-            if (response.ok) {
-                setFormData((prev: any) => ({ ...prev, content: result.content }));
-            } else {
-                alert('AI 생성 실패: ' + result.error);
+            if (error) {
+                // If it's a rate limit error or logic error from function
+                const errorMsg = error.context?.json?.error || error.message || 'AI 생성 중 오류가 발생했습니다.';
+                alert(errorMsg);
+                return;
             }
-        } catch (error) {
+
+            if (data?.content) {
+                setFormData((prev: any) => ({ ...prev, content: data.content }));
+            }
+        } catch (error: any) {
             console.error('Generation error', error);
-            alert('AI 생성 중 오류가 발생했습니다.');
+            alert('시스템 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } finally {
             setIsGenerating(false);
         }
@@ -500,16 +518,40 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                         {/* AI Review Step */}
                         {stepInfo.id === 'review' && (
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                                    <p className="text-sm text-gray-600">지금까지 입력하신 정보를 바탕으로 전기문을 생성합니다.</p>
-                                    <button
-                                        type="button"
-                                        onClick={handleGenerateAI}
-                                        disabled={isGenerating}
-                                        className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 disabled:opacity-50 text-sm font-bold transition-colors"
-                                    >
-                                        {isGenerating ? '생성 중...' : 'AI 초안 만들기'}
-                                    </button>
+                                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <div className="text-sm text-gray-600">
+                                            <p className="font-bold text-gray-800 mb-1">AI 전기문 생성 도우미</p>
+                                            <p>지금까지 입력하신 고인의 소중한 기억들을 모아 전기문 초안을 작성합니다.</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleGenerateAI}
+                                            disabled={isGenerating}
+                                            className="px-5 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 text-sm font-bold transition-all flex items-center gap-2 shadow-sm"
+                                        >
+                                            {isGenerating ? (
+                                                <>
+                                                    <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                                                    작성 중...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>✨</span>
+                                                    AI 초안 생성하기
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    {isGenerating && (
+                                        <div className="text-center py-8 animate-pulse">
+                                            <p className="text-indigo-800 font-medium text-lg mb-2">
+                                                "고인의 소중한 기억들을 모아 기사를 작성 중입니다..."
+                                            </p>
+                                            <p className="text-sm text-gray-500">잠시만 기다려주세요.</p>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div>
@@ -524,14 +566,23 @@ export default function ObituaryForm({ initialData, obituaryId, isEditMode = fal
                                     />
                                 </div>
 
-                                <textarea
-                                    name="content"
-                                    value={formData.content}
-                                    onChange={handleChange}
-                                    rows={12}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none resize-none leading-relaxed"
-                                    placeholder="AI 생성 버튼을 누르면 이곳에 전기문 초안이 작성됩니다. 내용을 직접 수정하실 수도 있습니다."
-                                />
+                                <div className="relative">
+                                    <textarea
+                                        name="content"
+                                        value={formData.content}
+                                        onChange={handleChange}
+                                        rows={15}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-1 focus:ring-gray-900 outline-none resize-none leading-relaxed"
+                                        placeholder="AI 생성 버튼을 누르면 이 곳에 전기문 초안이 작성됩니다."
+                                    />
+                                    <div className="absolute bottom-4 right-4 text-xs text-gray-400 bg-white/80 px-2 py-1 rounded backdrop-blur-sm">
+                                        이 글은 AI가 작성한 초안이며, 유족의 마음을 담아 자유롭게 수정하실 수 있습니다.
+                                    </div>
+                                </div>
+
+                                <p className="text-center text-xs text-gray-500 mt-2">
+                                    * AI 생성 기능은 하루 3회까지 무료로 제공됩니다.
+                                </p>
                             </div>
                         )}
 

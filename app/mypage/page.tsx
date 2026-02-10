@@ -142,43 +142,28 @@ export default function MyPage() {
                 </div>
 
                 {/* 2. Tabs Navigation */}
-                <div className="flex border-b border-gray-200 mb-8 w-full overflow-x-auto">
-                    <button
-                        onClick={() => setActiveTab('tributes')}
-                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'tributes'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
-                            }`}
-                    >
-                        나의 헌화
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('favorites')}
-                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'favorites'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
-                            }`}
-                    >
-                        자주 찾는 분들
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('history')}
-                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'history'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
-                            }`}
-                    >
-                        내가 읽은 기사
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('settings')}
-                        className={`min-w-[80px] flex-1 py-4 text-center font-bold text-sm md:text-base border-b-2 transition-colors whitespace-nowrap ${activeTab === 'settings'
-                            ? 'border-[#0A192F] text-[#0A192F]'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
-                            }`}
-                    >
-                        설정
-                    </button>
+                {/* 2. Tabs Navigation */}
+                <div className="flex w-full border-b-[1px] border-[#2D2D2D] mb-8 overflow-x-auto justify-around bg-[#1A1A1A] rounded-t-lg">
+                    {['tributes', 'favorites', 'history', 'settings'].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab as any)}
+                            className={`relative flex-1 py-4 text-center text-sm md:text-base transition-colors whitespace-nowrap ${activeTab === tab
+                                    ? 'text-white font-semibold'
+                                    : 'text-[#999999] font-normal hover:text-gray-400'
+                                }`}
+                        >
+                            <span>
+                                {tab === 'tributes' && '나의 헌화'}
+                                {tab === 'favorites' && '자주 찾는 분들'}
+                                {tab === 'history' && '내가 읽은 기사'}
+                                {tab === 'settings' && '설정'}
+                            </span>
+                            {activeTab === tab && (
+                                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60%] h-[2px] bg-[#C5A059]" />
+                            )}
+                        </button>
+                    ))}
                 </div>
 
                 {/* 3. Tab Content */}
