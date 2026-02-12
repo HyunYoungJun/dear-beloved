@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,7 @@ type ObituarySummary = {
     created_at: string;
 };
 
-export default function EditorPick({ data }: { data: ObituarySummary[] }) {
+const EditorPick = React.memo(function EditorPick({ data }: { data: ObituarySummary[] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Auto-slide logic
@@ -131,4 +131,6 @@ export default function EditorPick({ data }: { data: ObituarySummary[] }) {
             </div>
         </div>
     );
-}
+});
+
+export default EditorPick;

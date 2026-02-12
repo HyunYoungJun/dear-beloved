@@ -47,135 +47,92 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      // 1. Fetch Recent Data for General Display (Block Carousel, etc.)
-      const { data: recentData } = await supabase
-        .from('obituaries')
-        .select('*')
-        .eq('is_public', true)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      // 2. Strict Fetch for "Today's Deceased"
-      // Note: JSONB filtering syntax depends on Supabase/PostgREST version. 
-      // Safest fallback if index not optimized: Fetch all recent (checked above) 
-      // OR specific filtered query if we can do .contains or ->> text match.
-      // Trying client-side filter on a larger set or specific query if possible.
-      // Let's rely on fetching a larger batch if needed, but since we have recentData(20), 
-      // checking that first is efficient. If not found, we might miss old ones.
-      // PROPER APPROACH: specific query.
-
-      // However, for simplicity and strictly following "Modify Query" instructions:
-      // We will perform parallel requests to ensure we get the tagged items strictly.
-
-      // Editor's Picks Strict Query
-      // Using .not('biography_data', 'is', null) helps, but extracting JSON value is key.
-      // Since specific JSON filtering can be tricky without mapped columns, 
-      // I will fetch a slightly larger pool for features OR use the client-side strict filter on a dedicated call if volume is low.
-      // But given the previous code just filtered `recentData`, I will strictly filter `recentData` first.
-      // If the user wants "Database Query" modification, they implies `eq`.
-      // Supabase: .eq('biography_data->>feature_tag', 'editor') works if column is jsonb.
-
-      // Let's try separate robust queries.
-      const { data: todayData } = await supabase
-        .from('obituaries')
-        .select('*')
-        .eq('is_public', true)
-        // This syntax works for JSONB in Supabase JS v2 if correctly typed, otherwise we fetch and filter.
-        // To be safe against potential Type errors in this environment without checking libs:
-        // We will fetch a sufficient number of recent items (e.g. 100) and strictly filter in memory.
-        // This guarantees "Strict Filtering" logic is applied. 
-        // (Unless the user specifically demanded a SQL-level WHERE clause modification, but "Query to modify" can mean the JS query logic).
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (recentData) {
-        setRecentObituaries(recentData);
-      }
-
-      if (todayData) {
-        // Strict Filter: Today (Supports new boolean flag OR legacy string tag)
-        const todays = todayData.filter((item: any) =>
-          item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today'
-        );
-        setTodayObituaries(todays);
-
-        // Strict Filter: Editor's Pick (Supports new boolean flag OR legacy string tag)
-        const picks = todayData.filter((item: any) =>
-          item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor'
-        );
-        setEditorPicks(picks);
-      }
-
-      // ... inside fetchData ...
-
-      // 4. Fetch Quotes Section (Featured or Fallback)
-      // Since JSONB filtering is tricky in some stored procedures or older PG via supabase-js simple queries if not setup, 
-      // we'll try client-side filter on a fetched batch of candidates if deep filtering fails.
-      // But let's try to fetch all recent items that MIGHT have quotes (e.g. from general 'recentData' or separate call).
-
-      // Try to get ALL featured quotes first. 
-      // Note: In real app, create an index on biography_data.
-      const { data: quoteAllData } = await supabase
-        .from('obituaries')
-        .select('*')
-        .eq('is_public', true)
-        .order('created_at', { ascending: false })
-        .limit(100); // Fetch a batch to filter client-side for 'is_quote_featured'
-
-      let featuredQuotes: ObituarySummary[] = [];
-      if (quoteAllData) {
-        featuredQuotes = quoteAllData.filter((item: any) =>
-          item.biography_data?.quote &&
-          item.biography_data.quote.length > 0 &&
-          item.biography_data.is_quote_featured === true
-        );
-      }
-
-      // Fallback: If no featured, take the most recent ONE that has a quote
-      if (featuredQuotes.length === 0 && quoteAllData) {
-        const fallback = quoteAllData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
-        if (fallback) featuredQuotes = [fallback];
-      }
-
-      setQuoteObituaries(featuredQuotes);
-
-      // 3. Strict Fetch for "Overseas"
-      const { data: overseasData } = await supabase
-        .from('obituaries')
-        .select('*')
-        .eq('is_public', true)
-        .eq('service_type', 'overseas')
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      if (overseasData) {
-        setOverseasObituaries(overseasData);
-      }
-
-      // Use imported keys for loop
-      const newCategories: any = {};
-
-      await Promise.all(CATEGORY_KEYS.map(async (cat) => {
-        const { data } = await supabase
+      try {
+        // Consolidated Batch Query: Fetch recent 200 public obituaries with relation counts
+        // This replaces 8+ separate queries with a single request.
+        const { data: allData, error } = await supabase
           .from('obituaries')
-          .select('*')
-          .eq('category', cat)
+          .select('*, flower_offerings(count), candle_offerings(count)')
           .eq('is_public', true)
           .order('created_at', { ascending: false })
-          .limit(5);
-        newCategories[cat] = data || [];
-      }));
+          .limit(200);
 
-      setCategories(newCategories);
-      setLoading(false);
+        if (error) {
+          console.error('Error fetching batch data:', error);
+          setLoading(false);
+          return;
+        }
+
+        if (allData) {
+          // 1. Recent Obituaries (General Display) - Take top 20
+          setRecentObituaries(allData.slice(0, 20));
+
+          // 2. Today's Deceased (Client-side Filter)
+          const todays = allData.filter((item: any) =>
+            item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today'
+          );
+          setTodayObituaries(todays);
+
+          // 3. Editor's Picks (Client-side Filter)
+          const picks = allData.filter((item: any) =>
+            item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor'
+          );
+          setEditorPicks(picks);
+
+          // 4. Quotes (Client-side Filter)
+          const quoted = allData.filter((item: any) =>
+            item.biography_data?.quote &&
+            item.biography_data.quote.length > 0 &&
+            item.biography_data.is_quote_featured === true
+          );
+          // Fallback if no featured quotes found
+          if (quoted.length === 0) {
+            const fallbackQuote = allData.find((item: any) => item.biography_data?.quote && item.biography_data.quote.length > 5);
+            if (fallbackQuote) quoted.push(fallbackQuote);
+          }
+          setQuoteObituaries(quoted);
+
+          // 5. Overseas Obituaries
+          const overseas = allData.filter((item: any) => item.service_type === 'overseas').slice(0, 3);
+          setOverseasObituaries(overseas);
+
+          // 6. Categories (Grouping)
+          const newCategories: { [key: string]: ObituarySummary[] } = {
+            politics: [],
+            economy: [],
+            culture: [],
+            society: [],
+          };
+
+          allData.forEach((item: any) => {
+            if (item.category && newCategories[item.category]) {
+              // Limit to 5 per category to match previous logic logic
+              if (newCategories[item.category].length < 5) {
+                newCategories[item.category].push(item);
+              }
+            }
+          });
+          setCategories(newCategories);
+        }
+      } catch (err) {
+        console.error('Unexpected error in fetchData:', err);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50  text-gray-400">
-        Digital Memorial Archive...
+      <div className="min-h-screen bg-stone-50 pb-20 pt-20 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Skeleton UI for Loading State */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-3 h-64 bg-gray-200 animate-pulse rounded-lg mb-8"></div>
+          <div className="lg:col-span-1 h-96 bg-gray-200 animate-pulse rounded-lg"></div>
+          <div className="lg:col-span-1 h-96 bg-gray-200 animate-pulse rounded-lg"></div>
+          <div className="lg:col-span-1 h-96 bg-gray-200 animate-pulse rounded-lg"></div>
+        </div>
       </div>
     );
   }

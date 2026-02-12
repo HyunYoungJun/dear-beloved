@@ -21,7 +21,7 @@ interface DeceasedQuoteProps {
     items: ObituarySummary[];
 }
 
-export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
+const DeceasedQuote = React.memo(function DeceasedQuote({ items }: DeceasedQuoteProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Auto-rotation
@@ -157,4 +157,6 @@ export default function DeceasedQuote({ items }: DeceasedQuoteProps) {
             </div>
         </div>
     );
-}
+});
+
+export default DeceasedQuote;

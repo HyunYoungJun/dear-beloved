@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,7 +25,7 @@ const categoryNames: { [key: string]: string } = {
     society: 'Family & Society'
 };
 
-export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) {
+const FeaturedDeceased = React.memo(function FeaturedDeceased({ data }: { data: ObituarySummary[] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Auto-slide logic
@@ -146,4 +146,6 @@ export default function FeaturedDeceased({ data }: { data: ObituarySummary[] }) 
             </div>
         </div>
     );
-}
+});
+
+export default FeaturedDeceased;
