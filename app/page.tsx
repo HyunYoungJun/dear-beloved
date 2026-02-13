@@ -49,8 +49,7 @@ export default function Home() {
     async function fetchData() {
       try {
         // Consolidated Batch Query: Fetch recent 200 public obituaries with relation counts
-        // This replaces 8+ separate queries with a single request.
-        // OPTIMIZATION: Now including 'is_today' and 'is_editor_pick' columns for direct filtering.
+        // Uses * to safely fetch all available columns + relation counts
         const { data: allData, error } = await supabase
           .from('obituaries')
           .select('*, flower_offerings(count), candle_offerings(count)')
@@ -68,17 +67,25 @@ export default function Home() {
           // 1. Recent Obituaries (General Display) - Take top 20
           setRecentObituaries(allData.slice(0, 20));
 
-          // 2. Today's Deceased (Direct Column Filter)
-          let todays = allData.filter((item: any) => item.is_today === true);
+          // 2. Today's Deceased (Robust Filter: Checks Column OR JSONB)
+          let todays = allData.filter((item: any) =>
+            item.is_today === true ||
+            item.biography_data?.is_today === true ||
+            item.biography_data?.feature_tag === 'today'
+          );
 
-          // Fallback: If no "Today" items, take the most recent 5 items
+          // Fallback: If no "Today" items found even after strict check, take the most recent 5 items
           if (todays.length === 0) {
             todays = allData.slice(0, 5);
           }
           setTodayObituaries(todays);
 
-          // 3. Editor's Picks (Direct Column Filter)
-          let picks = allData.filter((item: any) => item.is_editor_pick === true);
+          // 3. Editor's Picks (Robust Filter: Checks Column OR JSONB)
+          let picks = allData.filter((item: any) =>
+            item.is_editor_pick === true ||
+            item.biography_data?.is_editor_pick === true ||
+            item.biography_data?.feature_tag === 'editor'
+          );
 
           // Fallback: If no "Editor Picks", take items 5-15 (avoiding overlap if possible)
           if (picks.length === 0) {
@@ -86,11 +93,11 @@ export default function Home() {
           }
           setEditorPicks(picks);
 
-          // 4. Quotes (Client-side Filter)
+          // 4. Quotes (Client-side Filter with Fallback)
           const quoted = allData.filter((item: any) =>
             item.biography_data?.quote &&
             item.biography_data.quote.length > 0 &&
-            item.biography_data.is_quote_featured === true
+            (item.biography_data.is_quote_featured === true || item.biography_data.quote.length > 20)
           );
           // Fallback if no featured quotes found
           if (quoted.length === 0) {
