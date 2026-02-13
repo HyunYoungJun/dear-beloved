@@ -50,6 +50,7 @@ export default function Home() {
       try {
         // Consolidated Batch Query: Fetch recent 200 public obituaries with relation counts
         // This replaces 8+ separate queries with a single request.
+        // OPTIMIZATION: Now including 'is_today' and 'is_editor_pick' columns for direct filtering.
         const { data: allData, error } = await supabase
           .from('obituaries')
           .select('*, flower_offerings(count), candle_offerings(count)')
@@ -67,16 +68,22 @@ export default function Home() {
           // 1. Recent Obituaries (General Display) - Take top 20
           setRecentObituaries(allData.slice(0, 20));
 
-          // 2. Today's Deceased (Client-side Filter)
-          const todays = allData.filter((item: any) =>
-            item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today'
-          );
+          // 2. Today's Deceased (Direct Column Filter)
+          let todays = allData.filter((item: any) => item.is_today === true);
+
+          // Fallback: If no "Today" items, take the most recent 5 items
+          if (todays.length === 0) {
+            todays = allData.slice(0, 5);
+          }
           setTodayObituaries(todays);
 
-          // 3. Editor's Picks (Client-side Filter)
-          const picks = allData.filter((item: any) =>
-            item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor'
-          );
+          // 3. Editor's Picks (Direct Column Filter)
+          let picks = allData.filter((item: any) => item.is_editor_pick === true);
+
+          // Fallback: If no "Editor Picks", take items 5-15 (avoiding overlap if possible)
+          if (picks.length === 0) {
+            picks = allData.slice(5, 15);
+          }
           setEditorPicks(picks);
 
           // 4. Quotes (Client-side Filter)

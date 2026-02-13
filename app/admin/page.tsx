@@ -32,8 +32,7 @@ export default function AdminDashboard() {
         {
             category: "콘텐츠 관리",
             items: [
-                { label: "오늘의 고인 / Editor Pick 선정", href: "/admin/create", icon: Star },
-                { label: "전체 기사 목록 및 수정", href: "/admin/contents", icon: FileText }
+                { label: "전체 기사 관리 (오늘의 고인/에디터픽 설정)", href: "/admin/contents", icon: FileText }
             ]
         },
         {

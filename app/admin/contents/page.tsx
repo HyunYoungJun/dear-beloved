@@ -12,7 +12,9 @@ type ObituarySimple = {
     main_image_url: string | null;
     is_public: boolean;
     created_at: string;
-    biography_data: any; // Used for feature flags
+    biography_data: any; // Used for other flags if needed
+    is_today: boolean;
+    is_editor_pick: boolean;
 };
 
 export default function AdminContentsPage() {
@@ -27,7 +29,8 @@ export default function AdminContentsPage() {
 
     const fetchObituaries = async () => {
         setLoading(true);
-        let query = supabase.from('obituaries').select('id, deceased_name, death_date, main_image_url, is_public, created_at, biography_data');
+        // Optimized Query: Fetch new boolean columns directly
+        let query = supabase.from('obituaries').select('id, deceased_name, death_date, main_image_url, is_public, created_at, biography_data, is_today, is_editor_pick');
 
         if (sortOrder === 'name_asc') {
             query = query.order('deceased_name', { ascending: true });
@@ -51,21 +54,15 @@ export default function AdminContentsPage() {
         // Optimistic UI Update
         setObituaries(prev => prev.map(item => {
             if (item.id === id) {
-                const newBio = { ...item.biography_data, [featureType]: !currentValue };
-                return { ...item, biography_data: newBio };
+                return { ...item, [featureType]: !currentValue };
             }
             return item;
         }));
 
-        // DB Update
-        const targetItem = obituaries.find(item => item.id === id);
-        if (!targetItem) return;
-
-        const updatedBio = { ...targetItem.biography_data, [featureType]: !currentValue };
-
+        // DB Update (Direct Column Update)
         const { error } = await supabase
             .from('obituaries')
-            .update({ biography_data: updatedBio })
+            .update({ [featureType]: !currentValue })
             .eq('id', id);
 
         if (error) {
@@ -73,7 +70,7 @@ export default function AdminContentsPage() {
             // Revert on error
             setObituaries(prev => prev.map(item => {
                 if (item.id === id) {
-                    return { ...item, biography_data: targetItem.biography_data };
+                    return { ...item, [featureType]: currentValue };
                 }
                 return item;
             }));
@@ -155,8 +152,8 @@ export default function AdminContentsPage() {
                     ) : (
                         <div className="divide-y divide-gray-100">
                             {filteredList.map((item) => {
-                                const isToday = item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today';
-                                const isEditor = item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor';
+                                const isToday = item.is_today;
+                                const isEditor = item.is_editor_pick;
 
                                 return (
                                     <div
