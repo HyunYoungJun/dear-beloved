@@ -13,8 +13,8 @@ type ObituarySimple = {
     is_public: boolean;
     created_at: string;
     biography_data: any; // Used for other flags if needed
-    is_today: boolean;
-    is_editor_pick: boolean;
+    is_today?: boolean;
+    is_editor_pick?: boolean;
 };
 
 export default function AdminContentsPage() {
@@ -29,8 +29,8 @@ export default function AdminContentsPage() {
 
     const fetchObituaries = async () => {
         setLoading(true);
-        // Optimized Query: Fetch new boolean columns directly
-        let query = supabase.from('obituaries').select('id, deceased_name, death_date, main_image_url, is_public, created_at, biography_data, is_today, is_editor_pick');
+        // Optimized Query: Use select('*') to be robust if new columns (is_today, is_editor_pick) are missing
+        let query = supabase.from('obituaries').select('*');
 
         if (sortOrder === 'name_asc') {
             query = query.order('deceased_name', { ascending: true });
@@ -46,35 +46,71 @@ export default function AdminContentsPage() {
         const { data, error } = await query;
         if (data) {
             setObituaries(data);
+        } else if (error) {
+            console.error("Fetch error:", error);
         }
         setLoading(false);
     };
 
     const toggleFeature = async (id: string, featureType: 'is_today' | 'is_editor_pick', currentValue: boolean) => {
+        const newValue = !currentValue;
+
         // Optimistic UI Update
         setObituaries(prev => prev.map(item => {
             if (item.id === id) {
-                return { ...item, [featureType]: !currentValue };
+                // Update both top-level and nested just in case for UI consistency
+                const newBio = { ...item.biography_data, [featureType]: newValue };
+                return { ...item, [featureType]: newValue, biography_data: newBio };
             }
             return item;
         }));
 
-        // DB Update (Direct Column Update)
-        const { error } = await supabase
-            .from('obituaries')
-            .update({ [featureType]: !currentValue })
-            .eq('id', id);
+        // DB Update Strategy: Try updating boolean column first. 
+        // If it fails (migration not matched), fallback to JSONB update.
+        // Actually, to be safe and keep strict consistency until migration is confirmed:
+        // We will try to update BOTH if possible, or gracefully fallback.
+        try {
+            // 1. Try Simple Column Update
+            const { error: colError } = await supabase
+                .from('obituaries')
+                .update({ [featureType]: newValue })
+                .eq('id', id);
 
-        if (error) {
-            console.error('Failed to update feature:', error);
+            if (colError) {
+                // If error is "Column not found" (PGRST301 or similar), fallback to JSONB
+                console.warn(`Column update failed, falling back to JSONB for ${featureType}`, colError);
+
+                // 2. JSONB Fallback
+                const targetItem = obituaries.find(item => item.id === id);
+                if (targetItem) {
+                    const updatedBio = { ...targetItem.biography_data, [featureType]: newValue };
+                    const { error: jsonError } = await supabase
+                        .from('obituaries')
+                        .update({ biography_data: updatedBio })
+                        .eq('id', id);
+
+                    if (jsonError) throw jsonError;
+                }
+            } else {
+                // If Column Update succeeded, ALSO update JSONB to keep them in sync during migration phase?
+                // Or just rely on the migration script to backfill later? 
+                // Let's safe-guard: Update JSONB too so `biography_data` remains source of truth for old code.
+                const targetItem = obituaries.find(item => item.id === id);
+                if (targetItem) {
+                    const updatedBio = { ...targetItem.biography_data, [featureType]: newValue };
+                    await supabase.from('obituaries').update({ biography_data: updatedBio }).eq('id', id);
+                }
+            }
+        } catch (err) {
+            console.error('Failed to update feature:', err);
             // Revert on error
             setObituaries(prev => prev.map(item => {
                 if (item.id === id) {
-                    return { ...item, [featureType]: currentValue };
+                    return { ...item, [featureType]: currentValue }; // simplified revert
                 }
                 return item;
             }));
-            alert('설정 변경에 실패했습니다.');
+            alert('설정 변경에 실패했습니다. (DB 연결 확인 필요)');
         }
     };
 
@@ -152,8 +188,9 @@ export default function AdminContentsPage() {
                     ) : (
                         <div className="divide-y divide-gray-100">
                             {filteredList.map((item) => {
-                                const isToday = item.is_today;
-                                const isEditor = item.is_editor_pick;
+                                // Fallback logic: Use top-level column if available, else check JSONB
+                                const isToday = item.is_today ?? (item.biography_data?.is_today === true || item.biography_data?.feature_tag === 'today');
+                                const isEditor = item.is_editor_pick ?? (item.biography_data?.is_editor_pick === true || item.biography_data?.feature_tag === 'editor');
 
                                 return (
                                     <div
