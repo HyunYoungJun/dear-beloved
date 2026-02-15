@@ -29,7 +29,6 @@ export default function AdminContentsPage() {
 
     const fetchObituaries = async () => {
         setLoading(true);
-        console.log("AdminContentsPage: Fetching obituaries...");
 
         // Optimized Query: Use select('*') to be robust if new columns (is_today, is_editor_pick) are missing
         let query = supabase.from('obituaries').select('*');
@@ -47,13 +46,10 @@ export default function AdminContentsPage() {
 
         const { data, error } = await query;
 
-        console.log("AdminContentsPage: Supabase response", { dataCount: data?.length, error });
-
         if (data) {
             setObituaries(data);
         } else if (error) {
             console.error("Fetch error:", error);
-            alert(`데이터를 불러오지 못했습니다: ${error.message}`);
         }
         setLoading(false);
     };
