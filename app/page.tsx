@@ -50,9 +50,10 @@ export default function Home() {
       try {
         // Consolidated Batch Query: Fetch recent 200 public obituaries with relation counts
         // Uses * to safely fetch all available columns + relation counts
+        // FIX: Use explicit join for flower_offerings to resolve ambiguity (memorial_id fk)
         const { data: allData, error } = await supabase
           .from('obituaries')
-          .select('*, flower_offerings(count), candle_offerings(count)')
+          .select('*, flower_offerings!flower_offerings_memorial_id_fkey(count), candle_offerings(count)')
           .eq('is_public', true)
           .order('created_at', { ascending: false })
           .limit(200);

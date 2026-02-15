@@ -55,7 +55,7 @@ export default function MyPage() {
             // Strict user_id filter + Explicit LEFT JOIN (obituaries(*))
             const { data: floralData, count, error: floralError } = await supabase
                 .from('flower_offerings')
-                .select('*, obituaries(*)', { count: 'exact' })
+                .select('*, obituaries!flower_offerings_memorial_id_fkey(*)', { count: 'exact' })
                 .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
@@ -149,8 +149,8 @@ export default function MyPage() {
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`relative flex-1 py-4 text-center text-sm md:text-base transition-colors whitespace-nowrap ${activeTab === tab
-                                    ? 'text-white font-semibold'
-                                    : 'text-[#999999] font-normal hover:text-gray-400'
+                                ? 'text-white font-semibold'
+                                : 'text-[#999999] font-normal hover:text-gray-400'
                                 }`}
                         >
                             <span>
