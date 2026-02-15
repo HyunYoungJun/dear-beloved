@@ -49,7 +49,7 @@ export default function AdminContentsPage() {
         if (data) {
             setObituaries(data);
         } else if (error) {
-            console.error("Fetch error:", error);
+            console.error("Supabase Error Detail:", error.message, error.hint);
         }
         setLoading(false);
     };

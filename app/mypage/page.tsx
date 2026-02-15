@@ -59,7 +59,7 @@ export default function MyPage() {
                 .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
-            if (floralError) console.error("[MyPage] Floral Fetch Error:", floralError);
+            if (floralError) console.error("Supabase Error Detail (Floral):", floralError.message, floralError.hint);
             if (count !== null) setTotalFlowerCount(count);
 
             if (floralData) {
@@ -76,7 +76,7 @@ export default function MyPage() {
                     .eq('user_id', userId)
                     .order('created_at', { ascending: false });
 
-                if (favError) console.error("[MyPage] Favorites Fetch Error:", favError);
+                if (favError) console.error("Supabase Error Detail (Favorites):", favError.message, favError.hint);
 
                 if (favData) {
                     const validFavs = favData.filter(item => item.obituaries !== null);

@@ -49,17 +49,16 @@ export default function Home() {
     async function fetchData() {
       try {
         // Consolidated Batch Query: Fetch recent 200 public obituaries with relation counts
-        // Uses * to safely fetch all available columns + relation counts
-        // FIX: Use explicit join for flower_offerings to resolve ambiguity (memorial_id fk)
+        // FIX: Use Explicit Joins for ALL relations to prevent Ambiguous FK errors
         const { data: allData, error } = await supabase
           .from('obituaries')
-          .select('*, flower_offerings!flower_offerings_memorial_id_fkey(count), candle_offerings(count)')
+          .select('*, flower_offerings!flower_offerings_memorial_id_fkey(count), candle_offerings!candle_offerings_memorial_id_fkey(count)')
           .eq('is_public', true)
           .order('created_at', { ascending: false })
           .limit(200);
 
         if (error) {
-          console.error('Error fetching batch data:', error);
+          console.error("Supabase Error Detail:", error.message, error.hint);
           setLoading(false);
           return;
         }
